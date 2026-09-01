@@ -1,0 +1,106 @@
+/* variables globales de color */
+:root {
+    --color-fondo: #120E1A;
+    --color-superficie: #1E1730;
+    --color-primario: #D6236A;
+    --color-acento: #00D2FF;
+    --color-texto: #F3EFFA;
+    --color-error: #FF7A7A;
+}
+
+/* configuracion del cuerpo de la pagina */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+}
+
+/* Contenedor principal de la cabecera */
+.header-principal {
+    background-color: var(--color-superficie);
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 15px 30px;
+}
+
+/* Enlace y alineacion del logo */
+.logo a {
+    display: flex;
+    align-items: center; 
+    gap: 10px; 
+    color: var(--color-texto);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+/* efecto hover para el logo (efecto al pasar el mouse por encima) */
+.logo a:hover {
+    color: var(--color-primario);
+}
+
+/* tamaño de la imagen del logo */
+.logo img {
+    max-height: 50px; 
+    display: block;
+}
+
+/* contenedor de la barra de busqueda */
+.busqueda {
+    flex-grow: 1; 
+    display: flex;
+    justify-content: center;
+    margin: 0 40px; 
+}
+
+/* formulario de la barra de busqueda */
+.busqueda form {
+    display: flex;
+    width: 100%;
+    max-width: 500px;
+}
+
+/* campo de texto de la busqueda */
+.busqueda input {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: 1px solid var(--color-texto);
+    border-radius: 4px 0 0 4px; 
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+}
+
+/* boton de envio de la busqueda */
+.busqueda button {
+    padding: 10px 20px;
+    background-color: var(--color-primario);
+    color: #FFFFFF; 
+    border: none;
+    border-radius: 0 4px 4px 0;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* lista de navegacion del lado derecho */
+.nav-derecha ul {
+    list-style: none;
+    display: flex;
+    gap: 25px; 
+    margin: 0;
+    padding: 0;
+}
+
+/* enlaces de la navegación del lado derecho (Carrito y Login) */
+.nav-derecha a {
+    color: var(--color-texto);
+    text-decoration: none; 
+    font-weight: bold;
+    font-size: 20px;
+}
+
+/* efecto hover para los enlaces de la derecha */
+.nav-derecha a:hover {
+    color: var(--color-primario);
+}
