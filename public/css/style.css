@@ -16,6 +16,11 @@ body {
     color: var(--color-texto);
 }
 
+
+
+                                        /* CONTENIDO UBICADO EN EL HEADER */
+
+
 /* Contenedor principal de la cabecera */
 .header-principal {
     background-color: var(--color-superficie);
@@ -104,3 +109,105 @@ body {
 .nav-derecha a:hover {
     color: var(--color-primario);
 }
+
+/*---------------------------------------------------------------------------------------------------------------------------------------------*/
+                                        /* BARRA DE CATEGORIAS */
+
+.barra-categorias {
+    background-color: var(--color-superficie);
+    width: 100%;
+    /* linea que separar a la barra de categorias  */
+    border-top: 2px solid var(--color-primario); 
+    /* espacio que divide la linea separadora y el borde debajo de las letras */
+    padding: 20px 0; 
+}
+
+
+.barra-categorias ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center; 
+    gap: 40px; /* separacion entre cada categoria */
+}
+
+
+.barra-categorias a {
+    color: var(--color-texto);
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: normal;
+    letter-spacing: 1px; /* separa un poco las letras */
+}
+
+.barra-categorias a:hover {
+    color: var(--color-primario);
+}
+/*---------------------------------------------------------------------------------------------------------------------------------------------*/
+
+                                        /*  CARRUSEL DE IMAGENES    */
+
+/* contenedor general del carrusel */
+.custom-carrusel {
+    max-width: 1000px;
+    margin: 40px auto;
+    border: 2px solid var(--color-primario);
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #000;
+}
+
+/* altura y proporcion del video e imagenes */
+.carrusel-media {
+    height: 480px;
+    object-fit: cover;
+}
+
+/* caja de texto inferior*/
+.custom-carrusel .carousel-caption {
+    background-color: rgba(30, 23, 48, 0.85);
+    border-bottom: 3px solid var(--color-acento);
+    border-radius: 8px;
+    padding: 12px 20px;
+    bottom: 25px;
+}
+
+/* titulo dentro de la caja de texto */
+.custom-carrusel .carousel-caption h5 {
+    color: var(--color-acento);
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+/* parrafo dentro de la caja de texto */
+.custom-carrusel .carousel-caption p {
+    color: var(--color-texto);
+    font-size: 14px;
+    margin-bottom: 0;
+}
+
+/* indicadores inferiores inactivos */
+.custom-carrusel .carousel-indicators [data-bs-target] {
+    background-color: var(--color-primario);
+    height: 4px;
+}
+
+/* indicador inferior activo */
+.custom-carrusel .carousel-indicators .active {
+    background-color: var(--color-acento);
+}
+
+
+/* sin el siguiente ajuste: el area de interaccion de los botones laterales no permitiran 
+interactuar con la interfaz del video por que estaran sobreponiendose*/
+
+/* reduce el area donde hacer clic en las flechas laterales*/
+.custom-carrusel .carousel-control-prev,
+.custom-carrusel .carousel-control-next {
+    width: 60px;
+    z-index: 5;
+}
+
+/*---------------------------------------------------------------------------------------------------------------------------------------------*/
