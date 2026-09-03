@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameHub Store</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+    <!-- Estilo main index-->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Estilo personalizado -->
+    <link rel="stylesheet" href="css/catalogo.css">
+    <link href="assets/icons/icono-wishlist.svg" rel="icon" type="image/svg+xml">
+
+</head>
+
+<body>
+    <header class="header-principal">
+
+        <!--LOGO UBICADO EN EL HEADER-->
+        <div class="logo">
+            <a href="index.html">
+                <img src="assets/icons/icono-wishlist.svg" alt="logotipo de GameHub Store"> GameHub
+                <!-- hay que cambiar el nombre del archivo de la imagen, ruta o tipo de formato una vez tengamos la imagen-->
+            </a>
+        </div>
+
+        <!--BARRA DE BUSQUEDA EN EL HEADER-->
+        <div class="busqueda">
+            <form action="#" method="GET">
+                <input type="text" placeholder="Buscar producto..." aria-label="busqueda en el catalogo" required>
+                <button tipe="submit">Buscar</button>
+            </form>
+        </div>
+
+        <!--CARRITO E INICIO DE SESION-->
+        <nav class="nav-derecha">
+            <ul>
+                <li>
+                    <a href="carrito.html"> <img src="assets/icons/icono-carrito.svg" alt="icono de carrito de compras">
+                        Carrito </a>
+                </li> <!--AÑADIR MAS ADELANTE-->
+                <li>
+                    <a href="login.html"> <img src="assets/icons/icono-usuario.svg" alt="icono de inicio de sesion">
+                        Login </a>
+                </li> <!--AÑADIR MAS ADELANTE-->
+            </ul>
+        </nav>
+
+    </header>
+
+    <!--    BARRA DE CATEGORIAS    -->
+    <nav class="barra-categorias">
+        <ul>
+            <li> <a href="index.html"> Notebooks </a> </li>
+            <li> <a href="index.html"> Tarjetas Gráficas </a> </li>
+            <li> <a href="index.html"> Procesadores </a> </li>
+            <li> <a href="index.html"> Periféricos </a> </li>
+            <li> <a href="index.html"> Consolas </a> </li>
+            <li> <a href="index.html"> Monitores </a> </li>
+            <li> <a href="index.html"> Accesorios </a> </li>
+        </ul>
+    </nav>
+
+    <main class="catalogo-main">
+
+        <div class="catalogo-encabezado">
+            <h3>Tarjetas Gráficas</h3>
+            <p class="catalogo-resultados">Mostrando 10 de 50 productos</p>
+        </div>
+
+
+        <div class="catalogo-contenido">
+
+            <!-- FILTROS LATERALES      -->
+            <aside class="filtros">
+                <form action="#" method="GET">
+                    <div class="filtro-grupo">
+                        <h4>Categoría</h4>
+                        <ul class="filtro-lista">
+                            <li>
+                                <input type="checkbox" id="cat-notebooks" name="categoria" value="notebooks">
+                                <label for="cat-notebooks">Notebooks</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="cat-graficas" name="categoria" value="graficas" checked>
+                                <label for="cat-graficas">Tarjetas Gráficas</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="cat-procesadores" name="categoria" value="procesadores">
+                                <label for="cat-procesadores">Procesadores</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="cat-perifericos" name="categoria" value="perifericos">
+                                <label for="cat-perifericos">Periféricos</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="cat-consolas" name="categoria" value="consolas">
+                                <label for="cat-consolas">Consolas</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="cat-monitores" name="categoria" value="monitores">
+                                <label for="cat-monitores">Monitores</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="cat-accesorios" name="categoria" value="accesorios">
+                                <label for="cat-accesorios">Accesorios</label>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="filtro-grupo">
+                        <h4>Marca</h4>
+                        <ul class="filtro-lista">
+                            <li>
+                                <input type="checkbox" id="marca-asus" name="marca" value="asus">
+                                <label for="marca-asus">ASUS</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="marca-msi" name="marca" value="msi">
+                                <label for="marca-msi">MSI</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="marca-gigabyte" name="marca" value="gigabyte">
+                                <label for="marca-gigabyte">Gigabyte</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="marca-nvidia" name="marca" value="nvidia">
+                                <label for="marca-nvidia">NVIDIA</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="marca-amd" name="marca" value="amd">
+                                <label for="marca-amd">AMD</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="marca-zotac" name="marca" value="zotac">
+                                <label for="marca-zotac">Zotac</label>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="filtro-grupo">
+                        <h4>Rango de precio</h4>
+                        <div class="filtro-precio">
+                            <label for="precio-min">Mínimo</label>
+                            <input type="number" id="precio-min" name="precio_min" placeholder="$0" min="0">
+
+                            <label for="precio-max">Máximo</label>
+                            <input type="number" id="precio-max" name="precio_max" placeholder="$2.000.000" min="0">
+                        </div>
+                    </div>
+
+                    <div class="filtro-grupo">
+                        <h4>Disponibilidad</h4>
+                        <ul class="filtro-lista">
+                            <li>
+                                <input type="checkbox" id="stock-disponible" name="disponibilidad" value="disponible">
+                                <label for="stock-disponible">Solo con stock disponible</label>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <button type="submit" class="btn-aplicar-filtros">Aplicar filtros</button>
+                    <button type="reset" class="btn-limpiar-filtros">Limpiar filtros</button>
+
+                </form>
+
+            </aside>
+
+            <!-- LISTADO DE PRODUCTOS -->
+            <section class="catalogo-productos">
+
+
+                <!-- BARRA DE ORDEN -->
+                <div class="barra-orden">
+                    <label for="orden">Ordenar por:</label>
+                    <select id="orden" name="orden">
+                        <option value="precio-asc">Precio: de menor a mayor</option>
+                        <option value="precio-desc">Precio: de mayor a menor</option>
+                        <option value="nombre-asc">Nombre: A-Z</option>
+                        <option value="nombre-desc">Nombre: Z-A</option>
+                    </select>
+                </div>
+            </section>
+
+            <!-- Grilla de productos (datos de prueba) -->
+            <div class="grilla-productos">
+
+                <article class="tarjeta-producto">
+                    <span class="etiqueta-stock disponible">En stock</span>
+                    <img src="assets/img/producto-placeholder.jpg" alt="RTX 4070 Super ASUS Dual">
+                    <h5>ASUS Dual GeForce RTX 4070 Super</h5>
+                    <p class="marca-producto">ASUS</p>
+                    <p class="precio-producto">$799.990</p>
+                    <a href="producto.html" class="btn-ver-producto">Ver producto</a>
+                </article>
+
+                <article class="tarjeta-producto">
+                    <span class="etiqueta-stock disponible">En stock</span>
+                    <img src="assets/img/producto-placeholder.jpg" alt="RTX 4060 Ti MSI Gaming">
+                    <h5>MSI Gaming X RTX 4060 Ti</h5>
+                    <p class="marca-producto">MSI</p>
+                    <p class="precio-producto">$549.990</p>
+                    <a href="producto.html" class="btn-ver-producto">Ver producto</a>
+                </article>
+
+                <article class="tarjeta-producto">
+                    <span class="etiqueta-stock agotado">Sin stock</span>
+                    <img src="assets/img/producto-placeholder.jpg" alt="RX 7800 XT Gigabyte">
+                    <h5>Gigabyte Gaming OC RX 7800 XT</h5>
+                    <p class="marca-producto">Gigabyte</p>
+                    <p class="precio-producto">$649.990</p>
+                    <a href="producto.html" class="btn-ver-producto">Ver producto</a>
+                </article>
+
+                <article class="tarjeta-producto">
+                    <span class="etiqueta-stock disponible">En stock</span>
+                    <img src="assets/img/producto-placeholder.jpg" alt="RTX 4090 Zotac Trinity">
+                    <h5>Zotac Gaming Trinity RTX 4090</h5>
+                    <p class="marca-producto">Zotac</p>
+                    <p class="precio-producto">$2.199.990</p>
+                    <a href="producto.html" class="btn-ver-producto">Ver producto</a>
+                </article>
+
+                <article class="tarjeta-producto">
+                    <span class="etiqueta-stock ultimas">Últimas unidades</span>
+                    <img src="assets/img/producto-placeholder.jpg" alt="RTX 4060 ASUS TUF">
+                    <h5>ASUS TUF Gaming RTX 4060</h5>
+                    <p class="marca-producto">ASUS</p>
+                    <p class="precio-producto">$399.990</p>
+                    <a href="producto.html" class="btn-ver-producto">Ver producto</a>
+                </article>
+
+                <article class="tarjeta-producto">
+                    <span class="etiqueta-stock disponible">En stock</span>
+                    <img src="assets/img/producto-placeholder.jpg" alt="RX 7900 XTX MSI">
+                    <h5>MSI Gaming Trio RX 7900 XTX</h5>
+                    <p class="marca-producto">MSI</p>
+                    <p class="precio-producto">$1.099.990</p>
+                    <a href="producto.html" class="btn-ver-producto">Ver producto</a>
+                </article>
+
+                <article class="tarjeta-producto">
+                    <span class="etiqueta-stock disponible">En stock</span>
+                    <img src="assets/img/producto-placeholder.jpg" alt="RTX 4080 Super Gigabyte">
+                    <h5>Gigabyte Aorus Master RTX 4080 Super</h5>
+                    <p class="marca-producto">Gigabyte</p>
+                    <p class="precio-producto">$1.549.990</p>
+                    <a href="producto.html" class="btn-ver-producto">Ver producto</a>
+                </article>
+
+                <article class="tarjeta-producto">
+                    <span class="etiqueta-stock agotado">Sin stock</span>
+                    <img src="assets/img/producto-placeholder.jpg" alt="RTX 4070 Zotac Twin Edge">
+                    <h5>Zotac Twin Edge RTX 4070</h5>
+                    <p class="marca-producto">Zotac</p>
+                    <p class="precio-producto">$599.990</p>
+                    <a href="producto.html" class="btn-ver-producto">Ver producto</a>
+                </article>
+
+                <article class="tarjeta-producto">
+                    <span class="etiqueta-stock disponible">En stock</span>
+                    <img src="assets/img/producto-placeholder.jpg" alt="RX 7600 ASUS Dual">
+                    <h5>ASUS Dual RX 7600</h5>
+                    <p class="marca-producto">ASUS</p>
+                    <p class="precio-producto">$279.990</p>
+                    <a href="producto.html" class="btn-ver-producto">Ver producto</a>
+                </article>
+
+                <article class="tarjeta-producto">
+                    <span class="etiqueta-stock disponible">En stock</span>
+                    <img src="assets/img/producto-placeholder.jpg" alt="RTX 4060 Ti Gigabyte Windforce">
+                    <h5>Gigabyte Windforce RTX 4060 Ti</h5>
+                    <p class="marca-producto">Gigabyte</p>
+                    <p class="precio-producto">$519.990</p>
+                    <a href="producto.html" class="btn-ver-producto">Ver producto</a>
+                </article>
+
+                <article class="tarjeta-producto">
+                    <span class="etiqueta-stock ultimas">Últimas unidades</span>
+                    <img src="assets/img/producto-placeholder.jpg" alt="RTX 4070 Ti Super MSI">
+                    <h5>MSI Suprim X RTX 4070 Ti Super</h5>
+                    <p class="marca-producto">MSI</p>
+                    <p class="precio-producto">$999.990</p>
+                    <a href="producto.html" class="btn-ver-producto">Ver producto</a>
+                </article>
+
+                <article class="tarjeta-producto">
+                    <span class="etiqueta-stock disponible">En stock</span>
+                    <img src="assets/img/producto-placeholder.jpg" alt="RX 7700 XT Zotac">
+                    <h5>Zotac Gaming RX 7700 XT</h5>
+                    <p class="marca-producto">Zotac</p>
+                    <p class="precio-producto">$549.990</p>
+                    <a href="producto.html" class="btn-ver-producto">Ver producto</a>
+                </article>
+
+            </div>
+
+
+            <nav class="paginacion">
+                <ul>
+                    <li><a href="catalogo.html?pagina=1" aria-label="página anterior">&laquo; Anterior</a></li>
+                    <li><a href="catalogo.html?pagina=1" class="pagina-activa">1</a></li>
+                    <li><a href="catalogo.html?pagina=2">2</a></li>
+                    <li><a href="catalogo.html?pagina=3">3</a></li>
+                    <li><a href="catalogo.html?pagina=4">4</a></li>
+                    <li><span>...</span></li>
+                    <li><a href="catalogo.html?pagina=2" aria-label="página siguiente">Siguiente &raquo;</a></li>
+                </ul>
+            </nav>
+
+
+        </div>
+
+    </main>
+
+</body>
+
+</html>
