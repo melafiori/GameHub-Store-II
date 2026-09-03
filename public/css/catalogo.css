@@ -1,0 +1,293 @@
+
+                                        /* ENCABEZADO DEL CATALOGO */
+
+.catalogo-encabezado {
+    max-width: 1200px;
+    margin: 30px auto 10px auto;
+    padding: 0 20px;
+}
+
+.catalogo-encabezado h3 {
+    color: var(--color-texto);
+    margin-bottom: 5px;
+}
+
+.catalogo-resultados {
+    color: var(--color-acento);
+    font-size: 14px;
+    margin: 0;
+}
+
+/*---------------------------------------------------------------------------------------------------------------------------------------------*/
+
+                                        /* CONTENEDOR GENERAL: FILTROS + PRODUCTOS */
+
+.catalogo-contenido {
+    max-width: 1200px;
+    margin: 0 auto 40px auto;
+    padding: 0 20px;
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+/*---------------------------------------------------------------------------------------------------------------------------------------------*/
+
+                                        /* FILTROS LATERALES */
+
+.filtros {
+    background-color: var(--color-superficie);
+    border-radius: 8px;
+    border-top: 2px solid var(--color-primario);
+    padding: 20px;
+    width: 260px;
+    flex-shrink: 0; /* evita que el sidebar se achique */
+}
+
+.filtro-grupo {
+    margin-bottom: 25px;
+}
+
+.filtro-grupo h4 {
+    color: var(--color-acento);
+    font-size: 15px;
+    margin-bottom: 12px;
+}
+
+.filtro-lista {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.filtro-lista li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.filtro-lista input[type="checkbox"] {
+    accent-color: var(--color-primario); /* colorea el check con el color primario */
+}
+
+.filtro-lista label {
+    color: var(--color-texto);
+    font-size: 14px;
+}
+
+/* rango de precio */
+.filtro-precio {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.filtro-precio label {
+    color: var(--color-texto);
+    font-size: 13px;
+}
+
+.filtro-precio input {
+    padding: 8px 10px;
+    border: 1px solid var(--color-texto);
+    border-radius: 4px;
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+}
+
+/* botones del formulario de filtros */
+.btn-aplicar-filtros,
+.btn-limpiar-filtros {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+.btn-aplicar-filtros {
+    background-color: var(--color-primario);
+    color: #FFFFFF;
+}
+
+.btn-limpiar-filtros {
+    background-color: transparent;
+    color: var(--color-texto);
+    border: 1px solid var(--color-texto);
+}
+
+.btn-aplicar-filtros:hover {
+    background-color: var(--color-acento);
+    color: var(--color-fondo);
+}
+
+.btn-limpiar-filtros:hover {
+    border-color: var(--color-primario);
+    color: var(--color-primario);
+}
+
+/*---------------------------------------------------------------------------------------------------------------------------------------------*/
+
+                                        /* SECCION DE PRODUCTOS */
+
+.catalogo-productos {
+    flex-grow: 1;
+}
+
+/* barra de orden */
+.barra-orden {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.barra-orden label {
+    color: var(--color-texto);
+    font-size: 14px;
+}
+
+.barra-orden select {
+    padding: 8px 12px;
+    border: 1px solid var(--color-texto);
+    border-radius: 4px;
+    background-color: var(--color-superficie);
+    color: var(--color-texto);
+}
+
+/*---------------------------------------------------------------------------------------------------------------------------------------------*/
+
+                                        /* GRILLA Y TARJETAS DE PRODUCTO */
+
+.grilla-productos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.tarjeta-producto {
+    background-color: var(--color-superficie);
+    border-radius: 8px;
+    padding: 15px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.tarjeta-producto:hover {
+    border: 1px solid var(--color-primario);
+}
+
+.tarjeta-producto img {
+    max-width: 100%;
+    height: 160px;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
+.tarjeta-producto h5 {
+    color: var(--color-texto);
+    font-size: 15px;
+    margin-bottom: 5px;
+}
+
+.marca-producto {
+    color: var(--color-acento);
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.precio-producto {
+    color: var(--color-texto);
+    font-weight: bold;
+    font-size: 17px;
+    margin-bottom: 12px;
+}
+
+.btn-ver-producto {
+    background-color: var(--color-primario);
+    color: #FFFFFF;
+    text-decoration: none;
+    padding: 8px 0;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 14px;
+    margin-top: auto;
+}
+
+.btn-ver-producto:hover {
+    background-color: var(--color-acento);
+    color: var(--color-fondo);
+}
+
+/* etiqueta de stock, ubicada arriba a la izquierda de la tarjeta */
+.etiqueta-stock {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #FFFFFF;
+}
+
+.etiqueta-stock.disponible {
+    background-color: var(--color-acento);
+    color: var(--color-fondo);
+}
+
+.etiqueta-stock.agotado {
+    background-color: var(--color-error);
+    color: var(--color-fondo);
+}
+
+.etiqueta-stock.ultimas {
+    background-color: var(--color-primario);
+    color: var(--color-fondo);
+}
+
+/*---------------------------------------------------------------------------------------------------------------------------------------------*/
+
+                                        /* PAGINACION */
+
+.paginacion {
+    display: flex;
+    justify-content: center;
+    margin-top: 35px;
+}
+
+.paginacion ul {
+    list-style: none;
+    display: flex;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+}
+
+.paginacion a,
+.paginacion span {
+    display: inline-block;
+    padding: 8px 14px;
+    border-radius: 4px;
+    color: var(--color-texto);
+    text-decoration: none;
+    background-color: var(--color-superficie);
+}
+
+.paginacion a:hover {
+    background-color: var(--color-primario);
+    color: #FFFFFF;
+}
+
+.paginacion .pagina-activa {
+    background-color: var(--color-primario);
+    color: #FFFFFF;
+}
+
+/*---------------------------------------------------------------------------------------------------------------------------------------------*/
