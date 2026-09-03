@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameHub Store - Detalle de Producto</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+    <!-- Estilo main index-->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Estilo personalizado -->
+    <link rel="stylesheet" href="css/producto.css">
+    <link href="assets/icons/icono-wishlist.svg" rel="icon" type="image/svg+xml">
+
+</head>
+
+<body>
+    <header class="header-principal">
+
+        <!--LOGO UBICADO EN EL HEADER-->
+        <div class="logo">
+            <a href="index.html">
+                <img src="assets/icons/icono-wishlist.svg" alt="logotipo de GameHub Store"> GameHub
+                <!-- hay que cambiar el nombre del archivo de la imagen, ruta o tipo de formato una vez tengamos la imagen-->
+            </a>
+        </div>
+
+        <!--BARRA DE BUSQUEDA EN EL HEADER-->
+        <div class="busqueda">
+            <form action="#" method="GET">
+                <input type="text" placeholder="Buscar producto..." aria-label="busqueda en el catalogo" required>
+                <button tipe="submit">Buscar</button>
+            </form>
+        </div>
+
+        <!--CARRITO E INICIO DE SESION-->
+        <nav class="nav-derecha">
+            <ul>
+                <li>
+                    <a href="carrito.html"> <img src="assets/icons/icono-carrito.svg" alt="icono de carrito de compras">
+                        Carrito </a>
+                </li> <!--AÑADIR MAS ADELANTE-->
+                <li>
+                    <a href="login.html"> <img src="assets/icons/icono-usuario.svg" alt="icono de inicio de sesion">
+                        Login </a>
+                </li> <!--AÑADIR MAS ADELANTE-->
+            </ul>
+        </nav>
+
+    </header>
+
+    <!--    BARRA DE CATEGORIAS    -->
+    <nav class="barra-categorias">
+        <ul>
+            <li> <a href="index.html"> Notebooks </a> </li>
+            <li> <a href="catcategoria.html"> Tarjetas Gráficas </a> </li>
+            <li> <a href="index.html"> Procesadores </a> </li>
+            <li> <a href="index.html"> Periféricos </a> </li>
+            <li> <a href="index.html"> Consolas </a> </li>
+            <li> <a href="index.html"> Monitores </a> </li>
+            <li> <a href="index.html"> Accesorios </a> </li>
+        </ul>
+    </nav>
+
+    <!--    MIGA DE PAN    -->
+    <nav class="miga-de-pan" aria-label="ruta de navegación">
+        <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="catalogo.html">Tarjetas Gráficas</a></li>
+            <li aria-current="page">ASUS Dual GeForce RTX 4070 Super</li>
+        </ul>
+    </nav>
+
+    <main class="producto-main">
+
+        <!--    SECCION PRINCIPAL: GALERIA + INFORMACION    -->
+        <div class="producto-detalle">
+
+            <!--    GALERIA DE IMAGENES    -->
+            <section class="producto-galeria">
+
+                <div class="galeria-imagen-principal">
+                    <img src="assets/img/producto-placeholder-grande.jpg" alt="ASUS Dual GeForce RTX 4070 Super - vista principal">
+                </div>
+
+                <ul class="galeria-miniaturas">
+                    <li>
+                        <a href="#">
+                            <img src="assets/img/producto-placeholder.jpg" alt="ASUS Dual GeForce RTX 4070 Super - vista frontal">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img src="assets/img/producto-placeholder.jpg" alt="ASUS Dual GeForce RTX 4070 Super - vista lateral">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img src="assets/img/producto-placeholder.jpg" alt="ASUS Dual GeForce RTX 4070 Super - vista de conectores">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img src="assets/img/producto-placeholder.jpg" alt="ASUS Dual GeForce RTX 4070 Super - vista de caja">
+                        </a>
+                    </li>
+                </ul>
+
+            </section>
+
+            <!--    INFORMACION DEL PRODUCTO    -->
+            <section class="producto-informacion">
+
+                <p class="producto-marca">ASUS</p>
+                <h1 class="producto-titulo">ASUS Dual GeForce RTX 4070 Super OC Edition 12GB GDDR6X</h1>
+
+                <div class="producto-valoracion">
+                    <span class="estrellas" aria-label="4.5 de 5 estrellas">★★★★☆</span>
+                    <a href="#reseñas">128 reseñas</a>
+                </div>
+
+                <div class="producto-precio">
+                    <span class="precio-anterior">$899.990</span>
+                    <span class="precio-actual">$799.990</span>
+                    <span class="etiqueta-descuento">-11% OFF</span>
+                </div>
+
+                <p class="producto-cuotas">Hasta 12 cuotas sin interés</p>
+
+                <p class="producto-stock disponible">
+                    <span class="indicador-stock"></span> Stock disponible (14 unidades)
+                </p>
+
+                <!--    SELECTOR DE CANTIDAD Y AGREGAR AL CARRITO    -->
+                <form action="carrito.html" method="GET" class="producto-compra">
+
+                    <div class="selector-cantidad">
+                        <label for="cantidad">Cantidad</label>
+                        <div class="selector-cantidad-controles">
+                            <button type="button" class="btn-cantidad" aria-label="disminuir cantidad">-</button>
+                            <input type="number" id="cantidad" name="cantidad" value="1" min="1" max="14">
+                            <button type="button" class="btn-cantidad" aria-label="aumentar cantidad">+</button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-agregar-carrito">
+                        <img src="assets/icons/icono-carrito.svg" alt="">
+                        Agregar al carrito
+                    </button>
+
+                </form>
+
+                <!--    DATOS RAPIDOS DE ENVIO    -->
+                <ul class="producto-datos-envio">
+                    <li>Envío a todo Chile</li>
+                    <li>Garantía oficial de 24 meses</li>
+                    <li>Retiro gratis en tienda</li>
+                </ul>
+
+            </section>
+
+        </div>
+
+        <!--    ESPECIFICACIONES TECNICAS    -->
+        <section class="producto-especificaciones">
+
+            <h2>Especificaciones técnicas</h2>
+
+            <table class="tabla-especificaciones">
+                <tbody>
+                    <tr>
+                        <th>Chipset</th>
+                        <td>NVIDIA GeForce RTX 4070 Super</td>
+                    </tr>
+                    <tr>
+                        <th>Memoria</th>
+                        <td>12 GB GDDR6X</td>
+                    </tr>
+                    <tr>
+                        <th>Interfaz de memoria</th>
+                        <td>192-bit</td>
+                    </tr>
+                    <tr>
+                        <th>Frecuencia Boost</th>
+                        <td>2505 MHz (modo OC)</td>
+                    </tr>
+                    <tr>
+                        <th>Conectores de salida</th>
+                        <td>2x HDMI 2.1, 2x DisplayPort 1.4a</td>
+                    </tr>
+                    <tr>
+                        <th>Alimentación requerida</th>
+                        <td>1x 8 pines, fuente mínima recomendada 650W</td>
+                    </tr>
+                    <tr>
+                        <th>Dimensiones</th>
+                        <td>267.6 x 129.9 x 50.4 mm</td>
+                    </tr>
+                    <tr>
+                        <th>Interfaz</th>
+                        <td>PCI Express 4.0</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="producto-descripcion">
+                <h3>Descripción</h3>
+                <p>
+                    Tarjeta gráfica ASUS Dual GeForce RTX 4070 Super con diseño de doble ventilador Axial-tech,
+                    disipador de gran superficie y backplate reforzado. Ideal para gaming en 1440p y 4K con
+                    tecnologías DLSS 3 y Ray Tracing de última generación.
+                </p>
+            </div>
+
+        </section>
+
+        <!--    RESEÑAS DE USUARIOS    -->
+        <section class="producto-reseñas" id="reseñas">
+
+            <h2>Reseñas de usuarios</h2>
+
+            <div class="reseñas-resumen">
+                <span class="reseñas-promedio">4.5</span>
+                <span class="estrellas" aria-label="4.5 de 5 estrellas">★★★★☆</span>
+                <p>Basado en 128 reseñas</p>
+            </div>
+
+            <ul class="reseñas-lista">
+
+                <li class="reseña">
+                    <div class="reseña-cabecera">
+                        <span class="reseña-autor">Martín G.</span>
+                        <span class="estrellas" aria-label="5 de 5 estrellas">★★★★★</span>
+                        <span class="reseña-fecha">12 de agosto de 2026</span>
+                    </div>
+                    <p class="reseña-comentario">
+                        Excelente rendimiento para el precio, corre todo en 1440p sin problemas y se mantiene
+                        fresca incluso en sesiones largas.
+                    </p>
+                </li>
+
+                <li class="reseña">
+                    <div class="reseña-cabecera">
+                        <span class="reseña-autor">Camila R.</span>
+                        <span class="estrellas" aria-label="4 de 5 estrellas">★★★★☆</span>
+                        <span class="reseña-fecha">3 de agosto de 2026</span>
+                    </div>
+                    <p class="reseña-comentario">
+                        Muy buena tarjeta, el único detalle es que es un poco grande y casi no entra en mi gabinete.
+                        El rendimiento sin embargo es excelente.
+                    </p>
+                </li>
+
+                <li class="reseña">
+                    <div class="reseña-cabecera">
+                        <span class="reseña-autor">Felipe A.</span>
+                        <span class="estrellas" aria-label="5 de 5 estrellas">★★★★★</span>
+                        <span class="reseña-fecha">28 de julio de 2026</span>
+                    </div>
+                    <p class="reseña-comentario">
+                        Llegó rápido y bien embalada. La instalé y funcionó a la primera, silenciosa incluso
+                        con carga alta.
+                    </p>
+                </li>
+
+                <li class="reseña">
+                    <div class="reseña-cabecera">
+                        <span class="reseña-autor">Valentina S.</span>
+                        <span class="estrellas" aria-label="3 de 5 estrellas">★★★☆☆</span>
+                        <span class="reseña-fecha">15 de julio de 2026</span>
+                    </div>
+                    <p class="reseña-comentario">
+                        Cumple lo que promete, pero esperaba un poco más de rendimiento en 4K. Para 1440p es una
+                        muy buena opción.
+                    </p>
+                </li>
+
+            </ul>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>
