@@ -299,3 +299,90 @@ interactuar con la interfaz del video por que estaran sobreponiendose*/
 }
 
 /*---------------------------------------------------------------------------------------------------------------------------------------------*/
+/* ==========================================
+   FOOTER
+   ========================================== */
+
+.footer-principal {
+    background-color: var(--color-superficie);
+    border-top: 2px solid var(--color-primario);
+
+    margin-top: 60px;
+
+    box-shadow:
+        0 -5px 20px rgba(214, 35, 106, 0.10);
+}
+
+.footer-contenido {
+    max-width: 1200px;
+    margin: auto;
+    padding: 45px 30px;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 50px;
+}
+
+.footer-seccion h3 {
+    font-family: 'Press Start 2P', cursive;
+    color: var(--color-acento);
+    font-size: 16px;
+    margin-bottom: 20px;
+
+    text-shadow:
+        0 0 8px rgba(0, 210, 255, 0.4);
+}
+
+.footer-seccion p {
+    color: var(--color-texto);
+    line-height: 1.6;
+    margin-bottom: 8px;
+}
+
+.footer-seccion ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-seccion li {
+    margin-bottom: 10px;
+}
+
+.footer-seccion a {
+    color: var(--color-texto);
+    transition: 0.3s ease;
+}
+
+.footer-seccion a:hover {
+    color: var(--color-acento);
+
+    text-shadow:
+        0 0 8px rgba(0, 210, 255, 0.6);
+}
+
+/* COPYRIGHT */
+.footer-copyright {
+    border-top: 1px solid rgba(0, 210, 255, 0.25);
+
+    text-align: center;
+    padding: 18px 20px;
+
+    color: #c8c2d4;
+    font-size: 15px;
+}
+
+.footer-copyright p {
+    margin: 0;
+}
+
+/*Adaptación de footer para celular, no sé bien si es así*/
+@media (max-width: 768px) {
+
+    .footer-contenido {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        padding: 35px 25px;
+    }
+
+}
