@@ -211,3 +211,84 @@ interactuar con la interfaz del video por que estaran sobreponiendose*/
 }
 
 /*---------------------------------------------------------------------------------------------------------------------------------------------*/
+
+/* 
+
+###################################   VISTA: CARRITO DE COMPRAS   ################################### 
+
+*/
+
+/* color para destacar el precio final a pagar */
+.text-acento {
+    color: var(--color-acento);
+}
+
+/* sobrescribir tarjeta de bootstrap con la paleta neon */
+.card-custom {
+    background-color: var(--color-superficie);
+    border: 1px solid rgba(214, 35, 106, 0.2);
+    border-radius: 8px;
+    color: var(--color-texto);
+}
+
+/* boton magenta principal*/
+.btn-neon-primario {
+    background-color: var(--color-primario);
+    color: #FFFFFF;
+    border: none;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.btn-neon-primario:hover {
+    background-color: #b51a56;
+    color: #FFFFFF;
+}
+
+/*tamañno para las imagenes de los productos */
+.img-miniatura {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border: 1px solid var(--color-superficie);
+}
+
+/*ajustes de fondo para la tabla de bootstrap */
+.table-dark {
+    --bs-table-bg: transparent;
+    --bs-table-color: var(--color-texto);
+}
+
+/* controles de cantidad de los productos */
+.input-cantidad {
+    width: 75px;
+    background-color: var(--color-fondo);
+    border: 1px solid var(--color-texto);
+    color: var(--color-texto);
+}
+
+.input-cantidad:focus {
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    border-color: var(--color-acento);
+    box-shadow: 0 0 5px var(--color-acento);
+}
+
+/*input de codigo del cupon */
+.input-dark {
+    background-color: var(--color-fondo);
+    border: 1px solid var(--color-texto);
+    color: var(--color-texto);
+}
+
+.input-dark:focus {
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    border-color: var(--color-primario);
+    box-shadow: 0 0 5px var(--color-primario);
+}
+
+/* tamaño del emoji/icono para el estado "vacio"  */
+.icono-vacio {
+    font-size: 4rem;
+}
