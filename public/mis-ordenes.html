@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis órdenes - GameHub Store</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link href="assets/icons/icono-wishlist.svg"rel="icon" type="image/svg+xml">
+</head>
+<body>
+    <!-- ================= HEADER ================= -->
+    <header class="header-principal">
+
+        <!--LOGO UBICADO EN EL HEADER-->
+        <div class="logo">
+            <a href="index.html">
+                <img src="assets/icons/icono-wishlist.svg" alt="logotipo de GameHub Store"> GameHub <!-- hay que cambiar el nombre del archivo de la imagen, ruta o tipo de formato una vez tengamos la imagen-->
+            </a>
+        </div>
+
+        <!--BARRA DE BUSQUEDA EN EL HEADER-->
+        <div class="busqueda">
+            <form action="#" method="GET">
+                <input type="text" placeholder="Buscar producto..." aria-label="busqueda en el catalogo" required>
+                <button tipe="submit">Buscar</button>
+            </form>
+        </div>
+
+        <!--CARRITO E INICIO DE SESION-->
+        <nav class="nav-derecha">
+            <ul>
+                <li> 
+                    <a href="carrito.html"> <img src="assets/icons/icono-carrito.svg" alt="icono de carrito de compras"> Carrito </a>
+                 </li>         <!--AÑADIR MAS ADELANTE-->
+                <li> 
+                    <a href="login.html"> <img src="assets/icons/icono-usuario.svg" alt="icono de inicio de sesion"> Login </a>
+                 </li>    <!--AÑADIR MAS ADELANTE-->
+                <li>
+                    <a href="mis-ordenes.html"> <img src="assets/icons/icono-ordenes.png" alt="icono de mis órdenes">Mis órdenes</a>
+                 </li>
+            </ul>
+        </nav>
+
+    </header>
+
+
+    <!-- ================= CATEGORÍAS ================= -->
+    <nav class="barra-categorias">
+        <ul>
+            <li><a href="index.html">Notebooks</a></li>
+            <li><a href="index.html">Tarjetas Gráficas</a></li>
+            <li><a href="index.html">Procesadores</a></li>
+            <li><a href="index.html">Periféricos</a></li>
+            <li><a href="index.html">Consolas</a></li>
+            <li><a href="index.html">Monitores</a></li>
+            <li><a href="index.html">Accesorios</a></li>
+        </ul>
+    </nav>
+
+
+    <!-- ================= CONTENIDO ================= -->
+    <main class="ordenes-container">
+
+        <h1>Mis órdenes</h1>
+        <p class="ordenes-descripcion">
+            Revisa tus compras y consulta el estado de tus pedidos.
+        </p>
+        <!--
+            JavaScript insertará aquí
+            las órdenes simuladas.
+        -->
+        <section id="lista-ordenes" class="lista-ordenes"></section>
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="footer-principal">
+    <div class="footer-contenido">
+
+            <!-- QUIÉNES SOMOS -->
+        <div class="footer-seccion">
+            <h3>GameHub Store</h3>
+            <p>
+                Somos una tienda gamer especializada en tarjetas grácas, procesadores, periféricos, consolas, monitores y accesorios para potenciar tu experiencia.
+            </p>
+        </div>
+
+            <!-- CONTACTO, PUSE NÚMERO Y CORREO -->
+        <div class="footer-seccion">
+            <h3>Contacto</h3>
+
+                <p>+56 9 1234 5678</p>
+                <p>contacto@gamehubstore.cl</p>
+        </div>
+
+            <!-- UBICACIÓN -->
+        <div class="footer-seccion">
+            <h3>Ubicación</h3>
+            <p>Valparaíso, Chile</p>
+            <p>Lunes a Viernes:
+            De 08:00 AM a 17:30</p>
+        </div>
+    </div>
+
+
+        <!-- COPYRIGHT -->
+        <div class="footer-copyright">
+            <p>© 2026 GameHub Store. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JavaScript -->
+    <script 
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">
+    </script>
+    <!-- JavaScript de Mis Órdenes -->
+    <script src="js/ordenes.js"></script>
+
+</body>
+</html>

@@ -119,6 +119,13 @@ body {
     font-size: 20px;
 }
 
+/* tamaño de iconos */
+.nav-derecha img {
+    width: 40px;
+    height: 25px;
+    object-fit: contain;
+}
+
 /* efecto hover para los enlaces de la derecha */
 .nav-derecha a:hover {
     color: var(--color-primario);
@@ -383,6 +390,249 @@ interactuar con la interfaz del video por que estaran sobreponiendose*/
         grid-template-columns: 1fr;
         gap: 30px;
         padding: 35px 25px;
+    }
+
+}
+
+/* ----------------------- MIS ÓRDENES ----------------------- */
+
+.ordenes-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 30px;
+    min-height: 600px;
+}
+
+/* TÍTULO */
+.ordenes-container h1 {
+    font-family: 'Press Start 2P', cursive;
+    color: var(--color-texto);
+    font-size: 26px;
+    margin-bottom: 18px;
+
+    text-shadow:
+        0 0 6px rgba(214, 35, 106, 0.7),
+        0 0 15px rgba(214, 35, 106, 0.3);
+}
+
+/* DESCRIPCIÓN */
+.ordenes-descripcion {
+    color: var(--color-texto);
+    font-size: 17px;
+    margin-bottom: 40px;
+    opacity: 0.85;
+}
+
+/* LISTA DE ÓRDENES */
+.lista-ordenes {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* TARJETA DE ORDEN */
+.orden-card {
+    background: var(--color-superficie);
+
+    border: 1px solid rgba(214, 35, 106, 0.65);
+    border-radius: 12px;
+
+    padding: 28px 30px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    box-shadow:
+        0 0 12px rgba(214, 35, 106, 0.15);
+
+    transition:
+        transform 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+
+/* EFECTO HOLOGRÁFICO AL PASAR EL MOUSE */
+.orden-card:hover {
+    transform: translateY(-4px);
+
+    border-color: var(--color-acento);
+
+    box-shadow:
+        0 0 12px rgba(0, 210, 255, 0.25),
+        0 0 25px rgba(0, 210, 255, 0.10);
+}
+
+/* INFORMACIÓN DE LA ORDEN */
+.orden-informacion h2 {
+    font-family: 'Press Start 2P', cursive;
+    color: var(--color-texto);
+    font-size: 16px;
+    margin-bottom: 18px;
+}
+
+.orden-informacion p {
+    color: var(--color-texto);
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+
+.orden-informacion strong {
+    color: var(--color-acento);
+}
+
+/* BOTÓN VER DETALLE */
+.orden-card .btn {
+    background-color: var(--color-primario);
+    border: 1px solid var(--color-primario);
+    color: #FFFFFF;
+    font-weight: bold;
+    padding: 12px 20px;
+    border-radius: 8px;
+    transition: 0.3s ease;
+}
+
+.orden-card .btn:hover {
+    background-color: var(--color-acento);
+    border-color: var(--color-acento);
+    color: #120E1A;
+    box-shadow:
+        0 0 12px rgba(0, 210, 255, 0.45);
+}
+
+
+/* ------------------------- RESPONSIVE------------------------- */
+
+@media (max-width: 768px) {
+    .ordenes-container {
+        padding: 40px 20px;
+    }
+
+    .orden-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .orden-card .btn {
+        width: 100%;
+    }
+
+    .ordenes-container h1 {
+        font-size: 20px;
+    }
+}
+
+/* ------------------------- DETALLE DE ORDEN -------------------------*/
+
+.detalle-orden {
+    width: 100%;
+    margin-top: 25px;
+    padding-top: 25px;
+}
+
+/* Línea divisoria */
+.detalle-separador {
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        var(--color-primario),
+        var(--color-acento),
+        transparent
+    );
+    margin-bottom: 30px;
+}
+
+/* Títulos del detalle */
+.detalle-orden h3 {
+    font-family: 'Press Start 2P', cursive;
+    color: var(--color-acento);
+    font-size: 14px;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+/* PRODUCTOS */
+.productos-orden {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.producto-orden {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 25px;
+    padding: 12px 15px;
+    background-color: rgba(18, 14, 26, 0.6);
+    border: 1px solid rgba(0, 210, 255, 0.2);
+    border-radius: 6px;
+    color: var(--color-texto);
+}
+
+/* ESTADO DEL PAGO */
+.estado-exitoso {
+    color: var(--color-texto);
+    font-weight: absolute;
+    margin-bottom: 20px;
+}
+
+
+/* SEGUIMIENTO */
+.seguimiento {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.paso-completado {
+    color: var(--color-texto);
+    padding: 10px 15px;
+    border-left: 3px solid var(--color-acento);
+    background-color: rgba(0, 210, 255, 0.05);
+}
+
+/* BOTONES */
+.acciones-orden {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn-resena {
+    background-color: var(--color-primario);
+    color: #FFFFFF;
+    border: 1px solid var(--color-primario);
+}
+
+.btn-garantia {
+    background-color: transparent;
+    color: var(--color-texto);
+    border: 1px solid var(--color-acento);
+}
+
+.btn-resena:hover {
+    background-color: var(--color-acento);
+    color: #120E1A;
+}
+
+.btn-garantia:hover {
+    background-color: var(--color-acento);
+    color: #120E1A;
+}
+
+/* CELULAR */
+@media (max-width: 768px) {
+    .producto-orden {
+        grid-template-columns: 1fr;
+        gap: 5px;
+    }
+    .acciones-orden {
+        flex-direction: column;
+    }
+    .acciones-orden .btn {
+        width: 100%;
     }
 
 }
