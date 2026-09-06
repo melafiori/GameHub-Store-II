@@ -13,7 +13,6 @@ const categorias = {
     accesorios: "Accesorios"
 };
 
-
 // Si no se selecciona una categoría, mostramos Tarjetas Gráficas por defecto
 const categoria = categorias[categoriaSeleccionada] || "Tarjetas Gráficas";
 
@@ -50,16 +49,18 @@ const productos = [
         marca: "ASUS",
         precio: 899990,
         stock: 10,
-        estado: "En stock"
+        estado: "En stock",
+        imagen: "https://cl-dam-resizer.ecomm.cencosud.com/unsafe/adaptive-fit-in/1920x0/cl/paris/406334999/variant/698c823ac83fe99183122a88/images/d638ffa3-d3c8-4705-81a3-043f4cc66f47/406334999-0000-001.jpg"
     },
 
     {
-        nombre: "MSI Katana 15",
+        nombre: "ROG Strix SCAR 18 (2026)G835LXG-TQ464W",
         categoria: "Notebooks",
-        marca: "MSI",
+        marca: "ASUS",
         precio: 999990,
         stock: 5,
-        estado: "En stock"
+        estado: "En stock",
+        imagen:"https://dlcdnwebimgs.asus.com/gain/6B2FAE90-9A5A-4758-91EE-073829291922/w717/h525/fwebp"
     },
 
     {
@@ -68,7 +69,8 @@ const productos = [
         marca: "ASUS",
         precio: 1299990,
         stock: 3,
-        estado: "Últimas unidades"
+        estado: "Últimas unidades",
+        imagen:"https://dlcdnwebimgs.asus.com/gain/1F39694F-8FC1-4B6E-97E4-13FF63D92FE5/w717/h525/fwebp"
     },
 
     /*---------------- TARJETAS GRÁFICAS ----------------*/
@@ -78,7 +80,8 @@ const productos = [
         marca: "ASUS",
         precio: 799990,
         stock: 10,
-        estado: "En stock"
+        estado: "En stock",
+        imagen:""
     },
 
     {
@@ -87,7 +90,8 @@ const productos = [
         marca: "MSI",
         precio: 549990,
         stock: 10,
-        estado: "En stock"
+        estado: "En stock",
+        imagen:""
     },
 
     {
@@ -96,7 +100,8 @@ const productos = [
         marca: "Gigabyte",
         precio: 649990,
         stock: 0,
-        estado: "Sin stock"
+        estado: "Sin stock",
+        imagen:""
     },
 
     {
@@ -105,7 +110,8 @@ const productos = [
         marca: "Zotac",
         precio: 2199990,
         stock: 10,
-        estado: "En stock"
+        estado: "En stock",
+        imagen:""
     },
 
     {
@@ -114,7 +120,8 @@ const productos = [
         marca: "ASUS",
         precio: 399990,
         stock: 3,
-        estado: "Últimas unidades"
+        estado: "Últimas unidades",
+        imagen:""
     },
 
     {
@@ -123,7 +130,8 @@ const productos = [
         marca: "MSI",
         precio: 1099990,
         stock: 10,
-        estado: "En stock"
+        estado: "En stock",
+        imagen:""
     },
 
     {
@@ -132,7 +140,8 @@ const productos = [
         marca: "Gigabyte",
         precio: 1549990,
         stock: 10,
-        estado: "En stock"
+        estado: "En stock",
+        imagen:""
     },
 
     {
@@ -141,7 +150,8 @@ const productos = [
         marca: "Zotac",
         precio: 599990,
         stock: 0,
-        estado: "Sin stock"
+        estado: "Sin stock",
+        imagen:""
     },
 
     {
@@ -150,7 +160,8 @@ const productos = [
         marca: "ASUS",
         precio: 279990,
         stock: 10,
-        estado: "En stock"
+        estado: "En stock",
+        imagen:""
     },
 
     {
@@ -159,7 +170,8 @@ const productos = [
         marca: "Gigabyte",
         precio: 519990,
         stock: 10,
-        estado: "En stock"
+        estado: "En stock",
+        imagen:""
     },
 
     {
@@ -168,7 +180,8 @@ const productos = [
         marca: "MSI",
         precio: 999990,
         stock: 3,
-        estado: "Últimas unidades"
+        estado: "Últimas unidades",
+        imagen:""
     },
 
     {
@@ -177,9 +190,9 @@ const productos = [
         marca: "Zotac",
         precio: 549990,
         stock: 10,
-        estado: "En stock"
+        estado: "En stock",
+        imagen:""
     },
-
 
     /*---------------- PROCESADORES ----------------*/
     {
@@ -188,7 +201,8 @@ const productos = [
         marca: "AMD",
         precio: 189990,
         stock: 15,
-        estado: "En stock"
+        estado: "En stock",
+        imagen:""
     },
 
     {
@@ -197,7 +211,8 @@ const productos = [
         marca: "AMD",
         precio: 399990,
         stock: 7,
-        estado: "En stock"
+        estado: "En stock",
+        imagen:""
     },
 
     {
@@ -206,7 +221,8 @@ const productos = [
         marca: "Intel",
         precio: 449990,
         stock: 4,
-        estado: "Últimas unidades"
+        estado: "Últimas unidades",
+        imagen:""
     },
 
     /*---------------- PERIFÉRICOS ----------------*/
@@ -214,9 +230,10 @@ const productos = [
         nombre: "Teclado Mecánico RGB",
         categoria: "Periféricos",
         marca: "ASUS",
-        precio: 69990,
+        precio: 110990,
         stock: 20,
-        estado: "En stock"
+        estado: "En stock",
+        imagen:"https://dlcdnwebimgs.asus.com/gain/AA156B88-2346-4523-9D4C-8E2B477BFE9C/w717/h525/fwebp"
     },
 
     {
@@ -225,16 +242,18 @@ const productos = [
         marca: "Logitech",
         precio: 49990,
         stock: 12,
-        estado: "En stock"
+        estado: "En stock",
+        imagen:""
     },
 
     {
-        nombre: "Audífonos Gamer HyperX",
+        nombre: "Audifonos ROG Delta S Animate",
         categoria: "Periféricos",
-        marca: "HyperX",
-        precio: 79990,
+        marca: "ASUS",
+        precio: 120000,
         stock: 0,
-        estado: "Sin stock"
+        estado: "Sin stock",
+        imagen:"https://dlcdnwebimgs.asus.com/gain/28EFE950-BAD3-4B17-9C43-05F86CA7B6B5/w717/h525/fwebp"
     },
 
     /*---------------- CONSOLAS ----------------*/
@@ -244,7 +263,8 @@ const productos = [
         marca: "Sony",
         precio: 649990,
         stock: 5,
-        estado: "En stock"
+        estado: "En stock",
+        imagen:""
     },
 
     {
@@ -253,7 +273,8 @@ const productos = [
         marca: "Microsoft",
         precio: 599990,
         stock: 3,
-        estado: "Últimas unidades"
+        estado: "Últimas unidades",
+        imagen:""
     },
 
     {
@@ -262,7 +283,8 @@ const productos = [
         marca: "Nintendo",
         precio: 349990,
         stock: 10,
-        estado: "En stock"
+        estado: "En stock",
+        imagen:""
     },
 
     /*---------------- MONITORES ----------------*/
@@ -272,7 +294,8 @@ const productos = [
         marca: "ASUS",
         precio: 299990,
         stock: 8,
-        estado: "En stock"
+        estado: "En stock",
+        imagen:""
     },
 
     {
@@ -281,7 +304,8 @@ const productos = [
         marca: "MSI",
         precio: 349990,
         stock: 5,
-        estado: "En stock"
+        estado: "En stock",
+        imagen:""
     },
 
     {
@@ -290,7 +314,8 @@ const productos = [
         marca: "Gigabyte",
         precio: 499990,
         stock: 2,
-        estado: "Últimas unidades"
+        estado: "Últimas unidades",
+        imagen:""
     },
 
     /*---------------- ACCESORIOS ----------------*/
@@ -300,16 +325,18 @@ const productos = [
         marca: "ASUS",
         precio: 59990,
         stock: 15,
-        estado: "En stock"
+        estado: "En stock",
+        imagen:""
     },
 
     {
-        nombre: "Mousepad Gamer XL",
+        nombre: "Mouse Pad gamer",
         categoria: "Accesorios",
-        marca: "MSI",
-        precio: 29990,
+        marca: "ASUS",
+        precio: 40990,
         stock: 20,
-        estado: "En stock"
+        estado: "En stock",
+        imagen:"https://cl.store.asus.com/media/catalog/product/_/c/_cxm2mqaoob63kmcu.png"
     },
 
     {
@@ -318,7 +345,8 @@ const productos = [
         marca: "Gigabyte",
         precio: 39990,
         stock: 0,
-        estado: "Sin stock"
+        estado: "Sin stock",
+        imagen:""
     }
 ];
 
@@ -353,7 +381,7 @@ function mostrarTodosLosProductos() {
             </span>
 
             <img
-                src="assets/img/producto-placeholder.jpg"
+                src="${producto.imagen}"
                 alt="${producto.nombre}"
             >
 
@@ -485,7 +513,7 @@ function mostrarProductos() {
             </span>
 
             <img
-                src="assets/img/producto-placeholder.jpg"
+                src="${producto.imagen}"
                 alt="${producto.nombre}"
             >
 
@@ -560,7 +588,6 @@ if (formularioFiltros) {
 mostrarProductos();
 /* ----------------------------------------------------- CAMBIAR ORDEN -----------------------------------------------------*/
 const selectorOrden = document.getElementById("orden");
-
 if (selectorOrden) {
     selectorOrden.addEventListener("change", mostrarProductos);
 }
