@@ -1,59 +1,69 @@
-
-                                        /* ENCABEZADO DEL CATALOGO */
-
+/* ----------------------------------------------------- ENCABEZADO DEL CATALOGO ----------------------------------------------------- */
 .catalogo-encabezado {
     max-width: 1200px;
-    margin: 30px auto 10px auto;
-    padding: 0 20px;
+    margin: 0 auto;
+    padding: 60px 30px 35px 30px;
 }
 
 .catalogo-encabezado h3 {
+    font-family: 'Press Start 2P', cursive;
     color: var(--color-texto);
-    margin-bottom: 5px;
+    font-size: 24px;
+    margin-bottom: 18px;
+    text-shadow:
+        0 0 6px rgba(214, 35, 106, 0.7),
+        0 0 15px rgba(214, 35, 106, 0.3);
 }
 
 .catalogo-resultados {
-    color: var(--color-acento);
-    font-size: 14px;
+    color: var(--color-texto);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 17px;
     margin: 0;
+    opacity: 0.85;
 }
-
-/*---------------------------------------------------------------------------------------------------------------------------------------------*/
-
-                                        /* CONTENEDOR GENERAL: FILTROS + PRODUCTOS */
-
+/* ----------------------------------------------------- CONTENEDOR GENERAL: FILTROS Y PRODUCTOS ----------------------------------------------------- */
 .catalogo-contenido {
     max-width: 1200px;
-    margin: 0 auto 40px auto;
-    padding: 0 20px;
+    margin: 0 auto 60px auto;
+    padding: 0 30px;
     display: flex;
-    gap: 30px;
+    gap: 25px;
     align-items: flex-start;
 }
-
-/*---------------------------------------------------------------------------------------------------------------------------------------------*/
-
-                                        /* FILTROS LATERALES */
-
+/* ----------------------------------------------------- FILTROS LATERALES ----------------------------------------------------- */
 .filtros {
     background-color: var(--color-superficie);
-    border-radius: 8px;
-    border-top: 2px solid var(--color-primario);
-    padding: 20px;
+    border: 1px solid rgba(214, 35, 106, 0.65);
+    border-radius: 12px;
+    padding: 25px;
     width: 260px;
-    flex-shrink: 0; /* evita que el sidebar se achique */
+    flex-shrink: 0;
+    box-shadow:
+        0 0 12px rgba(214, 35, 106, 0.12);
+    transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
 }
 
+.filtros:hover {
+    border-color: rgba(0, 210, 255, 0.45);
+    box-shadow:
+        0 0 15px rgba(0, 210, 255, 0.10);
+}
+/* -------------------------------- GRUPOS ---------------------------------- */
 .filtro-grupo {
-    margin-bottom: 25px;
+    margin-bottom: 28px;
 }
-
 .filtro-grupo h4 {
+    font-family: 'Press Start 2P', cursive;
     color: var(--color-acento);
-    font-size: 15px;
-    margin-bottom: 12px;
+    font-size: 12px;
+    margin-bottom: 18px;
+    text-shadow:
+        0 0 7px rgba(0, 210, 255, 0.35);
 }
-
+/* ------------------------------- LISTAS ----------------------------------- */
 .filtro-lista {
     list-style: none;
     margin: 0;
@@ -64,80 +74,114 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 10px;
+
+    margin-bottom: 11px;
+
+    transition:
+        transform 0.2s ease,
+        color 0.2s ease;
+}
+
+.filtro-lista li:hover {
+    transform: translateX(4px);
 }
 
 .filtro-lista input[type="checkbox"] {
-    accent-color: var(--color-primario); /* colorea el check con el color primario */
+    accent-color: var(--color-primario);
+    cursor: pointer;
 }
 
 .filtro-lista label {
     color: var(--color-texto);
-    font-size: 14px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 15px;
+    cursor: pointer;
 }
-
-/* rango de precio */
+/* ----------------------------------------------------- RANGO DE PRECIO ----------------------------------------------------- */
 .filtro-precio {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 9px;
 }
 
 .filtro-precio label {
     color: var(--color-texto);
-    font-size: 13px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 14px;
 }
 
 .filtro-precio input {
-    padding: 8px 10px;
-    border: 1px solid var(--color-texto);
-    border-radius: 4px;
+    padding: 9px 11px;
     background-color: var(--color-fondo);
     color: var(--color-texto);
+    border: 1px solid rgba(0, 210, 255, 0.35);
+    border-radius: 6px;
+    font-family: 'Rajdhani', sans-serif;
+    outline: none;
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
 }
 
-/* botones del formulario de filtros */
+.filtro-precio input:focus {
+    border-color: var(--color-acento);
+
+    box-shadow:
+        0 0 8px rgba(0, 210, 255, 0.25);
+}
+/* ----------------------------------------------------- BOTONES DE FILTROS ----------------------------------------------------- */
 .btn-aplicar-filtros,
 .btn-limpiar-filtros {
     width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    font-weight: bold;
+    padding: 11px;
+    border-radius: 8px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
     cursor: pointer;
-    margin-top: 5px;
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease,
+        transform 0.3s ease;
 }
-
+/* ---------------------------- APLICAR FILTROS ----------------------------- */
 .btn-aplicar-filtros {
     background-color: var(--color-primario);
     color: #FFFFFF;
-}
-
-.btn-limpiar-filtros {
-    background-color: transparent;
-    color: var(--color-texto);
-    border: 1px solid var(--color-texto);
+    border: 1px solid var(--color-primario);
 }
 
 .btn-aplicar-filtros:hover {
     background-color: var(--color-acento);
+    border-color: var(--color-acento);
     color: var(--color-fondo);
+    box-shadow:
+        0 0 12px rgba(0, 210, 255, 0.45);
+    transform: translateY(-2px);
+}
+/* ---------------------------- LIMPIAR FILTROS ----------------------------- */
+.btn-limpiar-filtros {
+    margin-top: 8px;
+    background-color: transparent;
+    color: var(--color-texto);
+    border: 1px solid rgba(0, 210, 255, 0.5);
 }
 
 .btn-limpiar-filtros:hover {
-    border-color: var(--color-primario);
-    color: var(--color-primario);
+    background-color: rgba(0, 210, 255, 0.08);
+    border-color: var(--color-acento);
+    color: var(--color-acento);
+    box-shadow:
+        0 0 8px rgba(0, 210, 255, 0.15);
 }
-
-/*---------------------------------------------------------------------------------------------------------------------------------------------*/
-
-                                        /* SECCION DE PRODUCTOS */
-
+/* ----------------------------------------------------- SECCION DE PRODUCTOS ----------------------------------------------------- */
 .catalogo-productos {
     flex-grow: 1;
+    min-width: 0;
 }
-
-/* barra de orden */
+/* ----------------------------------------------------- BARRA DE ORDEN ----------------------------------------------------- */
 .barra-orden {
     display: flex;
     justify-content: flex-end;
@@ -148,146 +192,217 @@
 
 .barra-orden label {
     color: var(--color-texto);
-    font-size: 14px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
 }
-
 .barra-orden select {
-    padding: 8px 12px;
-    border: 1px solid var(--color-texto);
-    border-radius: 4px;
+    padding: 9px 12px;
     background-color: var(--color-superficie);
     color: var(--color-texto);
+    border: 1px solid rgba(214, 35, 106, 0.55);
+    border-radius: 6px;
+    font-family: 'Rajdhani', sans-serif;
+    cursor: pointer;
+    outline: none;
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+.barra-orden select:focus {
+    border-color: var(--color-acento);
+    box-shadow:
+        0 0 8px rgba(0, 210, 255, 0.20);
 }
 
-/*---------------------------------------------------------------------------------------------------------------------------------------------*/
-
-                                        /* GRILLA Y TARJETAS DE PRODUCTO */
-
+/* ----------------------------------------------------- GRILLA DE PRODUCTOS ----------------------------------------------------- */
 .grilla-productos {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    gap: 25px;
 }
 
+/* ----------------------------------------------------- TARJETAS DE PRODUCTO ----------------------------------------------------- */
 .tarjeta-producto {
     background-color: var(--color-superficie);
-    border-radius: 8px;
-    padding: 15px;
+    border: 1px solid rgba(214, 35, 106, 0.65);
+    border-radius: 12px;
+    padding: 20px;
     position: relative;
     display: flex;
     flex-direction: column;
     text-align: center;
+    box-shadow:
+        0 0 12px rgba(214, 35, 106, 0.15);
+    transition:
+        transform 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
 }
 
+/* ------------------------------- HOVER ----------------------------------- */
 .tarjeta-producto:hover {
-    border: 1px solid var(--color-primario);
+    transform: translateY(-5px);
+    border-color: var(--color-acento);
+    box-shadow:
+        0 0 12px rgba(0, 210, 255, 0.25),
+        0 0 25px rgba(0, 210, 255, 0.10);
 }
 
+/* ----------------------------------------------------- IMAGEN DEL PRODUCTO ----------------------------------------------------- */
 .tarjeta-producto img {
-    max-width: 100%;
-    height: 160px;
+    width: 100%;
+    height: 170px;
     object-fit: contain;
-    margin-bottom: 10px;
+    margin-bottom: 18px;
+    transition:
+        transform 0.3s ease;
 }
 
+.tarjeta-producto:hover img {
+    transform: scale(1.04);
+}
+
+/* ----------------------------------------------------- NOMBRE DEL PRODUCTO ----------------------------------------------------- */
 .tarjeta-producto h5 {
     color: var(--color-texto);
-    font-size: 15px;
-    margin-bottom: 5px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 6px;
 }
-
+/* ----------------------------------------------------- MARCA ----------------------------------------------------- */
 .marca-producto {
     color: var(--color-acento);
-    font-size: 13px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
     margin-bottom: 8px;
 }
-
+/* ----------------------------------------------------- PRECIO ----------------------------------------------------- */
 .precio-producto {
     color: var(--color-texto);
-    font-weight: bold;
-    font-size: 17px;
-    margin-bottom: 12px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    text-shadow:
+        0 0 6px rgba(214, 35, 106, 0.25);
 }
-
+/* ----------------------------------------------------- BOTON VER PRODUCTO ----------------------------------------------------- */
 .btn-ver-producto {
     background-color: var(--color-primario);
     color: #FFFFFF;
+    border: 1px solid var(--color-primario);
+    border-radius: 8px;
+    padding: 11px 0;
     text-decoration: none;
-    padding: 8px 0;
-    border-radius: 4px;
-    font-weight: bold;
-    font-size: 14px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
     margin-top: auto;
+    transition:
+        background-color 0.3s ease,
+        border-color 0.3s ease,
+        color 0.3s ease,
+        box-shadow 0.3s ease,
+        transform 0.3s ease;
 }
 
 .btn-ver-producto:hover {
     background-color: var(--color-acento);
+    border-color: var(--color-acento);
     color: var(--color-fondo);
+    box-shadow:
+        0 0 12px rgba(0, 210, 255, 0.45);
+    transform: translateY(-2px);
 }
 
-/* etiqueta de stock, ubicada arriba a la izquierda de la tarjeta */
+/* ----------------------------------------------------- ETIQUETA DE STOCK ----------------------------------------------------- */
 .etiqueta-stock {
     position: absolute;
-    top: 10px;
-    left: 10px;
-    padding: 4px 10px;
-    border-radius: 4px;
-    font-size: 12px; 
-    font-weight: bold;
-    color: #FFFFFF;
+    top: 12px;
+    left: 12px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    z-index: 1;
 }
-
+/* ------------------------------- EN STOCK --------------------------------- */
 .etiqueta-stock.disponible {
     background-color: var(--color-acento);
     color: var(--color-fondo);
+    box-shadow:
+        0 0 8px rgba(0, 210, 255, 0.30);
 }
-
+/* ---------------------------- ULTIMAS UNIDADES ---------------------------- */
+.etiqueta-stock.ultimas {
+    background-color: var(--color-primario);
+    color: #FFFFFF;
+    box-shadow:
+        0 0 8px rgba(214, 35, 106, 0.30);
+}
+/* ------------------------------- AGOTADO ---------------------------------- */
 .etiqueta-stock.agotado {
     background-color: var(--color-error);
     color: var(--color-fondo);
 }
 
-.etiqueta-stock.ultimas {
-    background-color: var(--color-primario);
-    color: var(--color-fondo);
-}
-
-/*---------------------------------------------------------------------------------------------------------------------------------------------*/
-
-                                        /* PAGINACION */
-
+/* ----------------------------------------------------- PAGINACION ----------------------------------------------------- */
 .paginacion {
     display: flex;
     justify-content: center;
-    margin-top: 35px;
+    margin-top: 40px;
 }
 
 .paginacion ul {
     list-style: none;
     display: flex;
-    gap: 10px;
+    gap: 8px;
     margin: 0;
     padding: 0;
 }
 
 .paginacion a,
 .paginacion span {
-    display: inline-block;
-    padding: 8px 14px;
-    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 12px;
+    border-radius: 7px;
+    background-color: var(--color-superficie);
+    border: 1px solid rgba(214, 35, 106, 0.45);
     color: var(--color-texto);
     text-decoration: none;
-    background-color: var(--color-superficie);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    transition:
+        background-color 0.3s ease,
+        border-color 0.3s ease,
+        color 0.3s ease,
+        box-shadow 0.3s ease,
+        transform 0.3s ease;
 }
 
 .paginacion a:hover {
-    background-color: var(--color-primario);
-    color: #FFFFFF;
+    background-color: var(--color-acento);
+    border-color: var(--color-acento);
+    color: var(--color-fondo);
+    box-shadow:
+        0 0 10px rgba(0, 210, 255, 0.35);
+    transform: translateY(-2px);
 }
 
 .paginacion .pagina-activa {
     background-color: var(--color-primario);
+    border-color: var(--color-primario);
     color: #FFFFFF;
+    box-shadow:
+        0 0 10px rgba(214, 35, 106, 0.35);
 }
-
-/*---------------------------------------------------------------------------------------------------------------------------------------------*/
