@@ -47,6 +47,9 @@
                     <a href="login.html"> <img src="assets/icons/icono-usuario.svg" alt="icono de inicio de sesion">
                         Login </a>
                 </li> <!--AÑADIR MAS ADELANTE-->
+                <li>
+                    <a href="mis-ordenes.html"> <img src="assets/icons/icono-ordenes.png" alt="icono de mis órdenes">Mis órdenes</a>
+                 </li>
             </ul>
         </nav>
 
@@ -55,13 +58,13 @@
     <!--    BARRA DE CATEGORIAS    -->
     <nav class="barra-categorias">
         <ul>
-            <li> <a href="index.html"> Notebooks </a> </li>
-            <li> <a href="catcategoria.html"> Tarjetas Gráficas </a> </li>
-            <li> <a href="index.html"> Procesadores </a> </li>
-            <li> <a href="index.html"> Periféricos </a> </li>
-            <li> <a href="index.html"> Consolas </a> </li>
-            <li> <a href="index.html"> Monitores </a> </li>
-            <li> <a href="index.html"> Accesorios </a> </li>
+            <li> <a href="catcategoria.html?categoria=notebooks">Notebooks</a> </li>
+            <li> <a href="catcategoria.html?categoria=graficas">Tarjetas Gráficas</a> </li>
+            <li> <a href="catcategoria.html?categoria=procesadores">Procesadores</a> </li>
+            <li> <a href="catcategoria.html?categoria=perifericos">Periféricos </a> </li>
+            <li> <a href="catcategoria.html?categoria=consolas">Consolas </a> </li>
+            <li> <a href="catcategoria.html?categoria=monitores">Monitores</a> </li>
+            <li> <a href="catcategoria.html?categoria=accesorios">Accesorios</a> </li>
         </ul>
     </nav>
 
@@ -185,128 +188,17 @@
                 </div>
 
                 <!-- Grilla de productos (datos de prueba) -->
-                <div class="grilla-productos">
-
-                    <article class="tarjeta-producto">
-                        <span class="etiqueta-stock disponible">En stock</span>
-                        <img src="assets/img/producto-placeholder.jpg" alt="RTX 4070 Super ASUS Dual">
-                        <h5>ASUS Dual GeForce RTX 4070 Super</h5>
-                        <p class="marca-producto">ASUS</p>
-                        <p class="precio-producto">$799.990</p>
-                        <a href="producto.html" class="btn-ver-producto">Ver producto</a>
-                    </article>
-
-                    <article class="tarjeta-producto">
-                        <span class="etiqueta-stock disponible">En stock</span>
-                        <img src="assets/img/producto-placeholder.jpg" alt="RTX 4060 Ti MSI Gaming">
-                        <h5>MSI Gaming X RTX 4060 Ti</h5>
-                        <p class="marca-producto">MSI</p>
-                        <p class="precio-producto">$549.990</p>
-                        <a href="producto.html" class="btn-ver-producto">Ver producto</a>
-                    </article>
-
-                    <article class="tarjeta-producto">
-                        <span class="etiqueta-stock agotado">Sin stock</span>
-                        <img src="assets/img/producto-placeholder.jpg" alt="RX 7800 XT Gigabyte">
-                        <h5>Gigabyte Gaming OC RX 7800 XT</h5>
-                        <p class="marca-producto">Gigabyte</p>
-                        <p class="precio-producto">$649.990</p>
-                        <a href="producto.html" class="btn-ver-producto">Ver producto</a>
-                    </article>
-
-                    <article class="tarjeta-producto">
-                        <span class="etiqueta-stock disponible">En stock</span>
-                        <img src="assets/img/producto-placeholder.jpg" alt="RTX 4090 Zotac Trinity">
-                        <h5>Zotac Gaming Trinity RTX 4090</h5>
-                        <p class="marca-producto">Zotac</p>
-                        <p class="precio-producto">$2.199.990</p>
-                        <a href="producto.html" class="btn-ver-producto">Ver producto</a>
-                    </article>
-
-                    <article class="tarjeta-producto">
-                        <span class="etiqueta-stock ultimas">Últimas unidades</span>
-                        <img src="assets/img/producto-placeholder.jpg" alt="RTX 4060 ASUS TUF">
-                        <h5>ASUS TUF Gaming RTX 4060</h5>
-                        <p class="marca-producto">ASUS</p>
-                        <p class="precio-producto">$399.990</p>
-                        <a href="producto.html" class="btn-ver-producto">Ver producto</a>
-                    </article>
-
-                    <article class="tarjeta-producto">
-                        <span class="etiqueta-stock disponible">En stock</span>
-                        <img src="assets/img/producto-placeholder.jpg" alt="RX 7900 XTX MSI">
-                        <h5>MSI Gaming Trio RX 7900 XTX</h5>
-                        <p class="marca-producto">MSI</p>
-                        <p class="precio-producto">$1.099.990</p>
-                        <a href="producto.html" class="btn-ver-producto">Ver producto</a>
-                    </article>
-
-                    <article class="tarjeta-producto">
-                        <span class="etiqueta-stock disponible">En stock</span>
-                        <img src="assets/img/producto-placeholder.jpg" alt="RTX 4080 Super Gigabyte">
-                        <h5>Gigabyte Aorus Master RTX 4080 Super</h5>
-                        <p class="marca-producto">Gigabyte</p>
-                        <p class="precio-producto">$1.549.990</p>
-                        <a href="producto.html" class="btn-ver-producto">Ver producto</a>
-                    </article>
-
-                    <article class="tarjeta-producto">
-                        <span class="etiqueta-stock agotado">Sin stock</span>
-                        <img src="assets/img/producto-placeholder.jpg" alt="RTX 4070 Zotac Twin Edge">
-                        <h5>Zotac Twin Edge RTX 4070</h5>
-                        <p class="marca-producto">Zotac</p>
-                        <p class="precio-producto">$599.990</p>
-                        <a href="producto.html" class="btn-ver-producto">Ver producto</a>
-                    </article>
-
-                    <article class="tarjeta-producto">
-                        <span class="etiqueta-stock disponible">En stock</span>
-                        <img src="assets/img/producto-placeholder.jpg" alt="RX 7600 ASUS Dual">
-                        <h5>ASUS Dual RX 7600</h5>
-                        <p class="marca-producto">ASUS</p>
-                        <p class="precio-producto">$279.990</p>
-                        <a href="producto.html" class="btn-ver-producto">Ver producto</a>
-                    </article>
-
-                    <article class="tarjeta-producto">
-                        <span class="etiqueta-stock disponible">En stock</span>
-                        <img src="assets/img/producto-placeholder.jpg" alt="RTX 4060 Ti Gigabyte Windforce">
-                        <h5>Gigabyte Windforce RTX 4060 Ti</h5>
-                        <p class="marca-producto">Gigabyte</p>
-                        <p class="precio-producto">$519.990</p>
-                        <a href="producto.html" class="btn-ver-producto">Ver producto</a>
-                    </article>
-
-                    <article class="tarjeta-producto">
-                        <span class="etiqueta-stock ultimas">Últimas unidades</span>
-                        <img src="assets/img/producto-placeholder.jpg" alt="RTX 4070 Ti Super MSI">
-                        <h5>MSI Suprim X RTX 4070 Ti Super</h5>
-                        <p class="marca-producto">MSI</p>
-                        <p class="precio-producto">$999.990</p>
-                        <a href="producto.html" class="btn-ver-producto">Ver producto</a>
-                    </article>
-
-                    <article class="tarjeta-producto">
-                        <span class="etiqueta-stock disponible">En stock</span>
-                        <img src="assets/img/producto-placeholder.jpg" alt="RX 7700 XT Zotac">
-                        <h5>Zotac Gaming RX 7700 XT</h5>
-                        <p class="marca-producto">Zotac</p>
-                        <p class="precio-producto">$549.990</p>
-                        <a href="producto.html" class="btn-ver-producto">Ver producto</a>
-                    </article>
-
+                <div class="grilla-productos" id="grilla-productos">
                 </div>
-
                 <!-- PAGINACION -->
                 <nav class="paginacion">
                     <ul>
-                        <li><a href="catalogo.html?pagina=1" aria-label="página anterior">&laquo; Anterior</a></li>
-                        <li><a href="catalogo.html?pagina=1" class="pagina-activa">1</a></li>
-                        <li><a href="catalogo.html?pagina=2">2</a></li>
-                        <li><a href="catalogo.html?pagina=3">3</a></li>
-                        <li><a href="catalogo.html?pagina=4">4</a></li>
+                        <li><a href="#" aria-label="página anterior">&laquo; Anterior</a></li>
+                        <li><a href="#" class="pagina-activa">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
                         <li><span>...</span></li>
-                        <li><a href="catalogo.html?pagina=2" aria-label="página siguiente">Siguiente &raquo;</a></li>
+                        <li><a href="catcategoria.html?pagina=2" aria-label="página siguiente">Siguiente &raquo;</a></li>
                     </ul>
                 </nav>
 
@@ -315,6 +207,7 @@
         </div>
 
     </main>
+    <script src="js/catalogo.js"></script>
 
 </body>
 
