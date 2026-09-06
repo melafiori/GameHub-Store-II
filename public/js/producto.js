@@ -1,11 +1,94 @@
 document.addEventListener('DOMContentLoaded', function () {
 
+    /* ---- OBTENER PRODUCTO DESDE LA URL ---- */
+    const parametros = new URLSearchParams(window.location.search);
+    const idProducto = Number(parametros.get("id"));
+    const productoSeleccionado = window.productos.find(function (producto) {
+        return producto.id === idProducto;
+    });
+
+    if (!productoSeleccionado) {
+        alert("No se encontró el producto seleccionado.");
+        window.location.href = "catcategoria.html";
+        return;
+    }
+    /* ---- MOSTRAR DATOS DEL PRODUCTO ---- */
+    const marca = document.querySelector(".producto-marca");
+    const titulo = document.querySelector(".producto-titulo");
+    const imagenPrincipal = document.querySelector(".galeria-imagen-principal img");
+    const precioActual = document.querySelector(".precio-actual");
+    const stock = document.querySelector(".producto-stock");
+    const formulario = document.querySelector(".producto-compra");
+    const cantidad = document.getElementById("cantidad");
+
+    if (marca) {
+        marca.textContent = productoSeleccionado.marca;
+    }
+    if (titulo) {
+        titulo.textContent = productoSeleccionado.nombre;
+    }
+    if (imagenPrincipal) {
+        imagenPrincipal.src = productoSeleccionado.imagen;
+        imagenPrincipal.alt = productoSeleccionado.nombre;
+    }
+    if (precioActual) {
+        precioActual.textContent =
+            "$" + productoSeleccionado.precio.toLocaleString("es-CL");
+    }
+
+    if (stock) {
+        if (productoSeleccionado.stock > 0) {
+            stock.innerHTML =
+                '<span class="indicador-stock"></span> Stock disponible (' +
+                productoSeleccionado.stock +
+                ' unidades)';
+            stock.classList.remove("agotado");
+            stock.classList.add("disponible");
+        } else {
+            stock.innerHTML =
+                '<span class="indicador-stock"></span> Sin stock';
+            stock.classList.remove("disponible");
+            stock.classList.add("agotado");
+        }
+    }
+
+    /* ---- ACTUALIZAR DATOS DEL FORMULARIO ---- */
+    if (formulario) {
+        formulario.dataset.id = productoSeleccionado.id;
+        formulario.dataset.nombre = productoSeleccionado.nombre;
+        formulario.dataset.precio = productoSeleccionado.precio;
+        formulario.dataset.imagen = productoSeleccionado.imagen;
+        formulario.dataset.stockMaximo = productoSeleccionado.stock;
+        if (cantidad) {
+            cantidad.max = productoSeleccionado.stock;
+        }
+    }
     var formCompra = document.querySelector('.producto-compra');
     var inputCantidad = document.getElementById('cantidad');
 
+    /* ---- MOSTRAR ESPECIFICACIONES Y DESCRIPCIÓN ---- */
+    const tablaEspecificaciones = document.querySelector(".tabla-especificaciones tbody");
+    const descripcion = document.querySelector(".producto-descripcion p");
+
+    if (tablaEspecificaciones && productoSeleccionado.especificaciones) {
+        tablaEspecificaciones.innerHTML = "";
+
+        Object.entries(productoSeleccionado.especificaciones).forEach(function ([nombre, valor]) {
+            const fila = document.createElement("tr");
+
+            fila.innerHTML = `
+                <th>${nombre}</th>
+                <td>${valor}</td>
+            `;
+            tablaEspecificaciones.appendChild(fila);
+        });
+    }
+    if (descripcion && productoSeleccionado.descripcion) {
+        descripcion.textContent = productoSeleccionado.descripcion;
+    }
+
     /* ---- BOTONES + Y - DEL SELECTOR DE CANTIDAD ---- */
     var botonesCantidad = document.querySelectorAll('.btn-cantidad');
-
     botonesCantidad.forEach(function (boton) {
         boton.addEventListener('click', function () {
             var valorActual = parseInt(inputCantidad.value, 10) || 1;
@@ -58,5 +141,4 @@ document.addEventListener('DOMContentLoaded', function () {
 
         localStorage.setItem('carrito', JSON.stringify(carrito));
     }
-
 });
