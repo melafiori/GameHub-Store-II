@@ -10,11 +10,11 @@ function cargarDatosOrden() {
         return null;
     }
 
-    // si no paso por el boton del carrito, tenemos un respaldo
+    // si no paso por el boton del carrito, hay un respaldo
     return ordenGuardada ? JSON.parse(ordenGuardada) : { items: JSON.parse(carritoNormal), descuento: 0, cupon: null };
 }
 
-// dibuja la lista de productos y los valores finales en la columna derecha
+// muestra la lista de productos y los valores finales a la derecha
 function renderizarResumenCheckout() {
     const orden = cargarDatosOrden();
     if (!orden) return;
@@ -29,7 +29,7 @@ function renderizarResumenCheckout() {
 
     let subtotalCalculado = 0;
 
-    // inyecta los items como una lista compacta
+    // inyecta los items como una lista 
     listaResumen.innerHTML = orden.items.map(producto => {
         const subtotalLinea = producto.precio * producto.cantidad;
         subtotalCalculado += subtotalLinea;
@@ -67,7 +67,7 @@ function configurarValidacionFormulario() {
     const formulario = document.getElementById("formulario-checkout");
     if (!formulario) return;
 
-    // evalua los cambios en los inputs para limpiar los errores a medida que se escribe
+    // evalua los cambios en los inputs, para limpiar los errores a medida que se escribe
     const camposFormulario = formulario.querySelectorAll("input, select");
     camposFormulario.forEach(campo => {
         campo.addEventListener("input", () => {
@@ -152,6 +152,56 @@ function simularCompraExitosa() {
     window.location.href = "index.html";
 }
 
+// diccionario que relaciona el valor de cada region con sus comunas
+const comunasPorRegion = {
+    metropolitana: [
+        { valor: "santiago", texto: "santiago centro" },
+        { valor: "providencia", texto: "providencia" },
+        { valor: "maipu", texto: "maipu" },
+        { valor: "puente_alto", texto: "puente alto" }
+    ],
+    valparaiso: [
+        { valor: "vina", texto: "vina del mar" },
+        { valor: "valparaiso", texto: "valparaiso" },
+        { valor: "quilpue", texto: "quilpue" }
+    ],
+    biobio: [
+        { valor: "concepcion", texto: "concepcion" },
+        { valor: "talcahuano", texto: "talcahuano" },
+        { valor: "chiguayante", texto: "chiguayante" }
+    ]
+};
+
+// funcion para poblar el segundo select basandose en el primero
+function configurarSelectDependiente() {
+    const selectRegion = document.getElementById("region");
+    const selectComuna = document.getElementById("comuna");
+
+    if (!selectRegion || !selectComuna) return;
+
+    selectRegion.addEventListener("change", function() {
+        const regionSeleccionada = this.value;
+        const comunasDisponibles = comunasPorRegion[regionSeleccionada] || [];
+
+        // limpia las opciones anteriores y deja el mensaje por defecto
+        selectComuna.innerHTML = '<option value="" selected disabled>selecciona una comuna...</option>';
+
+        // crea e inyecta las nuevas opciones segun la region elegida
+        comunasDisponibles.forEach(comuna => {
+            const opcion = document.createElement("option");
+            opcion.value = comuna.valor;
+            opcion.textContent = comuna.texto;
+            selectComuna.appendChild(opcion);
+        });
+
+        // habilita el select de comuna ahora que tiene datos
+        selectComuna.disabled = false;
+        
+        // quita el borde rojo si habia dado error antes
+        selectComuna.classList.remove("is-invalid");
+    });
+}
 
 renderizarResumenCheckout();
 configurarValidacionFormulario();
+configurarSelectDependiente();

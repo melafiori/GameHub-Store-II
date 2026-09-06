@@ -820,14 +820,14 @@ interactuar con la interfaz del video por que estaran sobreponiendose*/
 
 .input-dark {
     background-color: var(--color-fondo);
-    border: 1px solid rgba(0, 210, 255, 0.4); /* borde cyan sutil, identico al de mis ordenes */
+    border: 1px solid rgba(0, 210, 255, 0.4); 
     color: var(--color-texto);
 }
 
-/* ajustes para hacer el texto de ejemplo (placeholder) mas visible */
+/* ajustes para hacer el texto de ejemplo mas visible */
 .input-dark::placeholder {
-    color: rgba(243, 239, 250, 0.5); /* color de texto principal con 50% de opacidad */
-    opacity: 1; /* asegura que los navegadores no apliquen su propia transparencia */
+    color: rgba(243, 239, 250, 0.5); 
+    opacity: 1; 
 }
 
 /* efecto al hacer clic en el recuadro */
@@ -836,6 +836,14 @@ interactuar con la interfaz del video por que estaran sobreponiendose*/
     color: var(--color-texto);
     border-color: var(--color-primario);
     box-shadow: 0 0 5px var(--color-primario);
+}
+
+/* especificamente para cuando no se a escogido region, esto dara un efecto de "deshabilitado" en la comuna*/
+.input-dark:disabled {
+    background-color: rgba(30, 23, 48, 0.6); 
+    color: rgba(243, 239, 250, 0.3); 
+    border-color: rgba(0, 210, 255, 0.15); 
+    opacity: 1; 
 }
 
 /* tamaño del emoji/icono para el estado "vacio"  */
