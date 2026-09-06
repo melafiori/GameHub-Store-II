@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GameHub Store</title>
+    <title>Checkout - GameHub Store</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
@@ -60,13 +60,13 @@
 
 <!-- contenido principal del checkout -->
     <main class="container my-5">
-        <h1 class="h2 mb-4 border-bottom pb-2 border-secondary">finalizar compra</h1>
+        <h1 class="h2 mb-4 border-bottom pb-2 border-secondary titulo-gamer">finalizar compra</h1>
 
         <div class="row g-4">
             
-            <!-- columna izquierda: formulario de despacho y pago -->
+            <!-- columna izquierda: formulario de despacho y de pago -->
             <div class="col-lg-8">
-                <!-- la clase novalidate apaga la validacion nativa del navegador para usar la nuestra con js -->
+                
                 <form id="formulario-checkout" class="card card-custom p-4" novalidate>
                     
                     <!-- seccion 1: datos personales -->
@@ -76,7 +76,7 @@
                             <div class="col-md-12">
                                 <label for="nombre" class="form-label text-light">nombre completo</label>
                                 <input type="text" class="form-control input-dark" id="nombre" autocomplete="name" placeholder="ej: juan perez">
-                                <!-- contenedor para el mensaje de error personalizado -->
+                                
                                 <div class="invalid-feedback">debes ingresar tu nombre completo.</div>
                             </div>
                             <div class="col-md-6">
@@ -87,7 +87,7 @@
                             <div class="col-md-6">
                                 <label for="telefono" class="form-label text-light">telefono movil</label>
                                 <input type="tel" class="form-control input-dark" id="telefono" autocomplete="tel" aria-describedby="ayuda-tel" placeholder="ej: 912345678">
-                                <!-- sugerencia de ayuda exigida por la rubrica -->
+                                
                                 <div id="ayuda-tel" class="form-text text-secondary">ingresa 9 digitos numericos.</div>
                                 <div class="invalid-feedback">el telefono debe contener exactamente 9 numeros.</div>
                             </div>
@@ -108,13 +108,12 @@
                                 </select>
                                 <div class="invalid-feedback">por favor, selecciona una region.</div>
                             </div>
+                            <!-- seleccion de comuna-->
                             <div class="col-md-6">
                                 <label for="comuna" class="form-label text-light">comuna</label>
-                                <select class="form-select input-dark" id="comuna" autocomplete="address-level2">
-                                    <option value="" selected disabled>selecciona una comuna...</option>
-                                    <option value="santiago">santiago centro</option>
-                                    <option value="providencia">providencia</option>
-                                    <option value="vina">vina del mar</option>
+                                
+                                <select class="form-select input-dark" id="comuna" autocomplete="address-level2" disabled>
+                                    <option value="" selected disabled>primero selecciona una region...</option>
                                 </select>
                                 <div class="invalid-feedback">por favor, selecciona una comuna.</div>
                             </div>
@@ -142,7 +141,7 @@
                                 <input class="form-check-input" type="radio" name="metodoPago" id="pago-transferencia" value="transferencia">
                                 <label class="form-check-label text-light" for="pago-transferencia">transferencia bancaria</label>
                             </div>
-                            <!-- div oculto para mostrar el error de los radio buttons -->
+                            
                             <div id="error-pago" class="text-danger small mt-2 d-none">debes seleccionar un metodo de pago.</div>
                         </div>
                     </fieldset>
@@ -151,14 +150,13 @@
                 </form>
             </div>
 
-            <!-- columna derecha: resumen final -->
+            <!-- columna de la derecha: resumen final -->
             <div class="col-lg-4">
                 <div class="card card-custom p-4 sticky-top" style="top: 20px;">
-                    <h2 class="h5 mb-4 border-bottom pb-2 border-secondary">resumen de tu orden</h2>
+                    <h2 class="h5 mb-4 border-bottom pb-2 border-secondary titulo-gamer">resumen de tu orden</h2>
                     
-                    <!-- aqui javascript inyectara una lista simple con los nombres y cantidades -->
+                    <!--javascript inyectara una lista con los nombres y cantidades -->
                     <ul id="lista-resumen-checkout" class="list-unstyled mb-4 text-light">
-                        <!-- contenido inyectado por dom -->
                     </ul>
 
                     <div class="d-flex justify-content-between mb-2">
@@ -222,7 +220,6 @@
     </div>
 
 </footer>
-    <script src="js/carrito.js"></script>
     <script src="js/checkout.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
