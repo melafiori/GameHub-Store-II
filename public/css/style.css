@@ -32,7 +32,7 @@ body {
     color: #120E1A;
 }
 
-                                        /* CONTENIDO UBICADO EN EL HEADER */
+/* ----------------------------------------------------- CONTENIDO UBICADO EN EL HEADER -----------------------------------------------------*/
 
 
 /* Contenedor principal de la cabecera */
@@ -131,43 +131,106 @@ body {
     color: var(--color-primario);
 }
 
-/*---------------------------------------------------------------------------------------------------------------------------------------------*/
-                                        /* BARRA DE CATEGORIAS */
-
+/* ----------------------------------------------------- BARRA DE CATEGORIAS ----------------------------------------------------- */
 .barra-categorias {
-    background-color: var(--color-superficie);
+    background: linear-gradient(
+        90deg,
+        #171124,
+        #1E1730,
+        #171124
+    );
+
     width: 100%;
-    /* linea que separar a la barra de categorias  */
-    border-top: 2px solid var(--color-primario); 
-    /* espacio que divide la linea separadora y el borde debajo de las letras */
-    padding: 20px 0; 
+    border-top: 1px solid rgba(214, 35, 106, 0.5);
+    border-bottom: 1px solid rgba(0, 210, 255, 0.35);
+    box-shadow:0 4px 15px rgba(0, 0, 0, 0.3),
+               0 0 15px rgba(214, 35, 106, 0.08);
+    padding: 8px 0;
 }
 
 
 .barra-categorias ul {
     list-style: none;
     margin: 0;
-    padding: 0;
+    padding: 0 20px;
     display: flex;
-    justify-content: center; 
-    gap: 40px; /* separacion entre cada categoria */
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
 }
 
+.barra-categorias li {
+    position: relative;
+}
 
 .barra-categorias a {
+    position: relative;
+    display: block;
+    padding: 10px 18px;
     color: var(--color-texto);
     text-decoration: none;
     font-size: 16px;
-    font-weight: normal;
-    letter-spacing: 1px; /* separa un poco las letras */
+    font-weight: 600;
+    letter-spacing: 1px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    transition:
+        color 0.25s ease,
+        background-color 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.25s ease;
 }
 
+
+/* Línea de neón debajo de la categoría */
+.barra-categorias a::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 3px;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(
+        90deg,
+        var(--color-primario),
+        var(--color-acento)
+    );
+    box-shadow:0 0 6px rgba(0, 210, 255, 0.7);
+    transform: translateX(-50%);
+    transition: width 0.25s ease;
+}
+
+/* EFECTO AL PASAR EL MOUSE */
 .barra-categorias a:hover {
-    color: var(--color-primario);
+    color: var(--color-acento);
+    background-color: rgba(0, 210, 255, 0.06);
+    border-color: rgba(0, 210, 255, 0.35);
+    box-shadow: 0 0 10px rgba(0, 210, 255, 0.12);
+    transform: translateY(-2px);
+    text-shadow:0 0 8px rgba(0, 210, 255, 0.7);
 }
-/*---------------------------------------------------------------------------------------------------------------------------------------------*/
+/* La línea aparece al pasar el mouse */
+.barra-categorias a:hover::after {
+    width: 70%;
+}
 
-                                        /*  CARRUSEL DE IMAGENES    */
+/* ADAPTACIÓN PARA CELULAR */
+@media (max-width: 768px) {
+
+    .barra-categorias ul {
+        gap: 4px;
+        padding: 8px 10px;
+    }
+
+    .barra-categorias a {
+        padding: 8px 10px;
+        font-size: 15px;
+    }
+
+}
+/* ----------------------------------------------------- CARRUSEL DE IMAGENES ----------------------------------------------------- */
 
 /* contenedor general del carrusel */
 .custom-carrusel {
@@ -231,7 +294,7 @@ interactuar con la interfaz del video por que estaran sobreponiendose*/
     z-index: 5;
 }
 
-/* -------------------- OFERTAS DESTACADAS------------------- */
+/* ----------------------------------------------------- OFERTAS DESTACADAS ----------------------------------------------------- */
 
 /*ESTO ESTÁ EN VEREMOS, NO SÉ SI ME CONVENCE*/
 .ofertas-destacadas h2 {
@@ -305,10 +368,7 @@ interactuar con la interfaz del video por que estaran sobreponiendose*/
         0 0 25px rgba(0, 210, 255, 0.2);
 }
 
-/*---------------------------------------------------------------------------------------------------------------------------------------------*/
-/* ==========================================
-   FOOTER
-   ========================================== */
+/* ----------------------------------------------------- FOOTER ----------------------------------------------------- */
 
 .footer-principal {
     background-color: var(--color-superficie);
@@ -371,10 +431,8 @@ interactuar con la interfaz del video por que estaran sobreponiendose*/
 /* COPYRIGHT */
 .footer-copyright {
     border-top: 1px solid rgba(0, 210, 255, 0.25);
-
     text-align: center;
     padding: 18px 20px;
-
     color: #c8c2d4;
     font-size: 15px;
 }
@@ -393,8 +451,7 @@ interactuar con la interfaz del video por que estaran sobreponiendose*/
     }
 
 }
-
-/* ----------------------- MIS ÓRDENES ----------------------- */
+/* ----------------------------------------------------- MIS ÓRDENES ----------------------------------------------------- */
 
 .ordenes-container {
     max-width: 1200px;
@@ -440,6 +497,7 @@ interactuar con la interfaz del video por que estaran sobreponiendose*/
     padding: 28px 30px;
 
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
 
@@ -451,7 +509,6 @@ interactuar con la interfaz del video por que estaran sobreponiendose*/
         border-color 0.3s ease,
         box-shadow 0.3s ease;
 }
-
 
 /* EFECTO HOLOGRÁFICO AL PASAR EL MOUSE */
 .orden-card:hover {
@@ -501,9 +558,7 @@ interactuar con la interfaz del video por que estaran sobreponiendose*/
         0 0 12px rgba(0, 210, 255, 0.45);
 }
 
-
-/* ------------------------- RESPONSIVE------------------------- */
-
+/* ----------------------------------------------------- COMPATIBILIDAD CELULAR ----------------------------------------------------- */
 @media (max-width: 768px) {
     .ordenes-container {
         padding: 40px 20px;
@@ -524,7 +579,7 @@ interactuar con la interfaz del video por que estaran sobreponiendose*/
     }
 }
 
-/* ------------------------- DETALLE DE ORDEN -------------------------*/
+/* ----------------------------------------------------- DETALLE DE ORDEN ----------------------------------------------------- */
 
 .detalle-orden {
     width: 100%;
@@ -574,22 +629,24 @@ interactuar con la interfaz del video por que estaran sobreponiendose*/
 /* ESTADO DEL PAGO */
 .estado-exitoso {
     color: var(--color-texto);
-    font-weight: absolute;
+    font-weight: bold;
     margin-bottom: 20px;
 }
 
-
-/* SEGUIMIENTO */
-.seguimiento {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+.indicador-estado {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    background-color: var(--color-acento);
+    border-radius: 50%;
+    margin-right: 8px;
+    box-shadow: 0 0 8px rgba(0, 210, 255, 0.7);
 }
 
 .paso-completado {
     color: var(--color-texto);
     padding: 10px 15px;
-    border-left: 3px solid var(--color-acento);
+    border-left: 2px solid var(--color-acento);
     background-color: rgba(0, 210, 255, 0.05);
 }
 
@@ -635,4 +692,67 @@ interactuar con la interfaz del video por que estaran sobreponiendose*/
         width: 100%;
     }
 
+}
+
+/* ----------------------------------------------------- FORMULARIOS DE MIS ÓRDENES ----------------------------------------------------- */
+.formulario-resena,
+.formulario-garantia {
+    width: 100%;
+    margin-top: 25px;
+    padding: 25px;
+    background-color: rgba(18, 14, 26, 0.7);
+    border: 1px solid rgba(0, 210, 255, 0.35);
+    border-radius: 8px;
+}
+
+.formulario-resena h3,
+.formulario-garantia h3 {
+    font-family: 'Press Start 2P', cursive;
+    color: var(--color-acento);
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.formulario-resena label,
+.formulario-garantia label {
+    display: block;
+    color: var(--color-texto);
+    font-weight: 600;
+    margin-bottom: 7px;
+}
+
+.formulario-resena select,
+.formulario-resena textarea,
+.formulario-garantia textarea {
+    width: 100%;
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    border: 1px solid rgba(0, 210, 255, 0.4);
+    border-radius: 6px;
+    padding: 10px;
+    margin-bottom: 15px;
+    font-family: 'Rajdhani', sans-serif;
+}
+
+.formulario-resena select:focus,
+.formulario-resena textarea:focus,
+.formulario-garantia textarea:focus {
+    outline: none;
+    border-color: var(--color-acento);
+    box-shadow: 0 0 8px rgba(0, 210, 255, 0.25);
+}
+
+.formulario-resena button,
+.formulario-garantia button {
+    margin-top: 5px;
+}
+
+.mensaje-formulario {
+    margin-top: 15px;
+    margin-bottom: 0;
+    font-weight: 600;
+}
+
+.mensaje-exito {
+    color: var(--color-acento);
 }
