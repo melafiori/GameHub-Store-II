@@ -12,6 +12,32 @@ document.addEventListener('DOMContentLoaded', function () {
         window.location.href = "catcategoria.html";
         return;
     }
+
+    /* ---- ACTUALIZAR MIGA DE PAN ---- */
+    const mapaCategorias = {
+        "Notebooks": "notebooks",
+        "Tarjetas Gráficas": "graficas",
+        "Procesadores": "procesadores",
+        "Periféricos": "perifericos",
+        "Consolas": "consolas",
+        "Monitores": "monitores",
+        "Accesorios": "accesorios"
+    };
+
+    const breadcrumbCategoria = document.querySelector(".breadcrumb-categoria");
+    const breadcrumbProducto = document.querySelector(".breadcrumb-producto");
+    if (breadcrumbCategoria) {
+        const categoriaUrl = mapaCategorias[productoSeleccionado.categoria];
+        breadcrumbCategoria.innerHTML = `
+            <a href="catcategoria.html?categoria=${categoriaUrl}">
+                ${productoSeleccionado.categoria}
+            </a>
+        `;
+    }
+    if (breadcrumbProducto) {
+        breadcrumbProducto.textContent = productoSeleccionado.nombre;
+    }
+
     /* ---- MOSTRAR DATOS DEL PRODUCTO ---- */
     const marca = document.querySelector(".producto-marca");
     const titulo = document.querySelector(".producto-titulo");
@@ -119,9 +145,16 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         guardarProductoEnCarrito(producto);
+        const mensajeCarrito = document.querySelector(".mensaje-carrito");
 
-        // recien ahora navegamos al carrito, con el producto ya guardado
-        window.location.href = formCompra.action;
+        if (mensajeCarrito) {
+            mensajeCarrito.textContent = "Producto agregado al carrito";
+            mensajeCarrito.classList.add("mostrar");
+
+            setTimeout(function () {
+                mensajeCarrito.classList.remove("mostrar");
+            }, 3000);
+        }
     });
 
     function guardarProductoEnCarrito(producto) {
