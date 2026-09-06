@@ -37,6 +37,9 @@
                 <li> 
                     <a href="login.html"> <img src="assets/icons/icono-usuario.svg" alt="icono de inicio de sesion"> Login </a>
                  </li>    <!--AÑADIR MAS ADELANTE-->
+                <li>
+                    <a href="mis-ordenes.html"> <img src="assets/icons/icono-ordenes.png" alt="icono de mis órdenes">Mis órdenes</a>
+                 </li>
             </ul>
         </nav>
 
@@ -45,13 +48,13 @@
     <!--    BARRA DE CATEGORIAS    -->
     <nav class="barra-categorias">
         <ul>
-            <li> <a href="index.html"> Notebooks </a> </li>
+            <li> <a href="catcategoria.html"> Notebooks </a> </li>
             <li> <a href="catcategoria.html"> Tarjetas Gráficas </a> </li>
-            <li> <a href="index.html"> Procesadores </a> </li>
-            <li> <a href="index.html"> Periféricos </a> </li>
-            <li> <a href="index.html"> Consolas </a> </li>
-            <li> <a href="index.html"> Monitores </a> </li>
-            <li> <a href="index.html"> Accesorios </a> </li>
+            <li> <a href="catcategoria.html"> Procesadores </a> </li>
+            <li> <a href="catcategoria.html"> Periféricos </a> </li>
+            <li> <a href="catcategoria.html"> Consolas </a> </li>
+            <li> <a href="catcategoria.html"> Monitores </a> </li>
+            <li> <a href="catcategoria.html"> Accesorios </a> </li>
         </ul>
     </nav>
     
@@ -74,9 +77,7 @@
                 
                 <!-- Slide 1: Video Local Nativo -->
                 <div class="carousel-item active">
-                    <video class="d-block w-100 carrusel-media" controls muted playsinline>
-                        <source src="assets/videos/Grand Theft Auto VI Trailer 1.mp4" type="video/mp4">
-                    </video>
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/-nyjd9gx5bg?si=9DhR8i4aKrKAZe1a" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     <div class="carousel-caption d-none d-md-block">
                         <h5> (cambiar este titulo mas tarde)</h5>       <!--CAMBIAR MAS TARDE-->
                         <p>(descripcion, cambiar mas tarde)</p>
@@ -85,19 +86,19 @@
 
                 <!-- Slide 2: Imagen Promocional -->
                 <div class="carousel-item">
-                    <img src="https://www.weplay.cl/pub/media/wysiwyg/Banners/BOTONERA-CONSOLAS.png" class="d-block w-100 carrusel-media" alt="Tarjetas Gráficas de última generación">
+                    <img src="https://www.notebookcheck.org/fileadmin/Notebooks/News/_nc4/Asus-ROG-Strix-Ace-xg248qsg-global-debut.jpg" class="d-block w-100 carrusel-media" alt="Tarjetas Gráficas de última generación">
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>(cambiar este titulo mas tarde)</h5>        <!--CAMBIAR MAS TARDE-->
-                        <p>(descripcion, cambiar mas tarde).</p>
+                        <h5>ROG Strix XG248QSG Ace</h5>        <!--CAMBIAR MAS TARDE-->
+                        <p>Panel Super TN FHD (1920 x 1080) de 24,1 pulgadas - 61,21 cm con frecuencia de actualización de 610 Hz (OC), diseñado específicamente para jugadores profesionales de deportes electrónicos.</p>
                     </div>
                 </div>
 
                 <!-- Slide 3: Imagen Promocional -->
                 <div class="carousel-item">
-                    <img src="https://www.weplay.cl///pub/media/wysiwyg/Banners/SECCION-NUEVA-WEB.JPG" class="d-block w-100 carrusel-media" alt="Periféricos Neón">
+                    <img src="https://i0.wp.com/www.madboxpc.com/wp-content/uploads/2023/05/Strix-SCAR-18_03.jpg?resize=850%2C420&ssl=1" class="d-block w-100 carrusel-media" alt="Periféricos Neón">
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>(cambiar este titulo mas tarde)</h5>        <!--CAMBIAR MAS TARDE-->
-                        <p>(descripcion, cambiar mas tarde)</p>
+                        <h5>Los notebooks más potentes para gaming</h5>        <!--CAMBIAR MAS TARDE-->
+                        <p> Diseñados para ofrecer potencia extrema en formatos de 16 y 18 pulgadas, ideales para videojuegos pesados y multitarea.</p>
                     </div>
                 </div>
 
@@ -112,12 +113,58 @@
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Siguiente</span>
             </button>
+            
         </div>
+        <!-- OFERTAS DESTACADAS --> 
+        <section class="ofertas-destacadas"> 
+            <h2>Ofertas destacadas</h2> 
+            <div id="lista-productos" class="row g-4"> 
+                <!-- Los productos serán cargados mediante JavaScript --> 
+            </div> 
+        </section>
+
 
 
     </main>
+    <footer class="footer-principal">
+
+    <div class="footer-contenido">
+
+        <!-- QUIÉNES SOMOS -->
+        <div class="footer-seccion">
+            <h3>GameHub Store</h3>
+            <p>
+                Somos una tienda gamer especializada en tarjetas grácas, procesadores, periféricos, consolas, monitores y accesorios para potenciar tu experiencia.
+            </p>
+        </div>
+
+        <!-- CONTACTO, PUSE NÚMERO Y CORREO -->
+        <div class="footer-seccion">
+            <h3>Contacto</h3>
+                <p>+56 9 1234 5678</p>
+                <p>contacto@gamehubstore.cl</p>
+            
+        </div>
+
+        <!-- UBICACIÓN -->
+        <div class="footer-seccion">
+            <h3>Ubicación</h3>
+            <p>Valparaíso, Chile</p>
+            <p>Lunes a Viernes:
+            De 08:00 AM a 17:30</p>
+        </div>
+
+    </div>
+
+    <!-- COPYRIGHT -->
+    <div class="footer-copyright">
+        <p>© 2026 GameHub Store. Todos los derechos reservados.</p>
+    </div>
+
+</footer>
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="js/inicio.js"></script>
 </body>
 </html>
