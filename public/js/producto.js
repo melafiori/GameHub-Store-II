@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     /* ---- OBTENER PRODUCTO DESDE LA URL ---- */
     const parametros = new URLSearchParams(window.location.search);
     const idProducto = Number(parametros.get("id"));
+    const esOferta = parametros.get("oferta") === "true";
     const productoSeleccionado = window.productos.find(function (producto) {
         return producto.id === idProducto;
     });
@@ -12,6 +13,9 @@ document.addEventListener('DOMContentLoaded', function () {
         window.location.href = "catcategoria.html";
         return;
     }
+    const precioFinal = esOferta
+        ? Math.round(productoSeleccionado.precio * 0.90)
+        : productoSeleccionado.precio;
 
     /* ---- ACTUALIZAR MIGA DE PAN ---- */
     const mapaCategorias = {
@@ -42,7 +46,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const marca = document.querySelector(".producto-marca");
     const titulo = document.querySelector(".producto-titulo");
     const imagenPrincipal = document.querySelector(".galeria-imagen-principal img");
+    const precioAnterior = document.querySelector(".precio-anterior");
     const precioActual = document.querySelector(".precio-actual");
+    const etiquetaDescuento = document.querySelector(".etiqueta-descuento");
     const stock = document.querySelector(".producto-stock");
     const formulario = document.querySelector(".producto-compra");
     const cantidad = document.getElementById("cantidad");
@@ -59,7 +65,28 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     if (precioActual) {
         precioActual.textContent =
-            "$" + productoSeleccionado.precio.toLocaleString("es-CL");
+            "$" + precioFinal.toLocaleString("es-CL");
+    }
+
+    if (precioAnterior) {
+        if (esOferta) {
+            precioAnterior.textContent =
+                "$" + productoSeleccionado.precio.toLocaleString("es-CL");
+            precioAnterior.style.display = "inline";
+        } else {
+            precioAnterior.textContent = "";
+            precioAnterior.style.display = "none";
+        }
+    }
+
+    if (etiquetaDescuento) {
+        if (esOferta) {
+            etiquetaDescuento.textContent = "10% OFF";
+            etiquetaDescuento.style.display = "inline";
+        } else {
+            etiquetaDescuento.textContent = "";
+            etiquetaDescuento.style.display = "none";
+        }
     }
 
     if (stock) {
@@ -82,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (formulario) {
         formulario.dataset.id = productoSeleccionado.id;
         formulario.dataset.nombre = productoSeleccionado.nombre;
-        formulario.dataset.precio = productoSeleccionado.precio;
+        formulario.dataset.precio = precioFinal;
         formulario.dataset.imagen = productoSeleccionado.imagen;
         formulario.dataset.stockMaximo = productoSeleccionado.stock;
         if (cantidad) {
