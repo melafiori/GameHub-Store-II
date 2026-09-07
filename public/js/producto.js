@@ -72,20 +72,20 @@ document.addEventListener('DOMContentLoaded', function () {
         if (esOferta) {
             precioAnterior.textContent =
                 "$" + productoSeleccionado.precio.toLocaleString("es-CL");
-            precioAnterior.style.display = "inline";
+            precioAnterior.classList.remove("oculto");
         } else {
             precioAnterior.textContent = "";
-            precioAnterior.style.display = "none";
+            precioAnterior.classList.add("oculto");
         }
     }
 
     if (etiquetaDescuento) {
         if (esOferta) {
             etiquetaDescuento.textContent = "10% OFF";
-            etiquetaDescuento.style.display = "inline";
+            etiquetaDescuento.classList.remove("oculto");
         } else {
             etiquetaDescuento.textContent = "";
-            etiquetaDescuento.style.display = "none";
+            etiquetaDescuento.classList.add("oculto");
         }
     }
 

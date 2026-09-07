@@ -417,3 +417,6 @@
     color: var(--color-primario);
     font-weight: bold;
 }
+.oculto {
+    display: none;
+}

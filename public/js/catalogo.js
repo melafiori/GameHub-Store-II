@@ -42,7 +42,7 @@ if (checkboxSeleccionado) {
 /* ----------------------------------------------------- FILTROS DEL CATÁLOGO -----------------------------------------------------*/
 const grillaProductos = document.getElementById("grilla-productos");
 const formularioFiltros = document.querySelector(".filtros form");
-const idsOfertas = [1, 4, 17, 19];
+const idsOfertas = [2, 4, 29, 19];
 
 function mostrarTodosLosProductos() {
     if (!grillaProductos) return;

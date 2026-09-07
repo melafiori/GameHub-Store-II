@@ -123,11 +123,12 @@
     box-shadow:
         0 0 8px rgba(0, 210, 255, 0.25);
 }
-
+/*POR AHORA NO ESTÁ FUNCIONAL YA QUE HAY QUE BUSCAR MUCHAS FOTOS*/
 .galeria-miniaturas img {
-    width: 100%;
+    display: none;
+    /*width: 100%;
     height: 75px;
-    object-fit: contain;
+    object-fit: contain;*/
 }
 
 /* ----------------------------------------------------- INFORMACIÓN DEL PRODUCTO ----------------------------------------------------- */

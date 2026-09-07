@@ -245,7 +245,14 @@ body {
 /* altura y proporcion del video e imagenes */
 .carrusel-media {
     height: 480px;
+    aspect-ratio: 16 / 9;
     object-fit: cover;
+}
+.carousel-item iframe {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    display: block;
+    border: none;
 }
 
 /* caja de texto inferior*/

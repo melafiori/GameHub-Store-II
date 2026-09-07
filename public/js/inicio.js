@@ -3,7 +3,7 @@
 const listaProductos = document.getElementById("lista-productos");
 
 // IDs de los productos que queremos mostrar como ofertas
-const idsOfertas = [1, 4, 17, 19];
+const idsOfertas = [2, 4, 29, 19];
 
 const productosOfertas = window.productos.filter(producto =>
     idsOfertas.includes(producto.id)
