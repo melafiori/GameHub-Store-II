@@ -406,3 +406,17 @@
     box-shadow:
         0 0 10px rgba(214, 35, 106, 0.35);
 }
+.precio-anterior {
+    text-decoration: line-through;
+    color: #888;
+    font-size: 0.9em;
+    margin-right: 8px;
+}
+
+.precio-oferta {
+    color: var(--color-primario);
+    font-weight: bold;
+}
+.oculto {
+    display: none;
+}

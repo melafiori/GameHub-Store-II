@@ -32,11 +32,11 @@
         <div class="busqueda">
             <form action="#" method="GET">
                 <input type="text" placeholder="Buscar producto..." aria-label="busqueda en el catalogo" required>
-                <button tipe="submit">Buscar</button>
+                <button type="submit">Buscar</button>
             </form>
         </div>
 
-        <!--CARRITO E INICIO DE SESION-->
+        <!--CARRITO, INICIO DE SESION Y ORDENES -->
         <nav class="nav-derecha">
             <ul>
                 <li>
@@ -47,6 +47,9 @@
                     <a href="login.html"> <img src="assets/icons/icono-usuario.svg" alt="icono de inicio de sesion">
                         Login </a>
                 </li> <!--AÑADIR MAS ADELANTE-->
+                <li>
+                    <a href="mis-ordenes.html"> <img src="assets/icons/icono-ordenes.png" alt="icono de mis órdenes">Mis órdenes</a>
+                 </li>
             </ul>
         </nav>
 
@@ -55,13 +58,13 @@
     <!--    BARRA DE CATEGORIAS    -->
     <nav class="barra-categorias">
         <ul>
-            <li> <a href="index.html"> Notebooks </a> </li>
-            <li> <a href="catcategoria.html"> Tarjetas Gráficas </a> </li>
-            <li> <a href="index.html"> Procesadores </a> </li>
-            <li> <a href="index.html"> Periféricos </a> </li>
-            <li> <a href="index.html"> Consolas </a> </li>
-            <li> <a href="index.html"> Monitores </a> </li>
-            <li> <a href="index.html"> Accesorios </a> </li>
+            <li> <a href="catcategoria.html?categoria=notebooks"> Notebooks </a> </li>
+            <li> <a href="catcategoria.html?categoria=graficas"> Tarjetas Gráficas </a> </li>
+            <li> <a href="catcategoria.html?categoria=procesadores"> Procesadores </a> </li>
+            <li> <a href="catcategoria.html?categoria=perifericos"> Periféricos </a> </li>
+            <li> <a href="catcategoria.html?categoria=consolas"> Consolas </a> </li>
+            <li> <a href="catcategoria.html?categoria=monitores"> Monitores </a> </li>
+            <li> <a href="catcategoria.html?categoria=accesorios"> Accesorios </a> </li>
         </ul>
     </nav>
 
@@ -69,8 +72,8 @@
     <nav class="miga-de-pan" aria-label="ruta de navegación">
         <ul>
             <li><a href="index.html">Inicio</a></li>
-            <li><a href="catalogo.html">Tarjetas Gráficas</a></li>
-            <li aria-current="page">ASUS Dual GeForce RTX 4070 Super</li>
+            <li class="breadcrumb-categoria"></li>
+            <li class="breadcrumb-producto" aria-current="page"></li>
         </ul>
     </nav>
 
@@ -83,28 +86,28 @@
             <section class="producto-galeria">
 
                 <div class="galeria-imagen-principal">
-                    <img src="assets/img/producto-placeholder-grande.jpg" alt="ASUS Dual GeForce RTX 4070 Super - vista principal">
+                    <img src="assets/img/producto-placeholder-grande.jpg" alt="Imagen del producto">
                 </div>
 
                 <ul class="galeria-miniaturas">
                     <li>
                         <a href="#">
-                            <img src="assets/img/producto-placeholder.jpg" alt="ASUS Dual GeForce RTX 4070 Super - vista frontal">
+                            <img src="assets/img/producto-placeholder.jpg" alt="Vista 1 del producto">
                         </a>
                     </li>
                     <li>
                         <a href="#">
-                            <img src="assets/img/producto-placeholder.jpg" alt="ASUS Dual GeForce RTX 4070 Super - vista lateral">
+                            <img src="assets/img/producto-placeholder.jpg" alt="Vista 2 del producto">
                         </a>
                     </li>
                     <li>
                         <a href="#">
-                            <img src="assets/img/producto-placeholder.jpg" alt="ASUS Dual GeForce RTX 4070 Super - vista de conectores">
+                            <img src="assets/img/producto-placeholder.jpg" alt="Vista 3 del producto">
                         </a>
                     </li>
                     <li>
                         <a href="#">
-                            <img src="assets/img/producto-placeholder.jpg" alt="ASUS Dual GeForce RTX 4070 Super - vista de caja">
+                            <img src="assets/img/producto-placeholder.jpg" alt="Vista 4 del producto">
                         </a>
                     </li>
                 </ul>
@@ -114,8 +117,8 @@
             <!--    INFORMACION DEL PRODUCTO    -->
             <section class="producto-informacion">
 
-                <p class="producto-marca">ASUS</p>
-                <h1 class="producto-titulo">ASUS Dual GeForce RTX 4070 Super OC Edition 12GB GDDR6X</h1>
+                <p class="producto-marca"></p>
+                <h1 class="producto-titulo"></h1>
 
                 <div class="producto-valoracion">
                     <span class="estrellas" aria-label="4.5 de 5 estrellas">★★★★☆</span>
@@ -123,31 +126,24 @@
                 </div>
 
                 <div class="producto-precio">
-                    <span class="precio-anterior">$899.990</span>
-                    <span class="precio-actual">$799.990</span>
-                    <span class="etiqueta-descuento">-11% OFF</span>
+                    <span class="precio-anterior"></span>
+                    <span class="precio-actual"></span>
+                    <span class="etiqueta-descuento"></span>
                 </div>
 
                 <p class="producto-cuotas">Hasta 12 cuotas sin interés</p>
 
                 <p class="producto-stock disponible">
-                    <span class="indicador-stock"></span> Stock disponible (14 unidades)
+                    <span class="indicador-stock"></span>
                 </p>
 
                 <!--    SELECTOR DE CANTIDAD Y AGREGAR AL CARRITO    -->
-                <form action="carrito.html" method="GET" class="producto-compra"
-                
-                    data-id="1"
-                    data-nombre="ASUS Dual GeForce RTX 4070 Super OC Edition 12GB GDDR6X"
-                    data-precio="799990"
-                    data-imagen="assets/img/producto-placeholder-grande.jpg"
-                    data-stock-maximo="14">
-
+                <form action="carrito.html" method="GET" class="producto-compra">
                     <div class="selector-cantidad">
                         <label for="cantidad">Cantidad</label>
                         <div class="selector-cantidad-controles">
                             <button type="button" class="btn-cantidad" data-accion="restar" aria-label="disminuir cantidad">-</button>
-                            <input type="number" id="cantidad" name="cantidad" value="1" min="1" max="14">
+                            <input type="number" id="cantidad" name="cantidad" value="1" min="1">
                             <button type="button" class="btn-cantidad" data-accion="sumar" aria-label="aumentar cantidad">+</button>
                         </div>
                     </div>
@@ -156,68 +152,30 @@
                         <img src="assets/icons/icono-carrito.svg" alt="">
                         Agregar al carrito
                     </button>
-
+                    <p class="mensaje-carrito" aria-live="polite"></p>
                 </form>
 
                 <!--    DATOS RAPIDOS DE ENVIO    -->
                 <ul class="producto-datos-envio">
-                    <li>Envío a todo Chile</li>
-                    <li>Garantía oficial de 24 meses</li>
+                    <li>Envíos a todo Chile</li>
+                    <li>Garantía de 6 meses</li>
                     <li>Retiro gratis en tienda</li>
                 </ul>
 
             </section>
-
         </div>
 
         <!--    ESPECIFICACIONES TECNICAS    -->
         <section class="producto-especificaciones">
-
             <h2>Especificaciones técnicas</h2>
-
             <table class="tabla-especificaciones">
                 <tbody>
-                    <tr>
-                        <th>Chipset</th>
-                        <td>NVIDIA GeForce RTX 4070 Super</td>
-                    </tr>
-                    <tr>
-                        <th>Memoria</th>
-                        <td>12 GB GDDR6X</td>
-                    </tr>
-                    <tr>
-                        <th>Interfaz de memoria</th>
-                        <td>192-bit</td>
-                    </tr>
-                    <tr>
-                        <th>Frecuencia Boost</th>
-                        <td>2505 MHz (modo OC)</td>
-                    </tr>
-                    <tr>
-                        <th>Conectores de salida</th>
-                        <td>2x HDMI 2.1, 2x DisplayPort 1.4a</td>
-                    </tr>
-                    <tr>
-                        <th>Alimentación requerida</th>
-                        <td>1x 8 pines, fuente mínima recomendada 650W</td>
-                    </tr>
-                    <tr>
-                        <th>Dimensiones</th>
-                        <td>267.6 x 129.9 x 50.4 mm</td>
-                    </tr>
-                    <tr>
-                        <th>Interfaz</th>
-                        <td>PCI Express 4.0</td>
-                    </tr>
                 </tbody>
             </table>
 
             <div class="producto-descripcion">
                 <h3>Descripción</h3>
                 <p>
-                    Tarjeta gráfica ASUS Dual GeForce RTX 4070 Super con diseño de doble ventilador Axial-tech,
-                    disipador de gran superficie y backplate reforzado. Ideal para gaming en 1440p y 4K con
-                    tecnologías DLSS 3 y Ray Tracing de última generación.
                 </p>
             </div>
 
@@ -243,8 +201,8 @@
                         <span class="reseña-fecha">12 de agosto de 2026</span>
                     </div>
                     <p class="reseña-comentario">
-                        Excelente rendimiento para el precio, corre todo en 1440p sin problemas y se mantiene
-                        fresca incluso en sesiones largas.
+                        Excelente rendimiento para el precio, llevo tiempo probando sin problemas y 
+                        muy buena experiencia.
                     </p>
                 </li>
 
@@ -255,8 +213,7 @@
                         <span class="reseña-fecha">3 de agosto de 2026</span>
                     </div>
                     <p class="reseña-comentario">
-                        Muy buena tarjeta, el único detalle es que es un poco grande y casi no entra en mi gabinete.
-                        El rendimiento sin embargo es excelente.
+                        Muy buena producto, el único detalle es que no revisé bien las medidas y es más grande de lo que pensé.
                     </p>
                 </li>
 
@@ -267,8 +224,7 @@
                         <span class="reseña-fecha">28 de julio de 2026</span>
                     </div>
                     <p class="reseña-comentario">
-                        Llegó rápido y bien embalada. La instalé y funcionó a la primera, silenciosa incluso
-                        con carga alta.
+                        Llegó todo muy rápido y muy bien embalado. Muy buen servicio.
                     </p>
                 </li>
 
@@ -279,8 +235,7 @@
                         <span class="reseña-fecha">15 de julio de 2026</span>
                     </div>
                     <p class="reseña-comentario">
-                        Cumple lo que promete, pero esperaba un poco más de rendimiento en 4K. Para 1440p es una
-                        muy buena opción.
+                        Cumple lo que promete, pero esperaba un poco más del producto, relación calidad-precio.
                     </p>
                 </li>
 
@@ -289,8 +244,43 @@
         </section>
 
     </main>
+    <footer class="footer-principal">
+
+    <div class="footer-contenido">
+
+        <!-- QUIÉNES SOMOS -->
+        <div class="footer-seccion">
+            <h3>GameHub Store</h3>
+            <p>
+                Somos una tienda gamer especializada en tarjetas grácas, procesadores, periféricos, consolas, monitores y accesorios para potenciar tu experiencia.
+            </p>
+        </div>
+
+        <!-- CONTACTO, PUSE NÚMERO Y CORREO -->
+        <div class="footer-seccion">
+            <h3>Contacto</h3>
+                <p>+56 9 1234 5678</p>
+                <p>contacto@gamehubstore.cl</p>
+            
+        </div>
+
+        <!-- UBICACIÓN -->
+        <div class="footer-seccion">
+            <h3>Ubicación</h3>
+            <p>Valparaíso, Chile</p>
+            <p>Lunes a Viernes:
+            De 08:00 AM a 17:30</p>
+        </div>
+
+    </div>
+
+    <!-- COPYRIGHT -->
+    <div class="footer-copyright">
+        <p>© 2026 GameHub Store. Todos los derechos reservados.</p>
+    </div>
+<script src="js/productos.js"></script>
+<script src="js/catalogo.js"></script>
 <script src="js/producto.js"></script>
 
 </body>
-
 </html>
