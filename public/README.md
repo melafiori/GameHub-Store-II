@@ -128,9 +128,9 @@ No se requiere instalar un backend ni una base de datos para ejecutar esta versi
 ## Ejecución del proyecto
 
 1. Clonar el repositorio:
-
-git clone [URL_DEL_REPOSITORIO]
-
+```
+git clone https://github.com/melafiori/GameHub-Store-II.git
+```
 2. Abrir la carpeta del proyecto en Visual Studio Code.
 
 3. Instalar la extensión **Live Server**, si aún no está instalada.
