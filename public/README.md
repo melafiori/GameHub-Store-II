@@ -123,7 +123,7 @@ Para ejecutar el proyecto se requiere:
 * Visual Studio Code u otro editor de código.
 * Extensión **Live Server** para facilitar la ejecución local del proyecto.
 
-No se requiere instalar un backend ni una base de datos para ejecutar esta versión.
+No se requiere instalar ningun tipo de backend ni una base de datos para ejecutar esta versión.
 
 ## Ejecución del proyecto
 
