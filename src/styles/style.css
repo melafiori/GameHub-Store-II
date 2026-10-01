@@ -1,0 +1,882 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rajdhani:wght@400;500;600;700&display=swap');
+/* variables globales de color */
+:root {
+    --color-fondo: #120E1A;
+    --color-superficie: #1E1730;
+    --color-primario: #D6236A;
+    --color-acento: #00D2FF;
+    --color-texto: #F3EFFA;
+    --color-error: #FF7A7A;
+    --bs-body-bg: #120E1A;
+    --bs-body-color: #1E1730;
+}
+
+/* configuracion del cuerpo de la pagina */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: var(--color-fondo) !important; 
+    color: var(--color-texto); 
+}
+
+/*Nuestro botón principal debe ser color magneta con texto claro*/
+.btn-primary {
+    background-color: #D6236A;
+    border-color: #D6236A;
+    color: #F3EFFA;
+    font-weight: 700;
+}
+
+/* Al pasar el maus por encima del botón, el botón se pone color cian*/
+.btn-primary:hover {
+    background-color: #00D2FF;
+    border-color: #00D2FF;
+    color: #120E1A;
+}
+
+/* ----------------------------------------------------- CONTENIDO UBICADO EN EL HEADER -----------------------------------------------------*/
+
+
+/* Contenedor principal de la cabecera */
+.header-principal {
+    background-color: var(--color-superficie);
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 15px 30px;
+}
+
+/* Enlace y alineacion del logo */
+.logo a {
+    display: flex;
+    align-items: center; 
+    gap: 10px; 
+    color: var(--color-texto);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+/* efecto hover para el logo (efecto al pasar el mouse por encima) */
+.logo a:hover {
+    color: var(--color-primario);
+}
+
+/* tamaño de la imagen del logo */
+.logo img {
+    max-height: 50px; 
+    display: block;
+}
+
+/* contenedor de la barra de busqueda */
+.busqueda {
+    flex-grow: 1; 
+    display: flex;
+    justify-content: center;
+    margin: 0 40px; 
+}
+
+/* formulario de la barra de busqueda */
+.busqueda form {
+    display: flex;
+    width: 100%;
+    max-width: 500px;
+}
+
+/* campo de texto de la busqueda */
+.busqueda input {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: 1px solid var(--color-texto);
+    border-radius: 4px 0 0 4px; 
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+}
+
+/* boton de envio de la busqueda */
+.busqueda button {
+    padding: 10px 20px;
+    background-color: var(--color-primario);
+    color: #FFFFFF; 
+    border: none;
+    border-radius: 0 4px 4px 0;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* lista de navegacion del lado derecho */
+.nav-derecha ul {
+    list-style: none;
+    display: flex;
+    gap: 25px; 
+    margin: 0;
+    padding: 0;
+}
+
+/* enlaces de la navegación del lado derecho (Carrito y Login) */
+.nav-derecha a {
+    color: var(--color-texto);
+    text-decoration: none; 
+    font-weight: bold;
+    font-size: 20px;
+}
+
+/* tamaño de iconos */
+.nav-derecha img {
+    width: 40px;
+    height: 25px;
+    object-fit: contain;
+}
+
+/* efecto hover para los enlaces de la derecha */
+.nav-derecha a:hover {
+    color: var(--color-primario);
+}
+
+/* ----------------------------------------------------- BARRA DE CATEGORIAS ----------------------------------------------------- */
+.barra-categorias {
+    background: linear-gradient(
+        90deg,
+        #171124,
+        #1E1730,
+        #171124
+    ) !important;
+
+    width: 100%;
+    border-top: 1px solid rgba(214, 35, 106, 0.5);
+    border-bottom: 1px solid rgba(0, 210, 255, 0.35);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3),
+                0 0 15px rgba(214, 35, 106, 0.08);
+    padding: 8px 0;
+}
+
+.barra-categorias .navbar-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.barra-categorias .nav-link {
+    position: relative;
+    display: block;
+    padding: 10px 18px !important;
+    color: var(--color-texto) !important;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    transition:
+        color 0.25s ease,
+        background-color 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.25s ease;
+}
+
+/* Línea de neón debajo de la categoría */
+.barra-categorias .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 3px;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(
+        90deg,
+        var(--color-primario),
+        var(--color-acento)
+    );
+    box-shadow: 0 0 6px rgba(0, 210, 255, 0.7);
+    transform: translateX(-50%);
+    transition: width 0.25s ease;
+}
+
+/* EFECTO AL PASAR EL MOUSE */
+.barra-categorias .nav-link:hover {
+    color: var(--color-acento) !important;
+    background-color: rgba(0, 210, 255, 0.06);
+    border-color: rgba(0, 210, 255, 0.35);
+    box-shadow: 0 0 10px rgba(0, 210, 255, 0.12);
+    transform: translateY(-2px);
+    text-shadow: 0 0 8px rgba(0, 210, 255, 0.7);
+}
+
+/* La línea aparece al pasar el mouse */
+.barra-categorias .nav-link:hover::after {
+    width: 70%;
+}
+
+/* ADAPTACIÓN PARA CELULAR */
+@media (max-width: 768px) {
+    .barra-categorias .navbar-nav {
+        gap: 4px;
+        padding: 8px 10px;
+    }
+
+    .barra-categorias .nav-link {
+        padding: 8px 10px !important;
+        font-size: 15px;
+    }
+}
+/* ----------------------------------------------------- CARRUSEL DE IMAGENES ----------------------------------------------------- */
+
+/* contenedor general del carrusel */
+.custom-carrusel {
+    max-width: 1000px;
+    margin: 0 auto;
+    border: 1px groove var(--color-primario);
+    border-radius: 16px;
+    overflow: hidden;
+    background-color: #000;
+}
+
+/* altura y proporcion del video e imagenes */
+.carrusel-media {
+    height: 480px;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+}
+.carousel-item iframe {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    display: block;
+    border: none;
+}
+
+/* caja de texto inferior*/
+.custom-carrusel .carousel-caption {
+    background-color: rgba(30, 23, 48, 0.85);
+    border-bottom: 3px solid var(--color-acento);
+    border-radius: 8px;
+    padding: 12px 20px;
+    bottom: 25px;
+}
+
+/* titulo dentro de la caja de texto */
+.custom-carrusel .carousel-caption h5 {
+    color: var(--color-acento);
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+/* parrafo dentro de la caja de texto */
+.custom-carrusel .carousel-caption p {
+    color: var(--color-texto);
+    font-size: 14px;
+    margin-bottom: 0;
+}
+
+/* indicadores inferiores inactivos */
+.custom-carrusel .carousel-indicators [data-bs-target] {
+    background-color: var(--color-primario);
+    height: 4px;
+}
+
+/* indicador inferior activo */
+.custom-carrusel .carousel-indicators .active {
+    background-color: var(--color-acento);
+}
+
+
+/* sin el siguiente ajuste: el area de interaccion de los botones laterales no permitiran 
+interactuar con la interfaz del video por que estaran sobreponiendose*/
+
+/* reduce el area donde hacer clic en las flechas laterales*/
+.custom-carrusel .carousel-control-prev,
+.custom-carrusel .carousel-control-next {
+    width: 60px;
+    z-index: 5;
+}
+
+/* ----------------------------------------------------- OFERTAS DESTACADAS ----------------------------------------------------- */
+
+/*ESTO ESTÁ EN VEREMOS, NO SÉ SI ME CONVENCE*/
+.ofertas-destacadas h2 {
+    font-family: 'Press Start 2P' ;
+    color: var(--color-texto);
+    font-size: 24px;
+    margin-bottom: 35px;
+
+    position: relative;
+    padding-bottom: 15px;
+
+    text-shadow:
+        0 0 5px rgba(214, 35, 106, 0.8),
+        0 0 12px rgba(214, 35, 106, 0.5);
+}
+
+.etiqueta-oferta {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: var(--color-primario);
+    color: var(--color-texto);
+    padding: 6px 10px;
+    border-radius: 5px;
+    font-weight: 700;
+    z-index: 2;
+    box-shadow: 0 0 10px rgba(214, 35, 106, 0.5);
+}
+
+.precio-anterior {
+    color: var(--color-texto);
+    text-decoration: line-through;
+    margin-bottom: 0;
+    font-size: 16px;
+}
+
+.precio-oferta {
+    color: var(--color-primario);
+    font-size: 24px;
+    font-weight: 700;
+    margin-top: 2px;
+    margin-bottom: 15px;
+    text-shadow: 0 0 8px rgba(214, 35, 106, 0.4);
+}
+
+.ofertas-destacadas .card {
+    position: relative;
+    background: linear-gradient(
+        145deg,
+        #1E1730,
+        #171124
+    );
+    color: var(--color-texto);
+    border: 1px solid var(--color-primario);
+    border-radius: 10px;
+    overflow: hidden;
+
+    box-shadow:
+        0 0 8px rgba(214, 35, 106, 0.15);
+
+    transition: 0.3s ease;
+}
+
+/*Al pasar por encima de cuadros, cambia de color rgb*/
+.ofertas-destacadas .card:hover {
+    transform: translateY(-8px);
+    border-color: var(--color-acento);
+
+    box-shadow:
+        0 0 10px rgba(0, 210, 255, 0.4),
+        0 0 25px rgba(0, 210, 255, 0.2);
+}
+
+/* ----------------------------------------------------- FOOTER ----------------------------------------------------- */
+
+.footer-principal {
+    background-color: var(--color-superficie);
+    border-top: 2px solid var(--color-primario);
+
+    margin-top: 60px;
+
+    box-shadow:
+        0 -5px 20px rgba(214, 35, 106, 0.10);
+}
+
+.footer-contenido {
+    max-width: 1200px;
+    margin: auto;
+    padding: 45px 30px;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 50px;
+}
+
+.footer-seccion h3 {
+    font-family: 'Press Start 2P', cursive;
+    color: var(--color-acento);
+    font-size: 16px;
+    margin-bottom: 20px;
+
+    text-shadow:
+        0 0 8px rgba(0, 210, 255, 0.4);
+}
+
+.footer-seccion p {
+    color: var(--color-texto);
+    line-height: 1.6;
+    margin-bottom: 8px;
+}
+
+.footer-seccion ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-seccion li {
+    margin-bottom: 10px;
+}
+
+.footer-seccion a {
+    color: var(--color-texto);
+    transition: 0.3s ease;
+}
+
+.footer-seccion a:hover {
+    color: var(--color-acento);
+
+    text-shadow:
+        0 0 8px rgba(0, 210, 255, 0.6);
+}
+
+/* COPYRIGHT */
+.footer-copyright {
+    border-top: 1px solid rgba(0, 210, 255, 0.25);
+    text-align: center;
+    padding: 18px 20px;
+    color: #c8c2d4;
+    font-size: 15px;
+}
+
+.footer-copyright p {
+    margin: 0;
+}
+
+/*Adaptación de footer para celular, no sé bien si es así*/
+@media (max-width: 768px) {
+
+    .footer-contenido {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        padding: 35px 25px;
+    }
+
+}
+/* ----------------------------------------------------- MIS ÓRDENES ----------------------------------------------------- */
+
+.ordenes-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 30px;
+    min-height: 600px;
+}
+
+/* TÍTULO */
+.ordenes-container h1 {
+    font-family: 'Press Start 2P', cursive;
+    color: var(--color-texto);
+    font-size: 26px;
+    margin-bottom: 18px;
+
+    text-shadow:
+        0 0 6px rgba(214, 35, 106, 0.7),
+        0 0 15px rgba(214, 35, 106, 0.3);
+}
+
+/* DESCRIPCIÓN */
+.ordenes-descripcion {
+    color: var(--color-texto);
+    font-size: 17px;
+    margin-bottom: 40px;
+    opacity: 0.85;
+}
+
+/* LISTA DE ÓRDENES */
+.lista-ordenes {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* TARJETA DE ORDEN */
+.orden-card {
+    background: var(--color-superficie);
+
+    border: 1px solid rgba(214, 35, 106, 0.65);
+    border-radius: 12px;
+
+    padding: 28px 30px;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+
+    box-shadow:
+        0 0 12px rgba(214, 35, 106, 0.15);
+
+    transition:
+        transform 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+/* EFECTO HOLOGRÁFICO AL PASAR EL MOUSE */
+.orden-card:hover {
+    transform: translateY(-4px);
+
+    border-color: var(--color-acento);
+
+    box-shadow:
+        0 0 12px rgba(0, 210, 255, 0.25),
+        0 0 25px rgba(0, 210, 255, 0.10);
+}
+
+/* INFORMACIÓN DE LA ORDEN */
+.orden-informacion h2 {
+    font-family: 'Press Start 2P', cursive;
+    color: var(--color-texto);
+    font-size: 16px;
+    margin-bottom: 18px;
+}
+
+.orden-informacion p {
+    color: var(--color-texto);
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+
+.orden-informacion strong {
+    color: var(--color-acento);
+}
+
+/* BOTÓN VER DETALLE */
+.orden-card .btn {
+    background-color: var(--color-primario);
+    border: 1px solid var(--color-primario);
+    color: #FFFFFF;
+    font-weight: bold;
+    padding: 12px 20px;
+    border-radius: 8px;
+    transition: 0.3s ease;
+}
+
+.orden-card .btn:hover {
+    background-color: var(--color-acento);
+    border-color: var(--color-acento);
+    color: #120E1A;
+    box-shadow:
+        0 0 12px rgba(0, 210, 255, 0.45);
+}
+
+/* ----------------------------------------------------- COMPATIBILIDAD CELULAR ----------------------------------------------------- */
+@media (max-width: 768px) {
+    .ordenes-container {
+        padding: 40px 20px;
+    }
+
+    .orden-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .orden-card .btn {
+        width: 100%;
+    }
+
+    .ordenes-container h1 {
+        font-size: 20px;
+    }
+}
+
+/* ----------------------------------------------------- DETALLE DE ORDEN ----------------------------------------------------- */
+
+.detalle-orden {
+    width: 100%;
+    margin-top: 25px;
+    padding-top: 25px;
+}
+
+/* Línea divisoria */
+.detalle-separador {
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        var(--color-primario),
+        var(--color-acento),
+        transparent
+    );
+    margin-bottom: 30px;
+}
+
+/* Títulos del detalle */
+.detalle-orden h3 {
+    font-family: 'Press Start 2P', cursive;
+    color: var(--color-acento);
+    font-size: 14px;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+/* PRODUCTOS */
+.productos-orden {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.producto-orden {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 25px;
+    padding: 12px 15px;
+    background-color: rgba(18, 14, 26, 0.6);
+    border: 1px solid rgba(0, 210, 255, 0.2);
+    border-radius: 6px;
+    color: var(--color-texto);
+}
+
+/* ESTADO DEL PAGO */
+.estado-exitoso {
+    color: var(--color-texto);
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.indicador-estado {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    background-color: var(--color-acento);
+    border-radius: 50%;
+    margin-right: 8px;
+    box-shadow: 0 0 8px rgba(0, 210, 255, 0.7);
+}
+
+.paso-completado {
+    color: var(--color-texto);
+    padding: 10px 15px;
+    border-left: 2px solid var(--color-acento);
+    background-color: rgba(0, 210, 255, 0.05);
+}
+
+/* BOTONES */
+.acciones-orden {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn-resena {
+    background-color: var(--color-primario);
+    color: #FFFFFF;
+    border: 1px solid var(--color-primario);
+}
+
+.btn-garantia {
+    background-color: transparent;
+    color: var(--color-texto);
+    border: 1px solid var(--color-acento);
+}
+
+.btn-resena:hover {
+    background-color: var(--color-acento);
+    color: #120E1A;
+}
+
+.btn-garantia:hover {
+    background-color: var(--color-acento);
+    color: #120E1A;
+}
+
+/* CELULAR */
+@media (max-width: 768px) {
+    .producto-orden {
+        grid-template-columns: 1fr;
+        gap: 5px;
+    }
+    .acciones-orden {
+        flex-direction: column;
+    }
+    .acciones-orden .btn {
+        width: 100%;
+    }
+
+}
+
+/* ----------------------------------------------------- FORMULARIOS DE MIS ÓRDENES ----------------------------------------------------- */
+.formulario-resena,
+.formulario-garantia {
+    width: 100%;
+    margin-top: 25px;
+    padding: 25px;
+    background-color: rgba(18, 14, 26, 0.7);
+    border: 1px solid rgba(0, 210, 255, 0.35);
+    border-radius: 8px;
+}
+
+.formulario-resena h3,
+.formulario-garantia h3 {
+    font-family: 'Press Start 2P', cursive;
+    color: var(--color-acento);
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.formulario-resena label,
+.formulario-garantia label {
+    display: block;
+    color: var(--color-texto);
+    font-weight: 600;
+    margin-bottom: 7px;
+}
+
+.formulario-resena select,
+.formulario-resena textarea,
+.formulario-garantia textarea {
+    width: 100%;
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    border: 1px solid rgba(0, 210, 255, 0.4);
+    border-radius: 6px;
+    padding: 10px;
+    margin-bottom: 15px;
+    font-family: 'Rajdhani', sans-serif;
+}
+
+.formulario-resena select:focus,
+.formulario-resena textarea:focus,
+.formulario-garantia textarea:focus {
+    outline: none;
+    border-color: var(--color-acento);
+    box-shadow: 0 0 8px rgba(0, 210, 255, 0.25);
+}
+
+.formulario-resena button,
+.formulario-garantia button {
+    margin-top: 5px;
+}
+
+.mensaje-formulario {
+    margin-top: 15px;
+    margin-bottom: 0;
+    font-weight: 600;
+}
+
+.mensaje-exito {
+    color: var(--color-acento);
+}
+/* 
+
+###################################   VISTA: CARRITO DE COMPRAS   ################################### 
+
+*/
+
+/* color para destacar el precio final a pagar */
+.text-acento {
+    color: var(--color-acento);
+}
+
+/* sobrescribir tarjeta de bootstrap con la paleta neon */
+.card-custom {
+    background-color: var(--color-superficie);
+    border: 1px solid rgba(214, 35, 106, 0.2);
+    border-radius: 8px;
+    color: var(--color-texto);
+}
+
+/* boton magenta principal*/
+.btn-neon-primario {
+    background-color: var(--color-primario);
+    color: #FFFFFF;
+    border: none;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.btn-neon-primario:hover {
+    background-color: #b51a56;
+    color: #FFFFFF;
+}
+
+/*tamañno para las imagenes de los productos */
+.img-miniatura {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border: 1px solid var(--color-superficie);
+}
+
+/*ajustes de fondo para la tabla de bootstrap */
+.table-dark {
+    --bs-table-bg: transparent;
+    --bs-table-color: var(--color-texto);
+}
+
+/* controles de cantidad de los productos */
+.input-cantidad {
+    width: 75px;
+    background-color: var(--color-fondo);
+    border: 1px solid var(--color-texto);
+    color: var(--color-texto);
+}
+
+.input-cantidad:focus {
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    border-color: var(--color-acento);
+    box-shadow: 0 0 5px var(--color-acento);
+}
+
+.input-dark {
+    background-color: var(--color-fondo);
+    border: 1px solid rgba(0, 210, 255, 0.4); 
+    color: var(--color-texto);
+}
+
+/* ajustes para hacer el texto de ejemplo mas visible */
+.input-dark::placeholder {
+    color: rgba(243, 239, 250, 0.5); 
+    opacity: 1; 
+}
+
+/* efecto al hacer clic en el recuadro */
+.input-dark:focus {
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    border-color: var(--color-primario);
+    box-shadow: 0 0 5px var(--color-primario);
+}
+
+/* especificamente para cuando no se a escogido region, esto dara un efecto de "deshabilitado" en la comuna*/
+.input-dark:disabled {
+    background-color: rgba(30, 23, 48, 0.6); 
+    color: rgba(243, 239, 250, 0.3); 
+    border-color: rgba(0, 210, 255, 0.15); 
+    opacity: 1; 
+}
+
+/* tamaño del emoji/icono para el estado "vacio"  */
+.icono-vacio {
+    font-size: 4rem;
+}
+
+
+.titulo-gamer {
+    font-family: 'Press Start 2P', cursive;
+    color: var(--color-texto);
+    text-shadow: 0 0 6px rgba(214, 35, 106, 0.7);
+    text-transform: uppercase;
+    font-size: 22px;
+}
+
+
+/* Sobrescribir el color del texto de error de Bootstrap */
+.invalid-feedback {
+    color: var(--color-error) !important;
+    text-shadow: 0 0 5px rgba(255, 122, 122, 0.4); 
+}
+
+/* Sobrescribir el borde rojo del recuadro cuando el dato es invalido */
+.form-control.is-invalid, 
+.form-select.is-invalid, 
+.input-dark.is-invalid {
+    border-color: var(--color-error) !important;
+    box-shadow: 0 0 8px rgba(255, 122, 122, 0.3) !important;
+}
+
+/* Mensaje de error personalizado para el metodo de pago */
+#error-pago {
+    color: var(--color-error) !important;
+    text-shadow: 0 0 5px rgba(255, 122, 122, 0.4);
+}
