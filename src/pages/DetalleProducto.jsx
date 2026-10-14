@@ -4,6 +4,9 @@ import { productos } from '../data/productos';
 import { useCart } from '../context/CartContext';
 import '../styles/producto.css';
 
+// Importación de ícono para producción en Vite/Vercel
+import iconoCarrito from '../assets/icons/icono-carrito.svg';
+
 const IDS_OFERTAS = [2, 4, 29, 19];
 
 // Mapeo para convertir la categoría del producto a la Query Param correspondiente
@@ -90,7 +93,6 @@ function DetalleProducto() {
       ? 'ultimas'
       : 'disponible';
 
-  // Obtener el slug correcto para la URL de la categoría
   const slugCategoria = CATEGORIA_SLUGS[producto.categoria] || 'graficas';
 
   return (
@@ -201,7 +203,7 @@ function DetalleProducto() {
               className="btn-agregar-carrito"
               disabled={producto.stock === 0}
             >
-              <img src="src/assets/icons/icono-carrito.svg" alt="" />
+              <img src={iconoCarrito} alt="icono de carrito" />
               {producto.stock === 0 ? 'Sin Stock' : 'Agregar al carrito'}
             </button>
 
