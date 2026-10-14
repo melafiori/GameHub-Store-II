@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { productos } from '../data/productos'; // Ajusta la ruta a tu archivo de datos
+import '../styles/catalogo.css';
 
 const CATEGORIAS = {
     notebooks: "Notebooks",
@@ -15,87 +16,98 @@ const CATEGORIAS = {
 const IDS_OFERTAS = [2, 4, 29, 19];
 const PRODUCTOS_POR_PAGINA = 12;
 
+const FILTROS_VACIOS = {
+    categorias: [],
+    marcas: [],
+    precioMin: "",
+    precioMax: "",
+    soloStock: false
+};
+
 function Catcategoria() {
     const [searchParams] = useSearchParams();
     const categoriaURL = searchParams.get("categoria");
 
-    // Estados de Filtros
-    const [categoriasSeleccionadas, setCategoriasSeleccionadas] = useState([]);
-    const [marcasSeleccionadas, setMarcasSeleccionadas] = useState([]);
-    const [precioMin, setPrecioMin] = useState("");
-    const [precioMax, setPrecioMax] = useState("");
-    const [soloStock, setSoloStock] = useState(false);
+    // Estado con los filtros que se están seleccionando en el formulario (Temporales)
+    const [filtrosTemp, setFiltrosTemp] = useState(FILTROS_VACIOS);
+
+    // Estado con los filtros efectivamente aplicados
+    const [filtrosAplicados, setFiltrosAplicados] = useState(FILTROS_VACIOS);
+
+    // Estados independientes de ordenamiento y paginación
     const [orden, setOrden] = useState("precio-asc");
     const [paginaActual, setPaginaActual] = useState(1);
 
     // Sincronizar categoría inicial desde la URL
     useEffect(() => {
-        if (categoriaURL && CATEGORIAS[categoriaURL]) {
-            setCategoriasSeleccionadas([CATEGORIAS[categoriaURL]]);
-        } else {
-            setCategoriasSeleccionadas([]);
-        }
+        const catInicial = (categoriaURL && CATEGORIAS[categoriaURL]) 
+            ? [CATEGORIAS[categoriaURL]] 
+            : [];
+
+        const nuevoEstado = { ...FILTROS_VACIOS, categorias: catInicial };
+        setFiltrosTemp(nuevoEstado);
+        setFiltrosAplicados(nuevoEstado);
         setPaginaActual(1);
     }, [categoriaURL]);
 
-    // Manejadores de Checkboxes
+    // Manejadores de cambios temporales (Checkbox e Inputs)
     const handleCategoriaChange = (nombreCat) => {
-        setCategoriasSeleccionadas(prev =>
-            prev.includes(nombreCat)
-                ? prev.filter(c => c !== nombreCat)
-                : [...prev, nombreCat]
-        );
-        setPaginaActual(1);
+        setFiltrosTemp(prev => ({
+            ...prev,
+            categorias: prev.categorias.includes(nombreCat)
+                ? prev.categorias.filter(c => c !== nombreCat)
+                : [...prev.categorias, nombreCat]
+        }));
     };
 
     const handleMarcaChange = (marca) => {
         const marcaLower = marca.toLowerCase();
-        setMarcasSeleccionadas(prev =>
-            prev.includes(marcaLower)
-                ? prev.filter(m => m !== marcaLower)
-                : [...prev, marcaLower]
-        );
-        setPaginaActual(1);
+        setFiltrosTemp(prev => ({
+            ...prev,
+            marcas: prev.marcas.includes(marcaLower)
+                ? prev.marcas.filter(m => m !== marcaLower)
+                : [...prev.marcas, marcaLower]
+        }));
     };
 
     const handleAplicarFiltros = (e) => {
         e.preventDefault();
-        const min = Number(precioMin) || 0;
-        const max = precioMax === "" ? Infinity : Number(precioMax);
+        const min = Number(filtrosTemp.precioMin) || 0;
+        const max = filtrosTemp.precioMax === "" ? Infinity : Number(filtrosTemp.precioMax);
 
         if (min > max) {
             alert("El precio mínimo no puede ser mayor que el precio máximo.");
             return;
         }
+
+        // Aplicar los filtros temporales al estado global de filtrado
+        setFiltrosAplicados({ ...filtrosTemp });
         setPaginaActual(1);
     };
 
     const handleLimpiarFiltros = () => {
-        setCategoriasSeleccionadas([]);
-        setMarcasSeleccionadas([]);
-        setPrecioMin("");
-        setPrecioMax("");
-        setSoloStock(false);
+        setFiltrosTemp(FILTROS_VACIOS);
+        setFiltrosAplicados(FILTROS_VACIOS);
         setOrden("precio-asc");
         setPaginaActual(1);
     };
 
-    // Filtrado y Ordenamiento dinámico
+    // Filtrado y Ordenamiento dinámico basado en 'filtrosAplicados'
     const productosFiltrados = useMemo(() => {
         let lista = productos.filter(producto => {
             const coincideCat =
-                categoriasSeleccionadas.length === 0 ||
-                categoriasSeleccionadas.includes(producto.categoria);
+                filtrosAplicados.categorias.length === 0 ||
+                filtrosAplicados.categorias.includes(producto.categoria);
 
             const coincideMarca =
-                marcasSeleccionadas.length === 0 ||
-                marcasSeleccionadas.includes(producto.marca.toLowerCase());
+                filtrosAplicados.marcas.length === 0 ||
+                filtrosAplicados.marcas.includes(producto.marca.toLowerCase());
 
-            const min = Number(precioMin) || 0;
-            const max = precioMax === "" ? Infinity : Number(precioMax);
+            const min = Number(filtrosAplicados.precioMin) || 0;
+            const max = filtrosAplicados.precioMax === "" ? Infinity : Number(filtrosAplicados.precioMax);
             const coincidePrecio = producto.precio >= min && producto.precio <= max;
 
-            const coincideStock = !soloStock || producto.stock > 0;
+            const coincideStock = !filtrosAplicados.soloStock || producto.stock > 0;
 
             return coincideCat && coincideMarca && coincidePrecio && coincideStock;
         });
@@ -109,7 +121,7 @@ function Catcategoria() {
         });
 
         return lista;
-    }, [categoriasSeleccionadas, marcasSeleccionadas, precioMin, precioMax, soloStock, orden]);
+    }, [filtrosAplicados, orden]);
 
     // Cálculo de Paginación
     const totalPaginas = Math.ceil(productosFiltrados.length / PRODUCTOS_POR_PAGINA);
@@ -119,7 +131,7 @@ function Catcategoria() {
     // Título Encabezado
     const tituloEncabezado = categoriaURL && CATEGORIAS[categoriaURL]
         ? CATEGORIAS[categoriaURL]
-        : (categoriasSeleccionadas.length === 1 ? categoriasSeleccionadas[0] : "Catálogo de productos");
+        : (filtrosAplicados.categorias.length === 1 ? filtrosAplicados.categorias[0] : "Catálogo de productos");
 
     return (
         <main className="catalogo-main">
@@ -144,7 +156,7 @@ function Catcategoria() {
                                             id={`cat-${key}`}
                                             name="categoria"
                                             value={key}
-                                            checked={categoriasSeleccionadas.includes(label)}
+                                            checked={filtrosTemp.categorias.includes(label)}
                                             onChange={() => handleCategoriaChange(label)}
                                         />
                                         <label htmlFor={`cat-${key}`}>{label}</label>
@@ -162,7 +174,7 @@ function Catcategoria() {
                                             id={`marca-${marca}`}
                                             name="marca"
                                             value={marca}
-                                            checked={marcasSeleccionadas.includes(marca)}
+                                            checked={filtrosTemp.marcas.includes(marca)}
                                             onChange={() => handleMarcaChange(marca)}
                                         />
                                         <label htmlFor={`marca-${marca}`}>{marca.toUpperCase()}</label>
@@ -180,8 +192,8 @@ function Catcategoria() {
                                     name="precio_min"
                                     placeholder="$0"
                                     min={0}
-                                    value={precioMin}
-                                    onChange={(e) => setPrecioMin(e.target.value)}
+                                    value={filtrosTemp.precioMin}
+                                    onChange={(e) => setFiltrosTemp(prev => ({ ...prev, precioMin: e.target.value }))}
                                 />
                                 <label htmlFor="precio-max">Máximo</label>
                                 <input
@@ -190,8 +202,8 @@ function Catcategoria() {
                                     name="precio_max"
                                     placeholder="$2.000.000"
                                     min={0}
-                                    value={precioMax}
-                                    onChange={(e) => setPrecioMax(e.target.value)}
+                                    value={filtrosTemp.precioMax}
+                                    onChange={(e) => setFiltrosTemp(prev => ({ ...prev, precioMax: e.target.value }))}
                                 />
                             </div>
                         </div>
@@ -203,11 +215,8 @@ function Catcategoria() {
                                         type="checkbox"
                                         id="stock-disponible"
                                         name="disponibilidad"
-                                        checked={soloStock}
-                                        onChange={(e) => {
-                                            setSoloStock(e.target.checked);
-                                            setPaginaActual(1);
-                                        }}
+                                        checked={filtrosTemp.soloStock}
+                                        onChange={(e) => setFiltrosTemp(prev => ({ ...prev, soloStock: e.target.checked }))}
                                     />
                                     <label htmlFor="stock-disponible">
                                         Solo con stock disponible
@@ -279,7 +288,7 @@ function Catcategoria() {
                                             )}
                                         </p>
                                         <Link
-                                            to={`/producto.html?id=${producto.id}${esOferta ? "&oferta=true" : ""}`}
+                                            to={`/producto?id=${producto.id}${esOferta ? "&oferta=true" : ""}`}
                                             className="btn-ver-producto"
                                         >
                                             Ver producto

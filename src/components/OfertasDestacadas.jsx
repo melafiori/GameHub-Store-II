@@ -16,7 +16,7 @@ function OfertasDestacadas() {
       <h2>Ofertas destacadas</h2>
       <div className="row g-4">
         {productosOfertas.map((producto) => {
-          // Cálculo de precio de oferta y descuento
+          // Cálculo de precio de oferta (10% descuento) y porcentaje
           const precioOferta = Math.round(producto.precio * 0.90);
           const descuento = Math.round(
             ((producto.precio - precioOferta) / producto.precio) * 100
@@ -50,7 +50,7 @@ function OfertasDestacadas() {
                     </p>
 
                     <Link
-                      to={`/producto/${producto.id}?oferta=true`}
+                      to={`/producto?id=${producto.id}&oferta=true`}
                       className="btn btn-primary w-100"
                     >
                       Ver producto
