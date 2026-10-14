@@ -1,5 +1,5 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 
 // Importaciones de íconos para que Vite los procese en producción
@@ -11,6 +11,21 @@ import iconoOrdenes from '../assets/icons/icono-ordenes.png'
 function Header() {
   const { cart } = useCart()
   const totalItems = cart ? cart.reduce((acc, item) => acc + item.cantidad, 0) : 0
+
+  // Estado para controlar la entrada de texto
+  const [terminoBusqueda, setTerminoBusqueda] = useState('')
+  const navigate = useNavigate()
+
+  // Manejador del envío del formulario
+  const handleSearch = (e) => {
+    e.preventDefault()
+    if (terminoBusqueda.trim()) {
+      // Redirige al catálogo con la query de búsqueda en la URL
+      navigate(`/catcategoria?busqueda=${encodeURIComponent(terminoBusqueda.trim())}`)
+    } else {
+      navigate('/catcategoria')
+    }
+  }
 
   return (
     <header className="header-principal">
@@ -27,11 +42,13 @@ function Header() {
 
       {/* BARRA DE BÚSQUEDA */}
       <div className="busqueda">
-        <form action="#" method="GET">
+        <form onSubmit={handleSearch}>
           <input
             type="text"
             placeholder="Buscar producto..."
             aria-label="busqueda en el catalogo"
+            value={terminoBusqueda}
+            onChange={(e) => setTerminoBusqueda(e.target.value)}
             required
           />
           <button type="submit">Buscar</button>

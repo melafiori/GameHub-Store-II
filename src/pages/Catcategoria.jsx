@@ -27,6 +27,7 @@ const FILTROS_VACIOS = {
 function Catcategoria() {
     const [searchParams] = useSearchParams();
     const categoriaURL = searchParams.get("categoria");
+    const busquedaURL = searchParams.get("busqueda"); // Extraído dentro del componente
 
     // Estado con los filtros que se están seleccionando en el formulario (Temporales)
     const [filtrosTemp, setFiltrosTemp] = useState(FILTROS_VACIOS);
@@ -40,8 +41,8 @@ function Catcategoria() {
 
     // Sincronizar categoría inicial desde la URL
     useEffect(() => {
-        const catInicial = (categoriaURL && CATEGORIAS[categoriaURL]) 
-            ? [CATEGORIAS[categoriaURL]] 
+        const catInicial = (categoriaURL && CATEGORIAS[categoriaURL])
+            ? [CATEGORIAS[categoriaURL]]
             : [];
 
         const nuevoEstado = { ...FILTROS_VACIOS, categorias: catInicial };
@@ -92,9 +93,15 @@ function Catcategoria() {
         setPaginaActual(1);
     };
 
-    // Filtrado y Ordenamiento dinámico basado en 'filtrosAplicados'
+    // Filtrado y Ordenamiento dinámico basado en 'filtrosAplicados' y 'busquedaURL'
     const productosFiltrados = useMemo(() => {
         let lista = productos.filter(producto => {
+            // Filtro por término de búsqueda en el nombre o marca
+            const coincideBusqueda =
+                !busquedaURL ||
+                producto.nombre.toLowerCase().includes(busquedaURL.toLowerCase()) ||
+                producto.marca.toLowerCase().includes(busquedaURL.toLowerCase());
+
             const coincideCat =
                 filtrosAplicados.categorias.length === 0 ||
                 filtrosAplicados.categorias.includes(producto.categoria);
@@ -109,7 +116,7 @@ function Catcategoria() {
 
             const coincideStock = !filtrosAplicados.soloStock || producto.stock > 0;
 
-            return coincideCat && coincideMarca && coincidePrecio && coincideStock;
+            return coincideBusqueda && coincideCat && coincideMarca && coincidePrecio && coincideStock;
         });
 
         lista.sort((a, b) => {
@@ -121,7 +128,7 @@ function Catcategoria() {
         });
 
         return lista;
-    }, [filtrosAplicados, orden]);
+    }, [busquedaURL, filtrosAplicados, orden]);
 
     // Cálculo de Paginación
     const totalPaginas = Math.ceil(productosFiltrados.length / PRODUCTOS_POR_PAGINA);
@@ -129,9 +136,11 @@ function Catcategoria() {
     const productosPagina = productosFiltrados.slice(inicio, inicio + PRODUCTOS_POR_PAGINA);
 
     // Título Encabezado
-    const tituloEncabezado = categoriaURL && CATEGORIAS[categoriaURL]
-        ? CATEGORIAS[categoriaURL]
-        : (filtrosAplicados.categorias.length === 1 ? filtrosAplicados.categorias[0] : "Catálogo de productos");
+    const tituloEncabezado = busquedaURL
+        ? `Resultados para: "${busquedaURL}"`
+        : (categoriaURL && CATEGORIAS[categoriaURL]
+            ? CATEGORIAS[categoriaURL]
+            : (filtrosAplicados.categorias.length === 1 ? filtrosAplicados.categorias[0] : "Catálogo de productos"));
 
     return (
         <main className="catalogo-main">
@@ -142,7 +151,7 @@ function Catcategoria() {
                 </p>
             </div>
             <div className="catalogo-contenido">
-                
+
                 {/* FILTROS LATERALES */}
                 <aside className="filtros">
                     <form onSubmit={handleAplicarFiltros} onReset={handleLimpiarFiltros}>
