@@ -1,68 +1,170 @@
-// src/pages/Carrito.jsx
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import '../styles/style.css';
 
 function Carrito() {
-  const { cart, cambiarCantidad, eliminarDelCarrito, vaciarCarrito } = useCart();
-  
+  const {
+    cart,
+    cambiarCantidad,
+    eliminarDelCarrito,
+    vaciarCarrito,
+  } = useCart();
+
   const [cupon, setCupon] = useState('');
   const [descuentoPorcentaje, setDescuentoPorcentaje] = useState(0);
-  const [mensajeCupon, setMensajeCupon] = useState({ texto: '', esError: false });
+  const [maximoDescuento, setMaximoDescuento] = useState(0);
+  const [mensajeCupon, setMensajeCupon] = useState({
+    texto: '',
+    esError: false,
+  });
 
   const handleVaciarCarrito = () => {
     if (window.confirm('¿Estás seguro de que deseas vaciar tu carrito?')) {
       vaciarCarrito();
+      localStorage.removeItem('gamehub_cupon');
+
+      setDescuentoPorcentaje(0);
+      setMaximoDescuento(0);
+      setMensajeCupon({ texto: '', esError: false });
+      setCupon('');
     }
   };
 
   const handleAplicarCupon = () => {
     const codigo = cupon.trim().toUpperCase();
-    if (codigo === 'NEON10') {
-      setDescuentoPorcentaje(10);
-      setMensajeCupon({ texto: '¡Cupón del 10% aplicado con éxito!', esError: false });
-    } else if (codigo === 'GAMEHUB20') {
-      setDescuentoPorcentaje(20);
-      setMensajeCupon({ texto: '¡Cupón del 20% aplicado con éxito!', esError: false });
-    } else if (codigo === '') {
-      setMensajeCupon({ texto: 'Ingresa un código de cupón.', esError: true });
-    } else {
+
+    // Eliminar cualquier cupón anterior antes de validar el nuevo.
+    localStorage.removeItem('gamehub_cupon');
+
+    const cupones = {
+      NEON10: {
+        porcentaje: 10,
+        maximo: 50000,
+        vigencia: '2026-12-31',
+      },
+      GAMEHUB20: {
+        porcentaje: 20,
+        maximo: 80000,
+        vigencia: '2026-12-31',
+      },
+      GAMER20: {
+        porcentaje: 20,
+        maximo: 80000,
+        vigencia: '2026-12-31',
+      },
+      EXPIRADO: {
+        porcentaje: 15,
+        maximo: 30000,
+        vigencia: '2025-01-01',
+      },
+    };
+
+    const cuponSeleccionado = cupones[codigo];
+
+    if (!codigo) {
       setDescuentoPorcentaje(0);
-      setMensajeCupon({ texto: 'Cupón no válido o expirado.', esError: true });
+      setMaximoDescuento(0);
+      setMensajeCupon({
+        texto: 'Ingresa un código de cupón.',
+        esError: true,
+      });
+      return;
     }
+
+    if (!cuponSeleccionado) {
+      setDescuentoPorcentaje(0);
+      setMaximoDescuento(0);
+      setMensajeCupon({
+        texto: 'Cupón no válido.',
+        esError: true,
+      });
+      return;
+    }
+
+    // Obtener la fecha local para comprobar la vigencia.
+    const hoy = new Date();
+    const fechaLocal = [
+      hoy.getFullYear(),
+      String(hoy.getMonth() + 1).padStart(2, '0'),
+      String(hoy.getDate()).padStart(2, '0'),
+    ].join('-');
+
+    if (fechaLocal > cuponSeleccionado.vigencia) {
+      setDescuentoPorcentaje(0);
+      setMaximoDescuento(0);
+      setMensajeCupon({
+        texto: 'Este cupón está vencido.',
+        esError: true,
+      });
+      return;
+    }
+
+    // Guardar el cupón válido para recuperarlo en el checkout.
+    localStorage.setItem(
+      'gamehub_cupon',
+      JSON.stringify({
+        codigo,
+        porcentaje: cuponSeleccionado.porcentaje,
+        maximo: cuponSeleccionado.maximo,
+        vigencia: cuponSeleccionado.vigencia,
+      })
+    );
+
+    setDescuentoPorcentaje(cuponSeleccionado.porcentaje);
+    setMaximoDescuento(cuponSeleccionado.maximo);
+    setMensajeCupon({
+      texto: `¡Cupón del ${cuponSeleccionado.porcentaje}% aplicado con éxito!`,
+      esError: false,
+    });
   };
 
-  // CÁLCULOS DINÁMICOS SOBRE EL ESTADO REAL DEL CARRITO
-  const subtotal = cart.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
-  const montoDescuento = Math.round((subtotal * descuentoPorcentaje) / 100);
-  const total = subtotal - montoDescuento;
+  const subtotal = cart.reduce(
+    (acc, item) => acc + item.precio * item.cantidad,
+    0
+  );
+
+  const montoDescuento = Math.min(
+    Math.round((subtotal * descuentoPorcentaje) / 100),
+    maximoDescuento,
+    subtotal
+  );
+
+  const total = Math.max(0, subtotal - montoDescuento);
 
   return (
     <main className="container my-5">
       <h1 className="h2 mb-4 border-bottom pb-2 border-secondary titulo-gamer">
-        tu carrito de compras
+        Tu carrito de compras
       </h1>
 
       {cart.length === 0 ? (
         <div id="estado-vacio" className="text-center py-5">
           <div className="icono-vacio mb-3">🛒</div>
+
           <h2 className="h3 text-light">Tu carrito está vacío</h2>
+
           <p className="text-secondary mb-4">
             Parece que aún no has agregado componentes o periféricos a tu compra.
           </p>
-          <Link to="/catcategoria" className="btn btn-neon-primario px-4 py-2">
+
+          <Link
+            to="/catcategoria"
+            className="btn btn-neon-primario px-4 py-2"
+          >
             Explorar Productos
           </Link>
         </div>
       ) : (
         <div id="contenedor-carrito" className="row g-4">
-          {/* Columna Izquierda: Tabla/Lista de productos */}
           <div className="col-lg-8">
             <div className="card card-custom p-4">
               <div className="d-flex justify-content-between align-items-center mb-3">
                 <h2 className="h4 m-0">Productos seleccionados</h2>
+
                 <button
+                  type="button"
                   className="btn btn-sm btn-outline-danger"
                   onClick={handleVaciarCarrito}
                 >
@@ -75,12 +177,29 @@ function Carrito() {
                   <thead>
                     <tr className="text-secondary border-secondary">
                       <th scope="col">Producto</th>
-                      <th scope="col" className="text-center">Precio Unit.</th>
-                      <th scope="col" className="text-center" style={{ width: '130px' }}>Cantidad</th>
-                      <th scope="col" className="text-end">Subtotal</th>
-                      <th scope="col" className="text-center" style={{ width: '60px' }}>Acción</th>
+                      <th scope="col" className="text-center">
+                        Precio Unit.
+                      </th>
+                      <th
+                        scope="col"
+                        className="text-center"
+                        style={{ width: '130px' }}
+                      >
+                        Cantidad
+                      </th>
+                      <th scope="col" className="text-end">
+                        Subtotal
+                      </th>
+                      <th
+                        scope="col"
+                        className="text-center"
+                        style={{ width: '60px' }}
+                      >
+                        Acción
+                      </th>
                     </tr>
                   </thead>
+
                   <tbody>
                     {cart.map((item) => (
                       <tr key={item.id}>
@@ -91,6 +210,7 @@ function Carrito() {
                               alt={item.nombre}
                               className="img-miniatura rounded"
                             />
+
                             <Link
                               to={`/producto?id=${item.id}`}
                               className="text-decoration-none text-light fw-bold"
@@ -99,25 +219,35 @@ function Carrito() {
                             </Link>
                           </div>
                         </td>
+
                         <td className="text-center">
                           ${item.precio.toLocaleString('es-CL')}
                         </td>
+
                         <td className="text-center">
                           <input
                             type="number"
-                            className="form-control form-control-sm input-cantidad text-center mx-auto"
                             min="1"
+                            className="form-control form-control-sm input-cantidad text-center mx-auto"
                             value={item.cantidad}
-                            onChange={(e) => cambiarCantidad(item.id, e.target.value)}
+                            aria-label={`Cantidad de ${item.nombre}`}
+                            onChange={(e) =>
+                              cambiarCantidad(item.id, e.target.value)
+                            }
                           />
                         </td>
+
                         <td className="text-end fw-bold">
-                          ${(item.precio * item.cantidad).toLocaleString('es-CL')}
+                          $
+                          {(item.precio * item.cantidad).toLocaleString('es-CL')}
                         </td>
+
                         <td className="text-center">
                           <button
+                            type="button"
                             className="btn btn-sm btn-outline-danger border-0"
                             title="Eliminar producto"
+                            aria-label={`Eliminar ${item.nombre}`}
                             onClick={() => eliminarDelCarrito(item.id)}
                           >
                             🗑️
@@ -131,18 +261,20 @@ function Carrito() {
             </div>
           </div>
 
-          {/* Columna Derecha: Cupón y resumen de compra */}
           <div className="col-lg-4">
             <div className="card card-custom p-3 mb-3">
               <h3 className="h5 mb-3">¿Tienes un cupón?</h3>
+
               <div className="input-group">
                 <input
                   type="text"
                   className="form-control input-dark"
                   placeholder="Ej: NEON10"
+                  aria-label="Código de cupón"
                   value={cupon}
                   onChange={(e) => setCupon(e.target.value)}
                 />
+
                 <button
                   className="btn btn-neon-primario"
                   type="button"
@@ -151,8 +283,10 @@ function Carrito() {
                   Aplicar
                 </button>
               </div>
+
               {mensajeCupon.texto && (
                 <small
+                  role="status"
                   className={`d-block mt-2 ${
                     mensajeCupon.esError ? 'text-danger' : 'text-success'
                   }`}
@@ -164,7 +298,7 @@ function Carrito() {
 
             <div className="card card-custom p-4">
               <h3 className="h5 mb-4 border-bottom pb-2 border-secondary">
-                Resumen de Compra
+                Resumen de compra
               </h3>
 
               <div className="d-flex justify-content-between mb-2">
@@ -176,8 +310,10 @@ function Carrito() {
 
               <div className="d-flex justify-content-between mb-2">
                 <span className="text-secondary">
-                  Descuento {descuentoPorcentaje > 0 && `(${descuentoPorcentaje}%)`}
+                  Descuento
+                  {descuentoPorcentaje > 0 && ` (${descuentoPorcentaje}%)`}
                 </span>
+
                 <span className="text-danger fw-bold">
                   -${montoDescuento.toLocaleString('es-CL')}
                 </span>

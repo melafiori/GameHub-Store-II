@@ -1,11 +1,8 @@
-import './styles/style.css'
 import './styles/producto.css'
 import './styles/catalogo.css'
-import './App.css'
 import Header from './components/Header'
 import { Routes, Route } from 'react-router-dom'; // Se quita BrowserRouter
-import Home from './pages/Home';
-import About from './pages/Catcategoria'
+import Home from './pages/Home'; 
 import Navigbar from './components/Navbar';
 import Catcategoria from './pages/Catcategoria';
 import Footer from './components/Footer';
@@ -22,7 +19,6 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
         <Route path="/catcategoria" element={<Catcategoria />} />
         <Route path="/producto" element={<DetalleProducto />} />
         <Route path="/carrito" element={<Carrito />} />
