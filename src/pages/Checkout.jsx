@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import '../styles/checkout.css';
 
 const COMUNAS_POR_REGION = {
   metropolitana: [
@@ -48,7 +49,6 @@ function obtenerCuponGuardado() {
       return null;
     }
 
-    // Comprobar nuevamente que el cupón no esté vencido.
     const hoy = new Date();
     const fechaLocal = [
       hoy.getFullYear(),
@@ -80,8 +80,8 @@ function Checkout() {
   const [errores, setErrores] = useState({});
   const [ordenCompletada, setOrdenCompletada] = useState(false);
   const [numeroOrden, setNumeroOrden] = useState('');
+  const [totalOrdenConfirmada, setTotalOrdenConfirmada] = useState(0);
 
-  // Recuperar el cupón y calcular los importes.
   const cuponGuardado = obtenerCuponGuardado();
 
   const subtotal = cart.reduce(
@@ -213,7 +213,9 @@ function Checkout() {
         JSON.stringify([nuevaOrden, ...ordenesGuardadas])
       );
 
-      // Limpiar el carrito y el cupón después de guardar la orden.
+      // Conservar el total para mostrarlo después de vaciar el carrito.
+      setTotalOrdenConfirmada(total);
+
       localStorage.removeItem('gamehub_cupon');
       vaciarCarrito();
 
@@ -226,29 +228,35 @@ function Checkout() {
     }
   };
 
+  // Pantalla de confirmación
   if (ordenCompletada) {
     return (
-      <main className="container text-center my-5 py-5">
+      <main className="container text-center my-5 py-5 checkout-container">
         <div
-          className="card card-custom p-5 mx-auto"
+          className="card card-custom confirmacion-compra p-5 mx-auto"
           style={{ maxWidth: '600px' }}
         >
-          <div className="display-1 text-success mb-3">✓</div>
+          <div className="display-1 text-success mb-3 icono-confirmacion">
+            ✓
+          </div>
 
-          <h1 className="h2 text-light mb-3">
+          <h1 className="h2 mb-3">
             ¡Gracias por tu compra, {formData.nombre}!
           </h1>
 
-          <p className="text-secondary mb-2">
-            Tu orden <strong>{numeroOrden}</strong> se ha registrado correctamente.
+          <p className="mb-2">
+            Tu orden <strong>{numeroOrden}</strong> se ha registrado
+            correctamente.
           </p>
 
-          <p className="text-secondary mb-4">
+          <p className="mb-4">
             El total de tu compra fue de{' '}
-            <strong>${total.toLocaleString('es-CL')}</strong>.
+            <strong className="text-acento">
+              ${totalOrdenConfirmada.toLocaleString('es-CL')}
+            </strong>.
           </p>
 
-          <p className="text-secondary mb-4">
+          <p className="mb-4">
             Esta es una compra simulada: no se envía un correo electrónico real.
           </p>
 
@@ -273,14 +281,14 @@ function Checkout() {
   }
 
   return (
-    <main className="container my-5">
+    <main className="container my-5 checkout-container">
       <h1 className="h2 mb-4 border-bottom pb-2 border-secondary titulo-gamer">
         Finalizar compra
       </h1>
 
       {cart.length === 0 ? (
         <div className="text-center py-5">
-          <h2 className="h4 text-light mb-3">
+          <h2 className="h4 mb-3">
             No hay productos en tu carrito para procesar el pago.
           </h2>
 
@@ -293,6 +301,7 @@ function Checkout() {
         </div>
       ) : (
         <div className="row g-4">
+          {/* Formulario de compra */}
           <div className="col-lg-8">
             <form
               id="formulario-checkout"
@@ -307,7 +316,7 @@ function Checkout() {
 
                 <div className="row g-3 mt-1">
                   <div className="col-md-12">
-                    <label htmlFor="nombre" className="form-label text-light">
+                    <label htmlFor="nombre" className="form-label">
                       Nombre completo
                     </label>
 
@@ -328,7 +337,7 @@ function Checkout() {
                   </div>
 
                   <div className="col-md-6">
-                    <label htmlFor="correo" className="form-label text-light">
+                    <label htmlFor="correo" className="form-label">
                       Correo electrónico
                     </label>
 
@@ -349,7 +358,7 @@ function Checkout() {
                   </div>
 
                   <div className="col-md-6">
-                    <label htmlFor="telefono" className="form-label text-light">
+                    <label htmlFor="telefono" className="form-label">
                       Teléfono móvil
                     </label>
 
@@ -382,7 +391,7 @@ function Checkout() {
 
                 <div className="row g-3 mt-1">
                   <div className="col-md-6">
-                    <label htmlFor="region" className="form-label text-light">
+                    <label htmlFor="region" className="form-label">
                       Región
                     </label>
 
@@ -400,7 +409,9 @@ function Checkout() {
                       <option value="metropolitana">
                         Región Metropolitana
                       </option>
-                      <option value="valparaiso">Región de Valparaíso</option>
+                      <option value="valparaiso">
+                        Región de Valparaíso
+                      </option>
                       <option value="biobio">Región del Biobío</option>
                     </select>
 
@@ -410,7 +421,7 @@ function Checkout() {
                   </div>
 
                   <div className="col-md-6">
-                    <label htmlFor="comuna" className="form-label text-light">
+                    <label htmlFor="comuna" className="form-label">
                       Comuna
                     </label>
 
@@ -443,10 +454,7 @@ function Checkout() {
                   </div>
 
                   <div className="col-12">
-                    <label
-                      htmlFor="direccion"
-                      className="form-label text-light"
-                    >
+                    <label htmlFor="direccion" className="form-label">
                       Dirección de entrega
                     </label>
 
@@ -486,7 +494,7 @@ function Checkout() {
                     />
 
                     <label
-                      className="form-check-label text-light"
+                      className="form-check-label"
                       htmlFor="pago-debito"
                     >
                       Tarjeta de débito
@@ -505,7 +513,7 @@ function Checkout() {
                     />
 
                     <label
-                      className="form-check-label text-light"
+                      className="form-check-label"
                       htmlFor="pago-credito"
                     >
                       Tarjeta de crédito
@@ -524,7 +532,7 @@ function Checkout() {
                     />
 
                     <label
-                      className="form-check-label text-light"
+                      className="form-check-label"
                       htmlFor="pago-transferencia"
                     >
                       Transferencia bancaria
@@ -548,28 +556,28 @@ function Checkout() {
             </form>
           </div>
 
+          {/* Resumen de la compra */}
           <div className="col-lg-4">
             <div
-              className="card card-custom p-4 sticky-top"
+              className="card card-custom resumen-compra p-4 sticky-top"
               style={{ top: '20px' }}
             >
               <h2 className="h5 mb-4 border-bottom pb-2 border-secondary titulo-gamer">
                 Resumen de tu orden
               </h2>
 
-              <ul className="list-unstyled mb-4 text-light">
+              <ul className="list-unstyled mb-4">
                 {cart.map((item) => (
                   <li
                     key={item.id}
-                    className="d-flex justify-content-between mb-2 small"
+                    className="d-flex justify-content-between gap-3 mb-2 small"
                   >
                     <span>
                       {item.nombre} x{item.cantidad}
                     </span>
 
-                    <span className="fw-bold">
-                      $
-                      {(item.precio * item.cantidad).toLocaleString('es-CL')}
+                    <span className="fw-bold text-nowrap">
+                      ${(item.precio * item.cantidad).toLocaleString('es-CL')}
                     </span>
                   </li>
                 ))}
@@ -582,13 +590,13 @@ function Checkout() {
                 </span>
               </div>
 
-              <div className="d-flex justify-content-between mb-2">
+              <div className="d-flex justify-content-between gap-3 mb-2">
                 <span className="text-secondary">
                   Descuento
                   {montoDescuento > 0 && ` (${cuponGuardado.porcentaje}%)`}
                 </span>
 
-                <span className="text-danger fw-bold">
+                <span className="text-danger fw-bold text-nowrap">
                   -${montoDescuento.toLocaleString('es-CL')}
                 </span>
               </div>
@@ -604,10 +612,10 @@ function Checkout() {
                 <span className="text-success fw-bold">Gratis</span>
               </div>
 
-              <div className="d-flex justify-content-between align-items-center">
+              <div className="d-flex justify-content-between align-items-center gap-3">
                 <span className="h5 m-0">Total a pagar</span>
 
-                <span className="h4 m-0 text-acento fw-bold">
+                <span className="h4 m-0 text-acento fw-bold text-nowrap">
                   ${total.toLocaleString('es-CL')}
                 </span>
               </div>

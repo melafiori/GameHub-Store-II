@@ -1,0 +1,191 @@
+/* ------------------------- GAMEHUB STORE - CARRITO DE COMPRAS --------------------- */
+
+/* Contenedor principal */
+#contenedor-carrito {
+    color: var(--color-texto);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 17px;
+}
+
+/* Tarjetas del carrito */
+#contenedor-carrito .card-custom {
+    background: linear-gradient(145deg, #211832, #171124) !important;
+    color: var(--color-texto) !important;
+    border: 1px solid rgba(214, 35, 106, 0.45) !important;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+#contenedor-carrito .card-custom:hover {
+    border-color: rgba(0, 210, 255, 0.6) !important;
+    box-shadow: 0 0 16px rgba(0, 210, 255, 0.08);
+}
+
+/* Título de la página */
+#contenedor-carrito .titulo-gamer {
+    line-height: 1.7;
+    border-bottom-color: rgba(0, 210, 255, 0.35) !important;
+}
+
+/* Tabla de productos */
+#contenedor-carrito .table-dark {
+    --bs-table-bg: transparent;
+    --bs-table-color: var(--color-texto);
+    --bs-table-border-color: rgba(0, 210, 255, 0.15);
+    --bs-table-striped-bg: rgba(0, 210, 255, 0.03);
+    --bs-table-hover-bg: rgba(0, 210, 255, 0.06);
+
+    background: transparent !important;
+    color: var(--color-texto);
+}
+
+#contenedor-carrito .table-dark thead th {
+    background-color: rgba(214, 35, 106, 0.10);
+    color: var(--color-acento);
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid rgba(0, 210, 255, 0.4);
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+#contenedor-carrito .table-dark tbody td {
+    background-color: transparent;
+    color: var(--color-texto);
+    border-color: rgba(0, 210, 255, 0.12);
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+#contenedor-carrito .table-dark tbody tr:hover td {
+    background-color: rgba(0, 210, 255, 0.035);
+}
+
+/* Imágenes de productos */
+#contenedor-carrito .img-miniatura {
+    border: 1px solid rgba(0, 210, 255, 0.35);
+    border-radius: 8px !important;
+    background-color: var(--color-fondo);
+    padding: 3px;
+}
+
+/* Campos de texto y cantidades */
+#contenedor-carrito .form-control {
+    background-color: #120E1A !important;
+    color: var(--color-texto) !important;
+    border: 1px solid rgba(0, 210, 255, 0.35) !important;
+    border-radius: 6px;
+}
+
+#contenedor-carrito .form-control::placeholder {
+    color: #AAA0BC !important;
+    opacity: 1;
+}
+
+#contenedor-carrito .form-control:focus {
+    border-color: var(--color-acento) !important;
+    box-shadow: 0 0 0 0.2rem rgba(0, 210, 255, 0.12),
+                0 0 10px rgba(0, 210, 255, 0.12) !important;
+}
+
+#contenedor-carrito .input-cantidad {
+    width: 75px;
+    text-align: center;
+}
+
+/* Botón principal */
+#contenedor-carrito .btn-neon-primario {
+    background: linear-gradient(100deg, #D6236A, #B51A56);
+    border: 1px solid var(--color-primario);
+    color: #FFFFFF;
+    border-radius: 7px;
+    font-weight: 700;
+    transition: transform 0.2s ease,
+                box-shadow 0.2s ease,
+                background 0.2s ease;
+}
+
+#contenedor-carrito .btn-neon-primario:hover {
+    background: linear-gradient(100deg, #00D2FF, #55E1FF);
+    border-color: var(--color-acento);
+    color: #120E1A;
+    transform: translateY(-2px);
+    box-shadow: 0 0 14px rgba(0, 210, 255, 0.25);
+}
+
+/* Botones secundarios y eliminar productos */
+#contenedor-carrito .btn-outline-danger {
+    color: #FF7A9F;
+    border-color: rgba(255, 122, 159, 0.6);
+}
+
+#contenedor-carrito .btn-outline-danger:hover {
+    background-color: rgba(214, 35, 106, 0.15);
+    color: #FF9FBA;
+    border-color: #FF7A9F;
+}
+
+/* Textos y separadores */
+#contenedor-carrito .text-acento {
+    color: var(--color-acento) !important;
+    text-shadow: 0 0 8px rgba(0, 210, 255, 0.18);
+}
+
+#contenedor-carrito .text-success {
+    color: #63EDB4 !important;
+}
+
+#contenedor-carrito .text-danger {
+    color: #FF7A9F !important;
+}
+
+#contenedor-carrito .border-secondary {
+    border-color: rgba(0, 210, 255, 0.2) !important;
+}
+
+/* Mensajes de validación */
+#contenedor-carrito .invalid-feedback {
+    color: #FF7A9F;
+}
+
+#contenedor-carrito .form-control.is-invalid {
+    border-color: var(--color-error) !important;
+}
+
+/* Carrito vacío */
+#estado-vacio {
+    background: radial-gradient(
+        ellipse at center,
+        rgba(30, 23, 48, 0.75),
+        transparent 75%
+    );
+    border: 1px dashed rgba(0, 210, 255, 0.25);
+    border-radius: 14px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+#estado-vacio .icono-vacio {
+    font-size: 4rem;
+    filter: drop-shadow(0 0 12px rgba(0, 210, 255, 0.35));
+}
+
+#estado-vacio h2 {
+    color: var(--color-acento);
+}
+
+/* Adaptación a celulares */
+@media (max-width: 768px) {
+    #contenedor-carrito .card-custom {
+        padding: 16px !important;
+    }
+
+    #contenedor-carrito .table-dark {
+        min-width: 650px;
+    }
+
+    #contenedor-carrito .titulo-gamer {
+    font-size: 17px;
+    }
+}

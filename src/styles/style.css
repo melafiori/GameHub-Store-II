@@ -8,13 +8,13 @@
     --color-texto: #F3EFFA;
     --color-error: #FF7A7A;
     --bs-body-bg: #120E1A;
-    --bs-body-color: #1E1730;
+    --bs-body-color: #F3EFFA;
 }
 
 /* configuracion del cuerpo de la pagina */
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Rajdhani', sans-serif;
     background-color: var(--color-fondo) !important; 
     color: var(--color-texto); 
 }
@@ -324,14 +324,14 @@ interactuar con la interfaz del video por que estaran sobreponiendose*/
     box-shadow: 0 0 10px rgba(214, 35, 106, 0.5);
 }
 
-.precio-anterior {
+.ofertas-destacadas .precio-anterior {
     color: var(--color-texto);
     text-decoration: line-through;
     margin-bottom: 0;
     font-size: 16px;
 }
 
-.precio-oferta {
+.ofertas-destacadas .precio-oferta {
     color: var(--color-primario);
     font-size: 24px;
     font-weight: 700;
@@ -756,102 +756,8 @@ interactuar con la interfaz del video por que estaran sobreponiendose*/
 .mensaje-exito {
     color: var(--color-acento);
 }
-/* 
 
-###################################   VISTA: CARRITO DE COMPRAS   ################################### 
-
-*/
-
-/* color para destacar el precio final a pagar */
-.text-acento {
-    color: var(--color-acento);
-}
-
-/* sobrescribir tarjeta de bootstrap con la paleta neon */
-.card-custom {
-    background-color: var(--color-superficie);
-    border: 1px solid rgba(214, 35, 106, 0.2);
-    border-radius: 8px;
-    color: var(--color-texto);
-}
-
-/* boton magenta principal*/
-.btn-neon-primario {
-    background-color: var(--color-primario);
-    color: #FFFFFF;
-    border: none;
-    font-weight: bold;
-    transition: background-color 0.2s ease;
-}
-
-.btn-neon-primario:hover {
-    background-color: #b51a56;
-    color: #FFFFFF;
-}
-
-/*tamañno para las imagenes de los productos */
-.img-miniatura {
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-    border: 1px solid var(--color-superficie);
-}
-
-/*ajustes de fondo para la tabla de bootstrap */
-.table-dark {
-    --bs-table-bg: transparent;
-    --bs-table-color: var(--color-texto);
-}
-
-/* controles de cantidad de los productos */
-.input-cantidad {
-    width: 75px;
-    background-color: var(--color-fondo);
-    border: 1px solid var(--color-texto);
-    color: var(--color-texto);
-}
-
-.input-cantidad:focus {
-    background-color: var(--color-fondo);
-    color: var(--color-texto);
-    border-color: var(--color-acento);
-    box-shadow: 0 0 5px var(--color-acento);
-}
-
-.input-dark {
-    background-color: var(--color-fondo);
-    border: 1px solid rgba(0, 210, 255, 0.4); 
-    color: var(--color-texto);
-}
-
-/* ajustes para hacer el texto de ejemplo mas visible */
-.input-dark::placeholder {
-    color: rgba(243, 239, 250, 0.5); 
-    opacity: 1; 
-}
-
-/* efecto al hacer clic en el recuadro */
-.input-dark:focus {
-    background-color: var(--color-fondo);
-    color: var(--color-texto);
-    border-color: var(--color-primario);
-    box-shadow: 0 0 5px var(--color-primario);
-}
-
-/* especificamente para cuando no se a escogido region, esto dara un efecto de "deshabilitado" en la comuna*/
-.input-dark:disabled {
-    background-color: rgba(30, 23, 48, 0.6); 
-    color: rgba(243, 239, 250, 0.3); 
-    border-color: rgba(0, 210, 255, 0.15); 
-    opacity: 1; 
-}
-
-/* tamaño del emoji/icono para el estado "vacio"  */
-.icono-vacio {
-    font-size: 4rem;
-}
-
-
+/* Título gamer compartido entre páginas */
 .titulo-gamer {
     font-family: 'Press Start 2P', cursive;
     color: var(--color-texto);
@@ -860,22 +766,7 @@ interactuar con la interfaz del video por que estaran sobreponiendose*/
     font-size: 22px;
 }
 
-
-/* Sobrescribir el color del texto de error de Bootstrap */
-.invalid-feedback {
-    color: var(--color-error) !important;
-    text-shadow: 0 0 5px rgba(255, 122, 122, 0.4); 
-}
-
-/* Sobrescribir el borde rojo del recuadro cuando el dato es invalido */
-.form-control.is-invalid, 
-.form-select.is-invalid, 
-.input-dark.is-invalid {
-    border-color: var(--color-error) !important;
-    box-shadow: 0 0 8px rgba(255, 122, 122, 0.3) !important;
-}
-
-/* Mensaje de error personalizado para el metodo de pago */
+/* Mensajes de error de pago */
 #error-pago {
     color: var(--color-error) !important;
     text-shadow: 0 0 5px rgba(255, 122, 122, 0.4);

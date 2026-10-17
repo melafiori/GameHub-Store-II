@@ -1,0 +1,188 @@
+
+/* =========================================
+   GAMEHUB STORE - CHECKOUT
+   ========================================= */
+
+/* Contenedor principal del checkout */
+.checkout-container {
+    color: var(--color-texto);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 17px;
+}
+
+/* Tarjetas y secciones */
+.checkout-container .card-custom {
+    background: linear-gradient(145deg, #211832, #171124) !important;
+    color: var(--color-texto) !important;
+    border: 1px solid rgba(214, 35, 106, 0.45) !important;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.checkout-container .card-custom:hover {
+    border-color: rgba(0, 210, 255, 0.5) !important;
+}
+
+/* Títulos */
+.checkout-container h2,
+.checkout-container h3,
+.checkout-container h4 {
+    color: var(--color-acento);
+    font-weight: 700;
+}
+
+.checkout-container .titulo-gamer {
+    line-height: 1.7;
+    text-shadow: 0 0 6px rgba(214, 35, 106, 0.5);
+}
+
+/* Etiquetas de los campos */
+.checkout-container .form-label,
+.checkout-container label {
+    color: var(--color-texto);
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+/* Campos de texto */
+.checkout-container .form-control,
+.checkout-container .form-select {
+    background-color: #120E1A !important;
+    color: var(--color-texto) !important;
+    border: 1px solid rgba(0, 210, 255, 0.35) !important;
+    border-radius: 6px;
+    padding: 10px 12px;
+}
+
+/* Texto de ejemplo */
+.checkout-container .form-control::placeholder {
+    color: #AAA0BC !important;
+    opacity: 1;
+}
+
+/* Cuando el usuario selecciona un campo */
+.checkout-container .form-control:focus,
+.checkout-container .form-select:focus {
+    border-color: var(--color-acento) !important;
+    box-shadow: 0 0 0 0.2rem rgba(0, 210, 255, 0.12),
+                0 0 10px rgba(0, 210, 255, 0.12) !important;
+}
+
+/* Opciones de los select */
+.checkout-container .form-select option {
+    background-color: #1E1730;
+    color: #F3EFFA;
+}
+
+/* Campos deshabilitados */
+.checkout-container .form-control:disabled,
+.checkout-container .form-select:disabled {
+    background-color: #211832 !important;
+    color: #AAA0BC !important;
+    border-color: rgba(0, 210, 255, 0.15) !important;
+    opacity: 1;
+}
+
+/* Validaciones */
+.checkout-container .invalid-feedback {
+    color: var(--color-error);
+    font-weight: 600;
+}
+
+.checkout-container .form-control.is-invalid,
+.checkout-container .form-select.is-invalid {
+    border-color: var(--color-error) !important;
+    box-shadow: 0 0 6px rgba(255, 122, 122, 0.15);
+}
+
+/* Botón principal */
+.checkout-container .btn-neon-primario {
+    background: linear-gradient(100deg, #D6236A, #B51A56);
+    border: 1px solid var(--color-primario);
+    color: #FFFFFF;
+    border-radius: 7px;
+    font-weight: 700;
+    padding: 10px 18px;
+    transition: transform 0.2s ease,
+                box-shadow 0.2s ease,
+                background 0.2s ease;
+}
+
+.checkout-container .btn-neon-primario:hover {
+    background: linear-gradient(100deg, #00D2FF, #55E1FF);
+    border-color: var(--color-acento);
+    color: #120E1A;
+    transform: translateY(-2px);
+    box-shadow: 0 0 14px rgba(0, 210, 255, 0.25);
+}
+
+/* Botones secundarios */
+.checkout-container .btn-outline-secondary {
+    color: var(--color-texto);
+    border-color: rgba(0, 210, 255, 0.4);
+}
+
+.checkout-container .btn-outline-secondary:hover {
+    background-color: rgba(0, 210, 255, 0.1);
+    border-color: var(--color-acento);
+    color: var(--color-acento);
+}
+
+/* Separadores */
+.checkout-container .border-secondary {
+    border-color: rgba(0, 210, 255, 0.2) !important;
+}
+
+/* Precios y textos destacados */
+.checkout-container .text-acento {
+    color: var(--color-acento) !important;
+    text-shadow: 0 0 8px rgba(0, 210, 255, 0.18);
+}
+
+.checkout-container .text-success {
+    color: #63EDB4 !important;
+}
+
+.checkout-container .text-danger {
+    color: #FF7A9F !important;
+}
+
+/* Resumen de compra */
+.checkout-container .resumen-compra {
+    background: rgba(18, 14, 26, 0.65);
+    border: 1px solid rgba(0, 210, 255, 0.2);
+    border-radius: 8px;
+    padding: 16px;
+}
+
+/* Confirmación de compra */
+.checkout-container .confirmacion-compra {
+    background: linear-gradient(145deg, #211832, #171124);
+    border: 1px solid rgba(0, 210, 255, 0.4);
+    border-radius: 14px;
+    padding: 28px;
+    box-shadow: 0 0 20px rgba(0, 210, 255, 0.08);
+    text-align: center;
+}
+
+.checkout-container .confirmacion-compra .icono-confirmacion {
+    color: #63EDB4;
+    font-size: 3.5rem;
+    filter: drop-shadow(0 0 10px rgba(99, 237, 180, 0.3));
+}
+
+/* Adaptación a celulares */
+@media (max-width: 768px) {
+    .checkout-container .card-custom {
+        padding: 16px !important;
+    }
+
+    .checkout-container .confirmacion-compra {
+        padding: 20px;
+    }
+
+    .checkout-container .titulo-gamer {
+        font-size: 17px;
+    }
+}

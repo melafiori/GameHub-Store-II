@@ -1,5 +1,3 @@
-import './styles/producto.css'
-import './styles/catalogo.css'
 import Header from './components/Header'
 import { Routes, Route } from 'react-router-dom'; // Se quita BrowserRouter
 import Home from './pages/Home'; 

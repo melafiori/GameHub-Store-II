@@ -650,3 +650,21 @@
 .mensaje-carrito.mostrar {
     display: block;
 }
+
+/* TABLA DE ESPECIFICACIONES: TEMA OSCURO */
+.tabla-especificaciones,
+.tabla-especificaciones tbody,
+.tabla-especificaciones tr,
+.tabla-especificaciones th,
+.tabla-especificaciones td {
+    background-color: transparent !important;
+    color: var(--color-texto);
+}
+
+.tabla-especificaciones th {
+    color: var(--color-acento) !important;
+}
+
+.tabla-especificaciones tr:hover > * {
+    background-color: rgba(0, 210, 255, 0.06) !important;
+}
