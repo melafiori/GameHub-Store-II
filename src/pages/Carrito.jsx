@@ -23,6 +23,8 @@ function Carrito() {
   const handleVaciarCarrito = () => {
     if (window.confirm('¿Estás seguro de que deseas vaciar tu carrito?')) {
       vaciarCarrito();
+      localStorage.removeItem('gamehub_cupon');
+
       setDescuentoPorcentaje(0);
       setMaximoDescuento(0);
       setMensajeCupon({ texto: '', esError: false });
@@ -32,6 +34,9 @@ function Carrito() {
 
   const handleAplicarCupon = () => {
     const codigo = cupon.trim().toUpperCase();
+
+    // Eliminar cualquier cupón anterior antes de validar el nuevo.
+    localStorage.removeItem('gamehub_cupon');
 
     const cupones = {
       NEON10: {
@@ -78,6 +83,7 @@ function Carrito() {
       return;
     }
 
+    // Obtener la fecha local para comprobar la vigencia.
     const hoy = new Date();
     const fechaLocal = [
       hoy.getFullYear(),
@@ -94,6 +100,17 @@ function Carrito() {
       });
       return;
     }
+
+    // Guardar el cupón válido para recuperarlo en el checkout.
+    localStorage.setItem(
+      'gamehub_cupon',
+      JSON.stringify({
+        codigo,
+        porcentaje: cuponSeleccionado.porcentaje,
+        maximo: cuponSeleccionado.maximo,
+        vigencia: cuponSeleccionado.vigencia,
+      })
+    );
 
     setDescuentoPorcentaje(cuponSeleccionado.porcentaje);
     setMaximoDescuento(cuponSeleccionado.maximo);
