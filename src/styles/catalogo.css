@@ -415,3 +415,321 @@ a.btn.btn-ver-producto:hover {
     display: none;
 }
 
+
+/* ----------------------------------------------------- AJUSTES VISUALES DEL CATÁLOGO GAMEHUB DPS DE BOOTSTRAP ----------------------------------------------------- */
+
+/* Encabezado */
+.catalogo-main {
+    color: var(--color-texto);
+}
+
+.catalogo-main h3 {
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+/* Panel de filtros */
+.catalogo-main .filtros {
+    background-color: var(--color-superficie);
+    border: 1px solid rgba(214, 35, 106, 0.65);
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(214, 35, 106, 0.12);
+    min-width: 0;
+}
+
+.catalogo-main .filtros h4 {
+    line-height: 1.6;
+}
+
+.catalogo-main .form-check-input {
+    background-color: #120E1A;
+    border-color: #00D2FF;
+}
+
+.catalogo-main .form-check-input:checked {
+    background-color: #D6236A;
+    border-color: #D6236A;
+}
+
+/* Barra de orden */
+.catalogo-main .form-select {
+    max-width: 100%;
+}
+
+/* Tarjetas de productos */
+.catalogo-main .tarjeta-producto {
+    background-color: var(--color-superficie) !important;
+    border: 1px solid rgba(214, 35, 106, 0.65) !important;
+    border-radius: 12px;
+    min-width: 0;
+    transition: transform 0.3s ease, border-color 0.3s ease,
+                box-shadow 0.3s ease;
+}
+
+.catalogo-main .tarjeta-producto:hover {
+    transform: translateY(-5px);
+    border-color: #00D2FF !important;
+    box-shadow: 0 0 12px rgba(0, 210, 255, 0.25);
+}
+
+.catalogo-main .tarjeta-producto img {
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.catalogo-main .tarjeta-producto .card-title {
+    overflow-wrap: anywhere;
+}
+
+/* Adaptación para celulares */
+@media (max-width: 576px) {
+    .catalogo-main {
+        margin-top: 1.5rem !important;
+        margin-bottom: 1.5rem !important;
+    }
+
+    .catalogo-main h3 {
+        font-size: 16px !important;
+    }
+
+    .catalogo-main .filtros {
+        padding: 1rem !important;
+    }
+
+    .catalogo-main .tarjeta-producto {
+        padding: 1rem !important;
+    }
+
+    .catalogo-main .pagination {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+.catalogo-main .precio-oferta {
+    color: var(--color-primario) !important;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+}
+
+.catalogo-main .etiqueta-stock.disponible {
+    background-color: var(--color-acento) !important;
+    color: var(--color-fondo) !important;
+    box-shadow: 0 0 8px rgba(0, 210, 255, 0.30);
+}
+
+.catalogo-main .etiqueta-stock.ultimas {
+    background-color: var(--color-primario) !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 0 8px rgba(214, 35, 106, 0.30);
+}
+
+.catalogo-main .etiqueta-stock.agotado {
+    background-color: var(--color-error) !important;
+    color: var(--color-fondo) !important;
+}
+
+.catalogo-main .barra-orden select {
+    border: 1px solid rgba(214, 35, 106, 0.55) !important;
+    border-radius: 6px;
+    font-family: 'Rajdhani', sans-serif;
+    cursor: pointer;
+}
+
+.catalogo-main .barra-orden select:focus {
+    border-color: var(--color-acento) !important;
+    box-shadow: 0 0 8px rgba(0, 210, 255, 0.20);
+}
+
+/* BARRA DE ORDEN - GAMEHUB */
+.catalogo-main .barra-orden {
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.catalogo-main .barra-orden label {
+    color: var(--color-texto);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.catalogo-main .barra-orden select {
+    min-height: 42px;
+    padding: 8px 38px 8px 14px;
+    background-color: var(--color-superficie);
+    color: var(--color-texto);
+    border: 1px solid rgba(214, 35, 106, 0.65) !important;
+    border-radius: 8px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    box-shadow: 0 0 8px rgba(214, 35, 106, 0.08);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.catalogo-main .barra-orden select:hover,
+.catalogo-main .barra-orden select:focus {
+    border-color: var(--color-acento) !important;
+    box-shadow: 0 0 10px rgba(0, 210, 255, 0.20);
+}
+
+.catalogo-main .barra-orden select:focus {
+    outline: none;
+}
+
+/* PAGINACIÓN - GAMEHUB */
+.catalogo-main .paginacion {
+    margin-top: 32px;
+}
+
+.catalogo-main .paginacion ul {
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.catalogo-main .paginacion button,
+.catalogo-main .paginacion span {
+    min-width: 40px;
+    min-height: 40px;
+    padding: 0 12px;
+    background-color: var(--color-superficie);
+    color: var(--color-texto);
+    border: 1px solid rgba(214, 35, 106, 0.45);
+    border-radius: 8px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    box-shadow: none;
+    transition: all 0.25s ease;
+}
+
+.catalogo-main .paginacion button:hover:not(:disabled) {
+    background-color: rgba(0, 210, 255, 0.10);
+    color: var(--color-acento);
+    border-color: var(--color-acento);
+    box-shadow: 0 0 10px rgba(0, 210, 255, 0.18);
+    transform: translateY(-2px);
+}
+
+.catalogo-main .paginacion button.pagina-activa,
+.catalogo-main .paginacion .pagina-activa {
+    background-color: var(--color-primario);
+    color: #FFFFFF;
+    border-color: var(--color-primario);
+    box-shadow: 0 0 10px rgba(214, 35, 106, 0.25);
+}
+
+.catalogo-main .paginacion button:disabled {
+    opacity: 0.35;
+    transform: none;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+/* TOQUE NEÓN FINAL - GAMEHUB */
+
+/* Selector Ordenar por */
+.catalogo-main .barra-orden select {
+    background-color: #1E1730 !important;
+    color: #F3EFFA !important;
+    border: 1px solid #D6236A !important;
+    border-radius: 8px;
+    font-weight: 700;
+    box-shadow: 0 0 8px rgba(214, 35, 106, 0.15);
+}
+
+.catalogo-main .barra-orden select option {
+    background-color: #1E1730;
+    color: #F3EFFA;
+}
+
+.catalogo-main .barra-orden select:hover,
+.catalogo-main .barra-orden select:focus {
+    border-color: #00D2FF !important;
+    box-shadow: 0 0 10px rgba(0, 210, 255, 0.25);
+}
+
+
+/* GAMEHUB — PAGINACIÓN DEFINITIVA */
+.catalogo-main nav.paginacion {
+    display: flex !important;
+    justify-content: center !important;
+    width: 100%;
+    margin: 40px 0 24px !important;
+}
+
+.catalogo-main nav.paginacion ul.pagination {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px !important;
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+
+.catalogo-main nav.paginacion ul.pagination li {
+    display: flex;
+    margin: 0 !important;
+}
+
+.catalogo-main nav.paginacion .boton-pagina {
+    min-width: 42px;
+    height: 42px;
+    padding: 0 12px;
+    background: #1E1730 !important;
+    color: #F3EFFA !important;
+    border: 1px solid #49304F !important;
+    border-radius: 8px !important;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1;
+    box-shadow: none !important;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.catalogo-main nav.paginacion .boton-pagina:hover:not(:disabled) {
+    color: #00D2FF !important;
+    border-color: #00D2FF !important;
+    background: #29203D !important;
+    transform: translateY(-2px);
+}
+
+.catalogo-main nav.paginacion .boton-pagina.pagina-activa {
+    background: #D6236A !important;
+    color: #FFFFFF !important;
+    border-color: #D6236A !important;
+    box-shadow: 0 0 12px rgba(214, 35, 106, 0.3) !important;
+}
+
+.catalogo-main nav.paginacion .boton-pagina:disabled {
+    background: #17111F !important;
+    color: #766B80 !important;
+    border-color: #302538 !important;
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.catalogo-main nav.paginacion .boton-pagina:focus-visible {
+    outline: 2px solid #00D2FF;
+    outline-offset: 3px;
+}
+
+@media (max-width: 576px) {
+    .catalogo-main nav.paginacion ul.pagination {
+        gap: 6px !important;
+    }
+
+    .catalogo-main nav.paginacion .boton-pagina {
+        min-width: 36px;
+        height: 38px;
+        padding: 0 9px;
+        font-size: 14px;
+    }
+}

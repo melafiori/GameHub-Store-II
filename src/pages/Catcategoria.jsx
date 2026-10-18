@@ -261,12 +261,12 @@ function Catcategoria() {
                 {/* COLUMNA DERECHA: LISTADO DE PRODUCTOS (100% en móvil, 75% en PC) */}
                 <section className="col-12 col-lg-9">
                     {/* BARRA DE ORDEN */}
-                    <div className="d-flex justify-content-lg-end justify-content-between align-items-center mb-4 gap-2">
+                    <div className="barra-orden d-flex justify-content-lg-end justify-content-between align-items-center mb-4 gap-2">
                         <label className="text-light fw-bold text-nowrap" htmlFor="orden">Ordenar por:</label>
                         <select
                             id="orden"
                             name="orden"
-                            className="form-select bg-dark text-light border-secondary w-auto"
+                            className="form-select bg-dark text-light w-auto"
                             value={orden}
                             onChange={(e) => {
                                 setOrden(e.target.value);
@@ -289,14 +289,16 @@ function Catcategoria() {
                         ) : (
                             productosPagina.map((producto) => {
                                 const esOferta = IDS_OFERTAS.includes(producto.id);
-                                let claseStock = "bg-info text-dark"; // disponible (cyan neon)
-                                if (producto.stock === 0) claseStock = "bg-danger text-white"; // agotado
-                                else if (producto.stock <= 3) claseStock = "bg-primary text-white"; // ultimas (fucsia neon)
-
+                                let claseStock = "disponible";
+                                if (producto.stock === 0) {
+                                    claseStock = "agotado";
+                                } else if (producto.stock <= 3) {
+                                    claseStock = "ultimas";
+                                }
                                 return (
                                     <div className="col-12 col-sm-6 col-xl-4" key={producto.id}>
                                         <article className="card h-100 bg-dark text-light border-secondary tarjeta-producto position-relative p-3">
-                                            <span className={`badge ${claseStock} position-absolute top-0 start-0 m-3 z-1`}>
+                                            <span className={`etiqueta-stock ${claseStock}`}>
                                                 {producto.estado}
                                             </span>
                                             
@@ -313,7 +315,7 @@ function Catcategoria() {
                                                         <span className="text-secondary text-decoration-line-through fs-6 me-2">
                                                             ${producto.precio.toLocaleString("es-CL")}
                                                         </span>
-                                                        <span className="text-primary">
+                                                        <span className="precio-oferta">
                                                             ${Math.round(producto.precio * 0.90).toLocaleString("es-CL")}
                                                         </span>
                                                     </>
@@ -335,31 +337,40 @@ function Catcategoria() {
                         )}
                     </div>
 
+                    
                     {/* PAGINACIÓN */}
                     {totalPaginas > 1 && (
-                        <nav className="d-flex justify-content-center mt-5">
-                            <ul className="pagination gap-2">
-                                <li className={`page-item ${paginaActual === 1 ? 'disabled' : ''}`}>
+                        <nav className="paginacion" aria-label="Paginación de productos">
+                            <ul className="pagination">
+                                <li>
                                     <button
-                                        className="page-link bg-dark text-light border-secondary rounded"
+                                        type="button"
+                                        className="boton-pagina boton-navegacion"
+                                        disabled={paginaActual === 1}
                                         onClick={() => setPaginaActual((p) => Math.max(p - 1, 1))}
                                     >
                                         « Anterior
                                     </button>
                                 </li>
+
                                 {Array.from({ length: totalPaginas }, (_, i) => i + 1).map((num) => (
-                                    <li key={num} className={`page-item ${paginaActual === num ? 'active' : ''}`}>
+                                    <li key={num}>
                                         <button
-                                            className={`page-link rounded ${paginaActual === num ? 'bg-primary border-primary text-white' : 'bg-dark text-light border-secondary'}`}
+                                            type="button"
+                                            className={`boton-pagina ${paginaActual === num ? 'pagina-activa' : ''}`}
+                                            aria-current={paginaActual === num ? 'page' : undefined}
                                             onClick={() => setPaginaActual(num)}
                                         >
                                             {num}
                                         </button>
                                     </li>
                                 ))}
-                                <li className={`page-item ${paginaActual === totalPaginas ? 'disabled' : ''}`}>
+
+                                <li>
                                     <button
-                                        className="page-link bg-dark text-light border-secondary rounded"
+                                        type="button"
+                                        className="boton-pagina boton-navegacion"
+                                        disabled={paginaActual === totalPaginas}
                                         onClick={() => setPaginaActual((p) => Math.min(p + 1, totalPaginas))}
                                     >
                                         Siguiente »
@@ -368,6 +379,7 @@ function Catcategoria() {
                             </ul>
                         </nav>
                     )}
+
                 </section>
             </div>
         </main>
