@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { productos } from '../data/productos'; // Ajusta la ruta a tu archivo de datos
+import { productos } from '../data/productos'; 
 import '../styles/catalogo.css';
 
 const CATEGORIAS = {
@@ -27,9 +27,9 @@ const FILTROS_VACIOS = {
 function Catcategoria() {
     const [searchParams] = useSearchParams();
     const categoriaURL = searchParams.get("categoria");
-    const busquedaURL = searchParams.get("busqueda"); // Extraído dentro del componente
+    const busquedaURL = searchParams.get("busqueda"); 
 
-    // Estado con los filtros que se están seleccionando en el formulario (Temporales)
+// Estado con los filtros que se están seleccionando en el formulario (Temporales)
     const [filtrosTemp, setFiltrosTemp] = useState(FILTROS_VACIOS);
 
     // Estado con los filtros efectivamente aplicados
@@ -51,7 +51,7 @@ function Catcategoria() {
         setPaginaActual(1);
     }, [categoriaURL]);
 
-    // Manejadores de cambios temporales (Checkbox e Inputs)
+    // Manejadores de cambios (Checkbox e Inputs)
     const handleCategoriaChange = (nombreCat) => {
         setFiltrosTemp(prev => ({
             ...prev,
@@ -81,7 +81,6 @@ function Catcategoria() {
             return;
         }
 
-        // Aplicar los filtros temporales al estado global de filtrado
         setFiltrosAplicados({ ...filtrosTemp });
         setPaginaActual(1);
     };
@@ -96,7 +95,6 @@ function Catcategoria() {
     // Filtrado y Ordenamiento dinámico basado en 'filtrosAplicados' y 'busquedaURL'
     const productosFiltrados = useMemo(() => {
         let lista = productos.filter(producto => {
-            // Filtro por término de búsqueda en el nombre o marca
             const coincideBusqueda =
                 !busquedaURL ||
                 producto.nombre.toLowerCase().includes(busquedaURL.toLowerCase()) ||
@@ -143,87 +141,99 @@ function Catcategoria() {
             : (filtrosAplicados.categorias.length === 1 ? filtrosAplicados.categorias[0] : "Catálogo de productos"));
 
     return (
-        <main className="catalogo-main">
-            <div className="catalogo-encabezado">
-                <h3>{tituloEncabezado}</h3>
-                <p className="catalogo-resultados">
+        <main className="container my-5 catalogo-main">
+            {/* ENCABEZADO */}
+            <div className="mb-4">
+                <h3 className="titulo-gamer mb-2" style={{ color: "var(--color-texto)", fontFamily: "'Press Start 2P', cursive", fontSize: "24px" }}>
+                    {tituloEncabezado}
+                </h3>
+                <p className="text-secondary fs-5 m-0">
                     Mostrando {productosPagina.length} de {productosFiltrados.length} productos
                 </p>
             </div>
-            <div className="catalogo-contenido">
 
-                {/* FILTROS LATERALES */}
-                <aside className="filtros">
-                    <form onSubmit={handleAplicarFiltros} onReset={handleLimpiarFiltros}>
-                        <div className="filtro-grupo">
-                            <h4>Categoría</h4>
-                            <ul className="filtro-lista">
-                                {Object.entries(CATEGORIAS).map(([key, label]) => (
-                                    <li key={key}>
-                                        <input
-                                            type="checkbox"
-                                            id={`cat-${key}`}
-                                            name="categoria"
-                                            className="form-check-input"
-                                            value={key}
-                                            checked={filtrosTemp.categorias.includes(label)}
-                                            onChange={() => handleCategoriaChange(label)}
-                                        />
-                                        <label htmlFor={`cat-${key}`}>{label}</label>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                        <div className="filtro-grupo">
-                            <h4>Marca</h4>
-                            <ul className="filtro-lista">
-                                {["asus", "msi", "gigabyte", "nvidia", "amd", "zotac"].map((marca) => (
-                                    <li key={marca}>
-                                        <input
-                                            type="checkbox"
-                                            id={`marca-${marca}`}
-                                            name="marca"
-                                            className="form-check-input"
-                                            value={marca}
-                                            checked={filtrosTemp.marcas.includes(marca)}
-                                            onChange={() => handleMarcaChange(marca)}
-                                        />
-                                        <label htmlFor={`marca-${marca}`}>{marca.toUpperCase()}</label>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                        <div className="filtro-grupo">
-                            <h4>Rango de precio</h4>
-                            <div className="filtro-precio">
-                                <label htmlFor="precio-min">Mínimo</label>
-                                <input
-                                    type="number"
-                                    id="precio-min"
-                                    name="precio_min"
-                                    className="form-control"
-                                    placeholder="$0"
-                                    min={0}
-                                    value={filtrosTemp.precioMin}
-                                    onChange={(e) => setFiltrosTemp(prev => ({ ...prev, precioMin: e.target.value }))}
-                                />
-                                <label htmlFor="precio-max">Máximo</label>
-                                <input
-                                    type="number"
-                                    id="precio-max"
-                                    name="precio_max"
-                                    className="form-control"
-                                    placeholder="$2.000.000"
-                                    min={0}
-                                    value={filtrosTemp.precioMax}
-                                    onChange={(e) => setFiltrosTemp(prev => ({ ...prev, precioMax: e.target.value }))}
-                                />
+            {/* CONTENEDOR PRINCIPAL BOOTSTRAP (Grilla) */}
+            <div className="row g-4">
+
+                {/* COLUMNA IZQUIERDA: FILTROS LATERALES (100% en móvil, 25% en PC) */}
+                <aside className="col-12 col-lg-3">
+                    <div className="filtros p-4 rounded">
+                        <form onSubmit={handleAplicarFiltros} onReset={handleLimpiarFiltros}>
+                            <div className="mb-4">
+                                <h4 className="text-info fs-6 mb-3" style={{ fontFamily: "'Press Start 2P', cursive" }}>Categoría</h4>
+                                <ul className="list-unstyled m-0 p-0">
+                                    {Object.entries(CATEGORIAS).map(([key, label]) => (
+                                        <li key={key} className="form-check mb-2">
+                                            <input
+                                                type="checkbox"
+                                                id={`cat-${key}`}
+                                                name="categoria"
+                                                className="form-check-input"
+                                                value={key}
+                                                checked={filtrosTemp.categorias.includes(label)}
+                                                onChange={() => handleCategoriaChange(label)}
+                                            />
+                                            <label className="form-check-label text-light" htmlFor={`cat-${key}`}>
+                                                {label}
+                                            </label>
+                                        </li>
+                                    ))}
+                                </ul>
                             </div>
-                        </div>
-                        <div className="filtro-grupo">
-                            <h4>Disponibilidad</h4>
-                            <ul className="filtro-lista">
-                                <li>
+
+                            <div className="mb-4">
+                                <h4 className="text-info fs-6 mb-3" style={{ fontFamily: "'Press Start 2P', cursive" }}>Marca</h4>
+                                <ul className="list-unstyled m-0 p-0">
+                                    {["asus", "msi", "gigabyte", "nvidia", "amd", "zotac"].map((marca) => (
+                                        <li key={marca} className="form-check mb-2">
+                                            <input
+                                                type="checkbox"
+                                                id={`marca-${marca}`}
+                                                name="marca"
+                                                className="form-check-input"
+                                                value={marca}
+                                                checked={filtrosTemp.marcas.includes(marca)}
+                                                onChange={() => handleMarcaChange(marca)}
+                                            />
+                                            <label className="form-check-label text-light" htmlFor={`marca-${marca}`}>
+                                                {marca.toUpperCase()}
+                                            </label>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+
+                            <div className="mb-4">
+                                <h4 className="text-info fs-6 mb-3" style={{ fontFamily: "'Press Start 2P', cursive" }}>Rango de precio</h4>
+                                <div className="d-flex flex-column gap-2">
+                                    <label className="text-light" htmlFor="precio-min">Mínimo</label>
+                                    <input
+                                        type="number"
+                                        id="precio-min"
+                                        name="precio_min"
+                                        className="form-control bg-dark text-light border-secondary"
+                                        placeholder="$0"
+                                        min={0}
+                                        value={filtrosTemp.precioMin}
+                                        onChange={(e) => setFiltrosTemp(prev => ({ ...prev, precioMin: e.target.value }))}
+                                    />
+                                    <label className="text-light mt-2" htmlFor="precio-max">Máximo</label>
+                                    <input
+                                        type="number"
+                                        id="precio-max"
+                                        name="precio_max"
+                                        className="form-control bg-dark text-light border-secondary"
+                                        placeholder="$2.000.000"
+                                        min={0}
+                                        value={filtrosTemp.precioMax}
+                                        onChange={(e) => setFiltrosTemp(prev => ({ ...prev, precioMax: e.target.value }))}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="mb-4">
+                                <h4 className="text-info fs-6 mb-3" style={{ fontFamily: "'Press Start 2P', cursive" }}>Disponibilidad</h4>
+                                <div className="form-check">
                                     <input
                                         type="checkbox"
                                         id="stock-disponible"
@@ -232,30 +242,31 @@ function Catcategoria() {
                                         checked={filtrosTemp.soloStock}
                                         onChange={(e) => setFiltrosTemp(prev => ({ ...prev, soloStock: e.target.checked }))}
                                     />
-                                    <label htmlFor="stock-disponible">
+                                    <label className="form-check-label text-light" htmlFor="stock-disponible">
                                         Solo con stock disponible
                                     </label>
-                                </li>
-                            </ul>
-                        </div>
-                        <button type="submit" className="btn btn-aplicar-filtros">
-                            Aplicar filtros
-                        </button>
-                        <button type="reset" className="btn btn-limpiar-filtros">
-                            Limpiar filtros
-                        </button>
-                    </form>
+                                </div>
+                            </div>
+
+                            <button type="submit" className="btn btn-primary w-100 fw-bold mb-2">
+                                Aplicar filtros
+                            </button>
+                            <button type="reset" className="btn btn-outline-info w-100 fw-bold">
+                                Limpiar filtros
+                            </button>
+                        </form>
+                    </div>
                 </aside>
 
-                {/* LISTADO DE PRODUCTOS */}
-                <section className="catalogo-productos">
+                {/* COLUMNA DERECHA: LISTADO DE PRODUCTOS (100% en móvil, 75% en PC) */}
+                <section className="col-12 col-lg-9">
                     {/* BARRA DE ORDEN */}
-                    <div className="barra-orden">
-                        <label htmlFor="orden">Ordenar por:</label>
+                    <div className="d-flex justify-content-lg-end justify-content-between align-items-center mb-4 gap-2">
+                        <label className="text-light fw-bold text-nowrap" htmlFor="orden">Ordenar por:</label>
                         <select
                             id="orden"
                             name="orden"
-                            className="form-select"
+                            className="form-select bg-dark text-light border-secondary w-auto"
                             value={orden}
                             onChange={(e) => {
                                 setOrden(e.target.value);
@@ -270,46 +281,54 @@ function Catcategoria() {
                     </div>
 
                     {/* Grilla de productos dinámica */}
-                    <div className="row g-4 grilla-productos" id="grilla-productos">
+                    <div className="row g-4" id="grilla-productos">
                         {productosPagina.length === 0 ? (
-                            <p className="sin-resultados">No se encontraron productos con estos filtros.</p>
+                            <div className="col-12 text-center py-5">
+                                <p className="text-secondary fs-4">No se encontraron productos con estos filtros.</p>
+                            </div>
                         ) : (
                             productosPagina.map((producto) => {
                                 const esOferta = IDS_OFERTAS.includes(producto.id);
-                                let claseStock = "disponible";
-                                if (producto.stock === 0) claseStock = "agotado";
-                                else if (producto.stock <= 3) claseStock = "ultimas";
+                                let claseStock = "bg-info text-dark"; // disponible (cyan neon)
+                                if (producto.stock === 0) claseStock = "bg-danger text-white"; // agotado
+                                else if (producto.stock <= 3) claseStock = "bg-primary text-white"; // ultimas (fucsia neon)
 
                                 return (
-                                    <div className="col-12 col-sm-6 col-lg-4" key={producto.id}>
-                                        <article className="card h-100 tarjeta-producto">
-                                        <span className={`etiqueta-stock ${claseStock}`}>
-                                            {producto.estado}
-                                        </span>
-                                        <img src={producto.imagen} alt={producto.nombre} />
-                                        <h5>{producto.nombre}</h5>
-                                        <p className="marca-producto">{producto.marca}</p>
-                                        <p className="precio-producto">
-                                            {esOferta ? (
-                                                <>
-                                                    <span className="precio-anterior">
-                                                        ${producto.precio.toLocaleString("es-CL")}
-                                                    </span>{" "}
-                                                    <span className="precio-oferta">
-                                                        ${Math.round(producto.precio * 0.90).toLocaleString("es-CL")}
-                                                    </span>
-                                                </>
-                                            ) : (
-                                                `$${producto.precio.toLocaleString("es-CL")}`
-                                            )}
-                                        </p>
-                                        <Link
-                                            to={`/producto?id=${producto.id}${esOferta ? "&oferta=true" : ""}`}
-                                            className="btn btn-ver-producto"
-                                        >
-                                            Ver producto
-                                        </Link>
-                                    </article>
+                                    <div className="col-12 col-sm-6 col-xl-4" key={producto.id}>
+                                        <article className="card h-100 bg-dark text-light border-secondary tarjeta-producto position-relative p-3">
+                                            <span className={`badge ${claseStock} position-absolute top-0 start-0 m-3 z-1`}>
+                                                {producto.estado}
+                                            </span>
+                                            
+                                            <div className="text-center mb-3">
+                                                <img src={producto.imagen} alt={producto.nombre} className="img-fluid" style={{height: "170px", objectFit: "contain", transition: "transform 0.3s ease"}} />
+                                            </div>
+                                            
+                                            <h5 className="card-title fs-5 fw-bold">{producto.nombre}</h5>
+                                            <p className="text-info fw-bold mb-2">{producto.marca}</p>
+                                            
+                                            <p className="fs-4 fw-bold mb-3 mt-auto">
+                                                {esOferta ? (
+                                                    <>
+                                                        <span className="text-secondary text-decoration-line-through fs-6 me-2">
+                                                            ${producto.precio.toLocaleString("es-CL")}
+                                                        </span>
+                                                        <span className="text-primary">
+                                                            ${Math.round(producto.precio * 0.90).toLocaleString("es-CL")}
+                                                        </span>
+                                                    </>
+                                                ) : (
+                                                    `$${producto.precio.toLocaleString("es-CL")}`
+                                                )}
+                                            </p>
+                                            
+                                            <Link
+                                                to={`/producto?id=${producto.id}${esOferta ? "&oferta=true" : ""}`}
+                                                className="btn btn-primary w-100 fw-bold"
+                                            >
+                                                Ver producto
+                                            </Link>
+                                        </article>
                                     </div>
                                 );
                             })
@@ -318,35 +337,30 @@ function Catcategoria() {
 
                     {/* PAGINACIÓN */}
                     {totalPaginas > 1 && (
-                        <nav className="paginacion">
-                            <ul>
-                                <li>
+                        <nav className="d-flex justify-content-center mt-5">
+                            <ul className="pagination gap-2">
+                                <li className={`page-item ${paginaActual === 1 ? 'disabled' : ''}`}>
                                     <button
-                                        type="button"
-                                        disabled={paginaActual === 1}
+                                        className="page-link bg-dark text-light border-secondary rounded"
                                         onClick={() => setPaginaActual((p) => Math.max(p - 1, 1))}
-                                        aria-label="página anterior"
                                     >
                                         « Anterior
                                     </button>
                                 </li>
                                 {Array.from({ length: totalPaginas }, (_, i) => i + 1).map((num) => (
-                                    <li key={num}>
+                                    <li key={num} className={`page-item ${paginaActual === num ? 'active' : ''}`}>
                                         <button
-                                            type="button"
-                                            className={paginaActual === num ? "pagina-activa" : ""}
+                                            className={`page-link rounded ${paginaActual === num ? 'bg-primary border-primary text-white' : 'bg-dark text-light border-secondary'}`}
                                             onClick={() => setPaginaActual(num)}
                                         >
                                             {num}
                                         </button>
                                     </li>
                                 ))}
-                                <li>
+                                <li className={`page-item ${paginaActual === totalPaginas ? 'disabled' : ''}`}>
                                     <button
-                                        type="button"
-                                        disabled={paginaActual === totalPaginas}
+                                        className="page-link bg-dark text-light border-secondary rounded"
                                         onClick={() => setPaginaActual((p) => Math.min(p + 1, totalPaginas))}
-                                        aria-label="página siguiente"
                                     >
                                         Siguiente »
                                     </button>

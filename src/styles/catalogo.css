@@ -1,20 +1,4 @@
 /* ----------------------------------------------------- ENCABEZADO DEL CATALOGO ----------------------------------------------------- */
-.catalogo-encabezado {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 60px 30px 35px 30px;
-}
-
-.catalogo-encabezado h3 {
-    font-family: 'Press Start 2P', cursive;
-    color: var(--color-texto);
-    font-size: 24px;
-    margin-bottom: 18px;
-    text-shadow:
-        0 0 6px rgba(214, 35, 106, 0.7),
-        0 0 15px rgba(214, 35, 106, 0.3);
-}
-
 .catalogo-resultados {
     color: var(--color-texto);
     font-family: 'Rajdhani', sans-serif;
@@ -22,22 +6,13 @@
     margin: 0;
     opacity: 0.85;
 }
-/* ----------------------------------------------------- CONTENEDOR GENERAL: FILTROS Y PRODUCTOS ----------------------------------------------------- */
-.catalogo-contenido {
-    max-width: 1200px;
-    margin: 0 auto 60px auto;
-    padding: 0 30px;
-    display: flex;
-    gap: 25px;
-    align-items: flex-start;
-}
+
 /* ----------------------------------------------------- FILTROS LATERALES ----------------------------------------------------- */
 .filtros {
     background-color: var(--color-superficie);
     border: 1px solid rgba(214, 35, 106, 0.65);
     border-radius: 12px;
     padding: 25px;
-    width: 260px;
     flex-shrink: 0;
     box-shadow:
         0 0 12px rgba(214, 35, 106, 0.12);
@@ -195,11 +170,7 @@ button.btn.btn-limpiar-filtros:hover {
     color: var(--color-acento);
     box-shadow: 0 0 8px rgba(0, 210, 255, 0.15);
 }
-/* ----------------------------------------------------- SECCION DE PRODUCTOS ----------------------------------------------------- */
-.catalogo-productos {
-    flex-grow: 1;
-    min-width: 0;
-}
+
 /* ----------------------------------------------------- BARRA DE ORDEN ----------------------------------------------------- */
 .barra-orden {
     display: flex;
@@ -444,57 +415,3 @@ a.btn.btn-ver-producto:hover {
     display: none;
 }
 
-
-/* ----------------------------------------------------- ADAPTACIÓN DEL CATÁLOGO PARA CELULARES ----------------------------------------------------- */
-@media (max-width: 576px) {
-    .catalogo-main {
-        width: 100%;
-        min-width: 0;
-    }
-
-    .catalogo-encabezado {
-        padding: 20px 15px;
-    }
-
-    .catalogo-contenido {
-        flex-direction: column;
-        gap: 20px;
-        padding: 0 15px;
-    }
-
-    .filtros {
-        width: 100%;
-        min-width: 0;
-        box-sizing: border-box;
-    }
-
-    .catalogo-productos {
-        width: 100%;
-        min-width: 0;
-    }
-
-    .grilla-productos {
-        margin-right: 0;
-        margin-left: 0;
-    }
-
-    .tarjeta-producto {
-        width: 100%;
-        min-width: 0;
-    }
-
-    .barra-orden {
-        flex-wrap: wrap;
-        gap: 8px;
-    }
-
-    .barra-orden select {
-        max-width: 100%;
-        min-width: 0;
-    }
-
-    .paginacion {
-        flex-wrap: wrap;
-        gap: 6px;
-    }
-}
