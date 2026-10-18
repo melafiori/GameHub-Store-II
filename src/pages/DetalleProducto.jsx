@@ -304,7 +304,7 @@ function DetalleProducto() {
               <p
                 role="status"
                 className={`mensaje-carrito mt-2 ${
-                  esErrorCarrito ? 'text-danger mostrar' : 'text-success mostrar'
+                  esErrorCarrito ? 'text-danger mostrar' : 'mostrar'
                 }`}
               >
                 {mensajeCarrito}

@@ -141,7 +141,7 @@
 }
 
 .checkout-container .text-success {
-    color: #63EDB4 !important;
+    color: var(--color-acento) !important;
 }
 
 .checkout-container .text-danger {
@@ -167,9 +167,9 @@
 }
 
 .checkout-container .confirmacion-compra .icono-confirmacion {
-    color: #63EDB4;
+    color: var(--color-acento);
     font-size: 3.5rem;
-    filter: drop-shadow(0 0 10px rgba(99, 237, 180, 0.3));
+    filter: drop-shadow(0 0 10px rgba(0, 210, 255, 0.3));
 }
 
 /* Adaptación a celulares */

@@ -164,6 +164,7 @@ function Catcategoria() {
                                             type="checkbox"
                                             id={`cat-${key}`}
                                             name="categoria"
+                                            className="form-check-input"
                                             value={key}
                                             checked={filtrosTemp.categorias.includes(label)}
                                             onChange={() => handleCategoriaChange(label)}
@@ -182,6 +183,7 @@ function Catcategoria() {
                                             type="checkbox"
                                             id={`marca-${marca}`}
                                             name="marca"
+                                            className="form-check-input"
                                             value={marca}
                                             checked={filtrosTemp.marcas.includes(marca)}
                                             onChange={() => handleMarcaChange(marca)}
@@ -199,6 +201,7 @@ function Catcategoria() {
                                     type="number"
                                     id="precio-min"
                                     name="precio_min"
+                                    className="form-control"
                                     placeholder="$0"
                                     min={0}
                                     value={filtrosTemp.precioMin}
@@ -209,6 +212,7 @@ function Catcategoria() {
                                     type="number"
                                     id="precio-max"
                                     name="precio_max"
+                                    className="form-control"
                                     placeholder="$2.000.000"
                                     min={0}
                                     value={filtrosTemp.precioMax}
@@ -224,6 +228,7 @@ function Catcategoria() {
                                         type="checkbox"
                                         id="stock-disponible"
                                         name="disponibilidad"
+                                        className="form-check-input"
                                         checked={filtrosTemp.soloStock}
                                         onChange={(e) => setFiltrosTemp(prev => ({ ...prev, soloStock: e.target.checked }))}
                                     />
@@ -233,10 +238,10 @@ function Catcategoria() {
                                 </li>
                             </ul>
                         </div>
-                        <button type="submit" className="btn-aplicar-filtros">
+                        <button type="submit" className="btn btn-aplicar-filtros">
                             Aplicar filtros
                         </button>
-                        <button type="reset" className="btn-limpiar-filtros">
+                        <button type="reset" className="btn btn-limpiar-filtros">
                             Limpiar filtros
                         </button>
                     </form>
@@ -250,6 +255,7 @@ function Catcategoria() {
                         <select
                             id="orden"
                             name="orden"
+                            className="form-select"
                             value={orden}
                             onChange={(e) => {
                                 setOrden(e.target.value);
@@ -264,7 +270,7 @@ function Catcategoria() {
                     </div>
 
                     {/* Grilla de productos dinámica */}
-                    <div className="grilla-productos" id="grilla-productos">
+                    <div className="row g-4 grilla-productos" id="grilla-productos">
                         {productosPagina.length === 0 ? (
                             <p className="sin-resultados">No se encontraron productos con estos filtros.</p>
                         ) : (
@@ -275,7 +281,8 @@ function Catcategoria() {
                                 else if (producto.stock <= 3) claseStock = "ultimas";
 
                                 return (
-                                    <article className="tarjeta-producto" key={producto.id}>
+                                    <div className="col-12 col-sm-6 col-lg-4" key={producto.id}>
+                                        <article className="card h-100 tarjeta-producto">
                                         <span className={`etiqueta-stock ${claseStock}`}>
                                             {producto.estado}
                                         </span>
@@ -298,11 +305,12 @@ function Catcategoria() {
                                         </p>
                                         <Link
                                             to={`/producto?id=${producto.id}${esOferta ? "&oferta=true" : ""}`}
-                                            className="btn-ver-producto"
+                                            className="btn btn-ver-producto"
                                         >
                                             Ver producto
                                         </Link>
                                     </article>
+                                    </div>
                                 );
                             })
                         )}

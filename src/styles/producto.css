@@ -45,7 +45,7 @@
 /* ----------------------------------------------------- DETALLE PRINCIPAL DEL PRODUCTO ----------------------------------------------------- */
 .producto-detalle {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 50px;
     align-items: start;
 }

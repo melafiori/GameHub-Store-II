@@ -86,9 +86,34 @@
     transform: translateX(4px);
 }
 
-.filtro-lista input[type="checkbox"] {
-    accent-color: var(--color-primario);
+.filtro-lista input[type="checkbox"].form-check-input {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    margin: 0;
+    padding: 0;
+    background-color: var(--color-fondo);
+    border: 1px solid var(--color-acento);
+    border-radius: 3px;
     cursor: pointer;
+    box-shadow: none;
+}
+
+.filtro-lista input[type="checkbox"].form-check-input:checked {
+    background-color: var(--color-primario);
+    border-color: var(--color-primario);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m3 8 3 3 7-7'/%3E%3C/svg%3E");
+    background-size: 12px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.filtro-lista input[type="checkbox"].form-check-input:focus-visible {
+    outline: 2px solid var(--color-acento);
+    outline-offset: 3px;
+    box-shadow: 0 0 6px rgba(0, 210, 255, 0.35);
 }
 
 .filtro-lista label {
@@ -132,6 +157,7 @@
 /* ----------------------------------------------------- BOTONES DE FILTROS ----------------------------------------------------- */
 .btn-aplicar-filtros,
 .btn-limpiar-filtros {
+    display: block;
     width: 100%;
     padding: 11px;
     border-radius: 8px;
@@ -139,42 +165,35 @@
     font-size: 15px;
     font-weight: 700;
     cursor: pointer;
-    transition:
-        background-color 0.3s ease,
-        color 0.3s ease,
-        border-color 0.3s ease,
-        box-shadow 0.3s ease,
-        transform 0.3s ease;
+    transition: all 0.3s ease;
 }
 /* ---------------------------- APLICAR FILTROS ----------------------------- */
-.btn-aplicar-filtros {
+button.btn.btn-aplicar-filtros {
     background-color: var(--color-primario);
     color: #FFFFFF;
     border: 1px solid var(--color-primario);
 }
 
-.btn-aplicar-filtros:hover {
+button.btn.btn-aplicar-filtros:hover {
     background-color: var(--color-acento);
     border-color: var(--color-acento);
     color: var(--color-fondo);
-    box-shadow:
-        0 0 12px rgba(0, 210, 255, 0.45);
+    box-shadow: 0 0 12px rgba(0, 210, 255, 0.45);
     transform: translateY(-2px);
 }
 /* ---------------------------- LIMPIAR FILTROS ----------------------------- */
-.btn-limpiar-filtros {
+button.btn.btn-limpiar-filtros {
     margin-top: 8px;
     background-color: transparent;
     color: var(--color-texto);
     border: 1px solid rgba(0, 210, 255, 0.5);
 }
 
-.btn-limpiar-filtros:hover {
+button.btn.btn-limpiar-filtros:hover {
     background-color: rgba(0, 210, 255, 0.08);
     border-color: var(--color-acento);
     color: var(--color-acento);
-    box-shadow:
-        0 0 8px rgba(0, 210, 255, 0.15);
+    box-shadow: 0 0 8px rgba(0, 210, 255, 0.15);
 }
 /* ----------------------------------------------------- SECCION DE PRODUCTOS ----------------------------------------------------- */
 .catalogo-productos {
@@ -217,9 +236,7 @@
 
 /* ----------------------------------------------------- GRILLA DE PRODUCTOS ----------------------------------------------------- */
 .grilla-productos {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 25px;
+    margin-bottom: 0;
 }
 
 /* ----------------------------------------------------- TARJETAS DE PRODUCTO ----------------------------------------------------- */
@@ -291,7 +308,9 @@
         0 0 6px rgba(214, 35, 106, 0.25);
 }
 /* ----------------------------------------------------- BOTON VER PRODUCTO ----------------------------------------------------- */
-.btn-ver-producto {
+a.btn.btn-ver-producto {
+    display: block;
+    width: 100%;
     background-color: var(--color-primario);
     color: #FFFFFF;
     border: 1px solid var(--color-primario);
@@ -302,22 +321,18 @@
     font-size: 15px;
     font-weight: 700;
     margin-top: auto;
-    transition:
-        background-color 0.3s ease,
-        border-color 0.3s ease,
-        color 0.3s ease,
-        box-shadow 0.3s ease,
-        transform 0.3s ease;
+    transition: all 0.3s ease;
 }
 
-.btn-ver-producto:hover {
+
+a.btn.btn-ver-producto:hover {
     background-color: var(--color-acento);
     border-color: var(--color-acento);
     color: var(--color-fondo);
-    box-shadow:
-        0 0 12px rgba(0, 210, 255, 0.45);
+    box-shadow: 0 0 12px rgba(0, 210, 255, 0.45);
     transform: translateY(-2px);
 }
+
 
 /* ----------------------------------------------------- ETIQUETA DE STOCK ----------------------------------------------------- */
 .etiqueta-stock {
@@ -366,13 +381,14 @@
     padding: 0;
 }
 
-.paginacion a,
+
+.paginacion button,
 .paginacion span {
     display: flex;
     align-items: center;
     justify-content: center;
     min-width: 40px;
-    height: 40px;
+    min-height: 40px;
     padding: 0 12px;
     border-radius: 7px;
     background-color: var(--color-superficie);
@@ -382,21 +398,28 @@
     font-family: 'Rajdhani', sans-serif;
     font-size: 15px;
     font-weight: 600;
-    transition:
-        background-color 0.3s ease,
-        border-color 0.3s ease,
-        color 0.3s ease,
-        box-shadow 0.3s ease,
-        transform 0.3s ease;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-.paginacion a:hover {
+.paginacion button:hover:not(:disabled) {
     background-color: var(--color-acento);
     border-color: var(--color-acento);
     color: var(--color-fondo);
-    box-shadow:
-        0 0 10px rgba(0, 210, 255, 0.35);
+    box-shadow: 0 0 10px rgba(0, 210, 255, 0.35);
     transform: translateY(-2px);
+}
+
+.paginacion button.pagina-activa {
+    background-color: var(--color-primario);
+    border-color: var(--color-primario);
+    color: #FFFFFF;
+    box-shadow: 0 0 10px rgba(214, 35, 106, 0.35);
+}
+
+.paginacion button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
 }
 
 .paginacion .pagina-activa {
@@ -419,4 +442,59 @@
 }
 .oculto {
     display: none;
+}
+
+
+/* ----------------------------------------------------- ADAPTACIÓN DEL CATÁLOGO PARA CELULARES ----------------------------------------------------- */
+@media (max-width: 576px) {
+    .catalogo-main {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .catalogo-encabezado {
+        padding: 20px 15px;
+    }
+
+    .catalogo-contenido {
+        flex-direction: column;
+        gap: 20px;
+        padding: 0 15px;
+    }
+
+    .filtros {
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+    }
+
+    .catalogo-productos {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .grilla-productos {
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+    .tarjeta-producto {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .barra-orden {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .barra-orden select {
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .paginacion {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
 }

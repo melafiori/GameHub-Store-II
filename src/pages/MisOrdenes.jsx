@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import '../styles/ordenes.css';
 
 // Datos de prueba simulados para las órdenes.
 const ORDENES_INICIALES = [
@@ -192,7 +193,7 @@ function MisOrdenes() {
   };
 
   return (
-    <main className="ordenes-container">
+    <main className="container my-5 ordenes-container">
       <h1>Mis órdenes</h1>
 
       <p className="ordenes-descripcion">
@@ -357,6 +358,7 @@ function MisOrdenes() {
                         <select
                           id={`calificacion-${orden.id}`}
                           name={`calificacion-${orden.id}`}
+                          className="form-select mb-3"
                           defaultValue="5"
                           required
                         >
@@ -374,6 +376,7 @@ function MisOrdenes() {
                         <textarea
                           id={`comentario-${orden.id}`}
                           name={`comentario-${orden.id}`}
+                          className="form-control mb-3"
                           rows="4"
                           placeholder="Escribe tu opinión sobre el producto..."
                           required
@@ -399,6 +402,7 @@ function MisOrdenes() {
                         <textarea
                           id={`motivo-${orden.id}`}
                           name={`motivo-${orden.id}`}
+                          className="form-control mb-3"
                           rows="4"
                           placeholder="Describe el problema que presenta tu producto..."
                           required
