@@ -1,16 +1,21 @@
+
 process.env.CHROME_BIN = 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe';
+
 module.exports = function(config) {
   config.set({
     basePath: '',
     frameworks: ['jasmine'],
+
     files: [
       'src/**/*.spec.js',
       'src/**/*.spec.jsx'
     ],
+
     preprocessors: {
-      'src/**/*.spec.js': ['webpack', 'coverage'],
-      'src/**/*.spec.jsx': ['webpack', 'coverage']
+      'src/**/*.spec.js': ['webpack'],
+      'src/**/*.spec.jsx': ['webpack']
     },
+
     webpack: {
       mode: 'development',
       module: {
@@ -18,7 +23,14 @@ module.exports = function(config) {
           {
             test: /\.(js|jsx)$/,
             exclude: /node_modules/,
-            use: ['babel-loader']
+            use: [
+              {
+                loader: 'babel-loader',
+                options: {
+                  envName: 'test'
+                }
+              }
+            ]
           },
           {
             test: /\.css$/,
@@ -30,7 +42,9 @@ module.exports = function(config) {
         extensions: ['.js', '.jsx']
       }
     },
+
     reporters: ['progress', 'coverage'],
+
     coverageReporter: {
       dir: 'coverage/',
       reporters: [
@@ -38,6 +52,7 @@ module.exports = function(config) {
         { type: 'text-summary' }
       ]
     },
+
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
@@ -45,5 +60,5 @@ module.exports = function(config) {
     browsers: ['ChromeHeadless'],
     singleRun: true,
     concurrency: Infinity
-  })
-}
+  });
+};

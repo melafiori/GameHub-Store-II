@@ -1,7 +1,20 @@
-export const calcularSubtotal = (precio, cantidad) => precio * cantidad;
+
+export const calcularSubtotal = (precioOCarrito, cantidad) => {
+  if (Array.isArray(precioOCarrito)) {
+    return precioOCarrito.reduce(
+      (total, item) => total + item.precio * item.cantidad,
+      0
+    );
+  }
+
+  return precioOCarrito * cantidad;
+};
 
 export const agregarAlCarrito = (carritoActual, productoAgregado) => {
-  const existe = carritoActual.find(item => item.id === productoAgregado.id);
+  const existe = carritoActual.find(
+    item => item.id === productoAgregado.id
+  );
+
   if (existe) {
     return carritoActual.map(item =>
       item.id === productoAgregado.id
@@ -9,21 +22,31 @@ export const agregarAlCarrito = (carritoActual, productoAgregado) => {
         : item
     );
   }
+
   return [...carritoActual, productoAgregado];
 };
 
-export const validarStock = (cantidad, stock) => cantidad <= stock;
-
-export const aplicarCupon = (subtotal, porcentajeDescuento) => {
-  const descuento = subtotal * (porcentajeDescuento / 100);
-  return subtotal - descuento;
+export const validarStock = (cantidad, stock) => {
+  return cantidad <= stock;
 };
 
-export const cuponVigente = (fechaExpiracion) => {
+export const aplicarCupon = (
+  subtotal,
+  porcentajeDescuento,
+  topeDescuento = Infinity
+) => {
+  const descuento = subtotal * (porcentajeDescuento / 100);
+  return subtotal - Math.min(descuento, topeDescuento);
+};
+
+export const cuponVigente = (fechaExpiracion, fechaInicio = null) => {
   const hoy = new Date();
-  return fechaExpiracion > hoy;
+  const inicio = fechaInicio ? new Date(fechaInicio) : null;
+  const expiracion = new Date(fechaExpiracion);
+
+  return (!inicio || hoy >= inicio) && hoy <= expiracion;
 };
 
 export const calcularTotal = (subtotal, envio, descuento) => {
-  return (subtotal + envio) - descuento;
+  return Math.max(0, subtotal + envio - descuento);
 };

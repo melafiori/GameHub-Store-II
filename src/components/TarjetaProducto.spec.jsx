@@ -33,4 +33,25 @@ describe('Componente TarjetaProducto', () => {
     expect(spyAgregar).toHaveBeenCalledTimes(1);
     expect(spyAgregar).toHaveBeenCalledWith(mockProducto);
   });
+
+  
+  it('7. Debe mostrar el aviso y deshabilitar el botón si no hay stock', () => {
+    const productoSinStock = {
+      ...mockProducto,
+      stock: 0
+    };
+
+    render(
+      <TarjetaProducto
+        producto={productoSinStock}
+        agregarAlCarrito={jasmine.createSpy('agregarAlCarrito')}
+      />
+    );
+
+    expect(screen.getByText('Producto sin stock')).not.toBeNull();
+
+    expect(
+      screen.getByRole('button', { name: /sin stock/i }).disabled
+    ).toBeTrue();
+  });
 });

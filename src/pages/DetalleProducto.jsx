@@ -4,6 +4,7 @@ import { useSearchParams, Link } from 'react-router-dom';
 import { productos } from '../data/productos';
 import { useCart } from '../context/CartContext';
 import '../styles/producto.css';
+import ListaResenas from '../components/ListaResenas';
 
 import iconoCarrito from '../assets/icons/icono-carrito.svg';
 
@@ -221,8 +222,7 @@ function DetalleProducto() {
           <h1 className="producto-titulo">{producto.nombre}</h1>
 
           <div className="producto-valoracion">
-            <span className="estrellas">★★★★☆</span>{' '}
-            <a href="#reseñas">128 reseñas</a>
+            <a href="#reseñas">Ver reseñas y calificaciones</a>
           </div>
 
           <div className="producto-precio">
@@ -343,30 +343,35 @@ function DetalleProducto() {
         </div>
       </section>
 
-      <section className="producto-reseñas" id="reseñas">
-        <h2>Reseñas de usuarios</h2>
-
-        <div className="reseñas-resumen">
-          <span className="reseñas-promedio">4.5</span>
-          <span className="estrellas">★★★★☆</span>
-          <p>Basado en 128 reseñas</p>
-        </div>
-
-        <ul className="reseñas-lista">
-          <li className="reseña">
-            <div className="reseña-cabecera">
-              <span className="reseña-autor">Martín G.</span>
-              <span className="estrellas">★★★★★</span>
-              <span className="reseña-fecha">12 de agosto de 2026</span>
-            </div>
-
-            <p className="reseña-comentario">
-              Excelente rendimiento para el precio, llevo tiempo probando sin
-              problemas y muy buena experiencia.
-            </p>
-          </li>
-        </ul>
-      </section>
+      
+      <ListaResenas
+        resenas={[
+          {
+            id: 1,
+            autor: 'Martín G.',
+            calificacion: 5,
+            fecha: '2026-08-12',
+            comentario:
+              'Excelente rendimiento para el precio, llevo tiempo probando sin problemas y muy buena experiencia.',
+          },
+          {
+            id: 2,
+            autor: 'Camila R.',
+            calificacion: 4,
+            fecha: '2026-09-20',
+            comentario:
+              'Buen producto, cumple con lo esperado y llegó en buenas condiciones.',
+          },
+          {
+            id: 3,
+            autor: 'Diego P.',
+            calificacion: 4,
+            fecha: '2026-09-01',
+            comentario:
+              'Buena experiencia y buen rendimiento.',
+          },
+        ]}
+      />
     </main>
   );
 }
