@@ -240,7 +240,7 @@ function DetalleProducto() {
                 <span className="precio-anterior">
                   ${producto.precio.toLocaleString('es-CL')}
                 </span>
-                <span className="precio-actual text-primary">
+                <span className="precio-actual">
                   ${precioOferta.toLocaleString('es-CL')}
                 </span>
                 <span className="etiqueta-descuento">
@@ -248,7 +248,7 @@ function DetalleProducto() {
                 </span>
               </>
             ) : (
-              <span className="precio-actual text-info">
+              <span className="precio-actual">
                 ${producto.precio.toLocaleString('es-CL')}
               </span>
             )}
@@ -311,10 +311,9 @@ function DetalleProducto() {
             {mensajeCarrito && (
               <p
                 role="status"
-                className={`position-absolute mt-2 w-100 ${
-                  esErrorCarrito ? 'text-danger' : 'text-success'
+                className={`mensaje-carrito mostrar ${
+                  esErrorCarrito ? 'mensaje-carrito-error' : 'mensaje-carrito-ok'
                 }`}
-                style={{ bottom: '-30px', left: '0' }}
               >
                 {mensajeCarrito}
               </p>
@@ -330,8 +329,8 @@ function DetalleProducto() {
       </div>
 
       {/* ESPECIFICACIONES TÉCNICAS */}
-      <section className="producto-especificaciones my-5 bg-dark p-4 rounded border border-secondary">
-        <h2 className="titulo-gamer text-info mb-4" style={{fontFamily: "'Press Start 2P', cursive", fontSize: "18px"}}>Especificaciones técnicas</h2>
+      <section className="producto-especificaciones my-5">
+        <h2 className="mb-4">Especificaciones técnicas</h2>
 
         <div className="table-responsive">
           <table className="tabla-especificaciones table table-dark table-striped table-hover border-secondary m-0">
@@ -347,8 +346,8 @@ function DetalleProducto() {
           </table>
         </div>
 
-        <div className="mt-4 pt-4 border-top border-secondary">
-          <h3 className="text-primary mb-3" style={{fontFamily: "'Press Start 2P', cursive", fontSize: "14px"}}>Descripción</h3>
+        <div className="producto-descripcion mt-4 pt-4 border-top border-secondary">
+          <h3 className="producto-descripcion-titulo mb-3">Descripción</h3>
           <p className="text-light" style={{ opacity: 0.9, lineHeight: 1.7 }}>{producto.descripcion}</p>
         </div>
       </section>

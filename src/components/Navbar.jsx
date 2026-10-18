@@ -5,7 +5,8 @@ import { Link } from 'react-router-dom';
 
 function Navigbar() {
   return (
-    <Navbar expand="lg" className="barra-categorias navbar-dark bg-dark border-bottom border-secondary">
+    <Navbar expand="lg" className="barra-categorias navbar-dark">
+
       <Container fluid>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">

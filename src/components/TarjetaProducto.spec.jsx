@@ -16,7 +16,12 @@ describe('Componente TarjetaProducto', () => {
     
     // Verifica que el nombre y el precio esten en el DOM
     expect(screen.getByText('Juego Prueba')).not.toBeNull();
-    expect(screen.getByText('$15000')).not.toBeNull();
+    expect(
+      screen.getByText((_, element) =>
+        element?.classList.contains('precio-producto') &&
+        element.textContent.replace(/\s/g, '').replace(/\./g, '').includes('15000')
+      )
+    ).toBeTruthy();
   });
 
   it('5. Debe ejecutar el evento onClick usando un Mock al presionar "Agregar"', () => {

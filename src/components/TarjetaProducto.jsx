@@ -19,8 +19,8 @@ const TarjetaProducto = ({ producto, agregarAlCarrito }) => {
       <div className="card-body d-flex flex-column p-0">
         <h5 className="card-title fs-5 fw-bold">{producto.nombre}</h5>
         
-        <p className="fs-4 fw-bold mb-3 mt-auto">
-          ${producto.precio}
+        <p className="precio-producto mb-3 mt-auto">
+          ${Number(producto.precio).toLocaleString('es-CL')}
         </p>
 
         {sinStock && (

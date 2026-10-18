@@ -442,6 +442,58 @@ interactuar con la interfaz del video por que estaran sobreponiendose*/
         0 0 25px rgba(0, 210, 255, 0.2);
 }
 
+
+/* Ajustes visuales para las ofertas destacadas */
+/* Se mantienen las clases y la estructura de Bootstrap */
+
+.ofertas-destacadas .card {
+    background: linear-gradient(
+        145deg,
+        var(--color-superficie),
+        #171124
+    ) !important;
+
+    border: 1px solid var(--color-primario) !important;
+    border-radius: 10px;
+    color: var(--color-texto);
+    box-shadow: 0 0 8px rgba(214, 35, 106, 0.15);
+    transition: transform 0.3s ease, border-color 0.3s ease,
+                box-shadow 0.3s ease;
+}
+
+.ofertas-destacadas .card:hover {
+    transform: translateY(-6px);
+    border-color: var(--color-acento) !important;
+    box-shadow: 0 0 10px rgba(0, 210, 255, 0.4),
+                0 0 20px rgba(0, 210, 255, 0.2);
+}
+
+.ofertas-destacadas .etiqueta-oferta {
+    background-color: var(--color-primario) !important;
+    color: #FFFFFF !important;
+    border: 1px solid var(--color-primario);
+}
+
+.ofertas-destacadas .precio-anterior {
+    color: #B5A9C2 !important;
+}
+
+.ofertas-destacadas .precio-oferta {
+    color: var(--color-primario) !important;
+}
+
+.ofertas-destacadas .card .btn-primary {
+    background-color: var(--color-primario);
+    border-color: var(--color-primario);
+}
+
+.ofertas-destacadas .card .btn-primary:hover {
+    background-color: var(--color-acento);
+    border-color: var(--color-acento);
+    color: var(--color-fondo);
+}
+
+
 /* ----------------------------------------------------- FOOTER ----------------------------------------------------- */
 
 .footer-principal {
