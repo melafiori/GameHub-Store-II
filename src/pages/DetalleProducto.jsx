@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { productos } from '../data/productos';
@@ -43,10 +42,10 @@ function DetalleProducto() {
 
   if (!producto) {
     return (
-      <main className="container text-center my-5">
-        <h2>Producto no encontrado</h2>
-        <p>El producto que buscas no existe o ha sido removido.</p>
-        <Link to="/catcategoria" className="btn btn-primary">
+      <main className="container text-center my-5 py-5">
+        <h2 className="text-light">Producto no encontrado</h2>
+        <p className="text-secondary">El producto que buscas no existe o ha sido removido.</p>
+        <Link to="/catalogo" className="btn btn-primary mt-3">
           Volver al catálogo
         </Link>
       </main>
@@ -171,67 +170,77 @@ function DetalleProducto() {
   const slugCategoria = CATEGORIA_SLUGS[producto.categoria] || 'graficas';
 
   return (
-    <main className="producto-main container my-4">
-      <nav className="miga-de-pan mb-4" aria-label="Ruta de navegación">
-        <ul className="d-flex list-unstyled gap-2 align-items-center">
+    <main className="container my-5">
+      {/* MIGAS DE PAN */}
+      <nav className="mb-4" aria-label="Ruta de navegación">
+        <ul className="d-flex list-unstyled gap-2 align-items-center m-0 p-0">
           <li>
-            <Link to="/">Inicio</Link> /
+            <Link to="/" className="text-info text-decoration-none">Inicio</Link> <span className="text-secondary ms-2">/</span>
           </li>
           <li>
-            <Link to={`/catcategoria?categoria=${slugCategoria}`}>
+            <Link to={`/catalogo?categoria=${slugCategoria}`} className="text-info text-decoration-none">
               {producto.categoria}
-            </Link>{' '}
-            /
+            </Link> <span className="text-secondary ms-2">/</span>
           </li>
-          <li className="active" aria-current="page">
+          <li className="text-light fw-bold" aria-current="page">
             {producto.nombre}
           </li>
         </ul>
       </nav>
 
-      <div className="producto-detalle">
-        <section className="producto-galeria">
-          <div className="galeria-imagen-principal">
-            <img
-              src={imagenSeleccionada || producto.imagen}
-              alt={producto.nombre}
-            />
-          </div>
+      {/* GRILLA PRINCIPAL BOOTSTRAP (2 COLUMNAS EN PC, 1 EN MÓVIL) */}
+      <div className="row g-5">
+        
+        {/* COLUMNA IZQUIERDA: GALERÍA */}
+        <section className="col-12 col-lg-6">
+          <div className="producto-galeria">
+            <div className="galeria-imagen-principal">
+              <img
+                src={imagenSeleccionada || producto.imagen}
+                alt={producto.nombre}
+                className="img-fluid"
+              />
+            </div>
 
-          <ul className="galeria-miniaturas">
-            {[...Array(4)].map((_, index) => (
-              <li key={index}>
-                <button
-                  type="button"
-                  className="btn-miniatura"
-                  onClick={() => setImagenSeleccionada(producto.imagen)}
-                  aria-label={`Seleccionar vista ${index + 1}`}
-                >
-                  <img
-                    src={producto.imagen}
-                    alt={`Vista ${index + 1} de ${producto.nombre}`}
-                  />
-                </button>
-              </li>
-            ))}
-          </ul>
+            {/* GRILLA BOOTSTRAP PARA MINIATURAS */}
+            <ul className="row g-2 list-unstyled mt-3 mb-0">
+              {[...Array(4)].map((_, index) => (
+                <li className="col-3" key={index}>
+                  <button
+                    type="button"
+                    className="btn p-1 w-100 h-100 border-info bg-dark"
+                    onClick={() => setImagenSeleccionada(producto.imagen)}
+                    aria-label={`Seleccionar vista ${index + 1}`}
+                  >
+                    <img
+                      src={producto.imagen}
+                      alt={`Vista ${index + 1} de ${producto.nombre}`}
+                      className="img-fluid"
+                    />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
         </section>
 
-        <section className="producto-informacion">
+        {/* COLUMNA DERECHA: INFORMACIÓN Y COMPRA */}
+        <section className="col-12 col-lg-6 producto-informacion">
           <p className="producto-marca">{producto.marca}</p>
           <h1 className="producto-titulo">{producto.nombre}</h1>
 
-          <div className="producto-valoracion">
-            <a href="#reseñas">Ver reseñas y calificaciones</a>
+          <div className="producto-valoracion mb-4">
+            <span className="estrellas">★★★★☆</span>
+            <a href="#resenas" className="text-info text-decoration-none ms-2">Ver reseñas y calificaciones</a>
           </div>
 
-          <div className="producto-precio">
+          <div className="producto-precio d-flex align-items-center flex-wrap gap-3 mb-2">
             {esOferta ? (
               <>
                 <span className="precio-anterior">
                   ${producto.precio.toLocaleString('es-CL')}
                 </span>
-                <span className="precio-actual">
+                <span className="precio-actual text-primary">
                   ${precioOferta.toLocaleString('es-CL')}
                 </span>
                 <span className="etiqueta-descuento">
@@ -239,7 +248,7 @@ function DetalleProducto() {
                 </span>
               </>
             ) : (
-              <span className="precio-actual">
+              <span className="precio-actual text-info">
                 ${producto.precio.toLocaleString('es-CL')}
               </span>
             )}
@@ -247,43 +256,42 @@ function DetalleProducto() {
 
           <p className="producto-cuotas">Hasta 12 cuotas sin interés</p>
 
-          <p className={`producto-stock ${claseStock}`}>
-            <span className="indicador-stock">{producto.estado}</span>
+          <p className={`producto-stock ${claseStock} mb-4`}>
+            <span className="indicador-stock"></span>
+            {producto.estado}
           </p>
 
-          <form onSubmit={handleAgregarAlCarrito} className="producto-compra">
-            <div className="selector-cantidad">
-              <label htmlFor="cantidad">Cantidad</label>
-
-              <div className="selector-cantidad-controles">
+          {/* FORMULARIO DE COMPRA CON INPUT-GROUP DE BOOTSTRAP */}
+          <form onSubmit={handleAgregarAlCarrito} className="d-flex flex-column flex-md-row align-items-md-end gap-3 p-4 bg-dark border border-secondary rounded mb-4 shadow">
+            
+            <div className="selector-cantidad" style={{ maxWidth: '180px' }}>
+              <label htmlFor="cantidad" className="form-label text-light fw-bold mb-2">Cantidad</label>
+              <div className="input-group">
                 <button
                   type="button"
-                  className="btn-cantidad"
+                  className="btn btn-outline-info fw-bold fs-5"
                   onClick={handleRestar}
                   disabled={Number(cantidad) <= 1}
                   aria-label="Restar cantidad"
                 >
                   -
                 </button>
-
                 <input
                   type="number"
                   id="cantidad"
                   name="cantidad"
+                  className="form-control bg-dark text-light text-center border-info"
                   value={cantidad}
                   min="1"
                   max={producto.stock}
                   onChange={handleCambiarCantidad}
                   aria-label="Cantidad de productos"
                 />
-
                 <button
                   type="button"
-                  className="btn-cantidad"
+                  className="btn btn-outline-info fw-bold fs-5"
                   onClick={handleSumar}
-                  disabled={
-                    producto.stock <= 0 || Number(cantidad) >= producto.stock
-                  }
+                  disabled={producto.stock <= 0 || Number(cantidad) >= producto.stock}
                   aria-label="Sumar cantidad"
                 >
                   +
@@ -293,85 +301,89 @@ function DetalleProducto() {
 
             <button
               type="submit"
-              className="btn-agregar-carrito"
+              className="btn btn-primary flex-grow-1 py-2 fw-bold d-flex align-items-center justify-content-center gap-2"
               disabled={producto.stock <= 0 || cantidad === ''}
             >
-              <img src={iconoCarrito} alt="" />
+              <img src={iconoCarrito} alt="" style={{ width: '22px' }} />
               {producto.stock <= 0 ? 'Sin stock' : 'Agregar al carrito'}
             </button>
 
             {mensajeCarrito && (
               <p
                 role="status"
-                className={`mensaje-carrito mt-2 ${
-                  esErrorCarrito ? 'text-danger mostrar' : 'mostrar'
+                className={`position-absolute mt-2 w-100 ${
+                  esErrorCarrito ? 'text-danger' : 'text-success'
                 }`}
+                style={{ bottom: '-30px', left: '0' }}
               >
                 {mensajeCarrito}
               </p>
             )}
           </form>
 
-          <ul className="producto-datos-envio">
-            <li>Envíos a todo Chile</li>
-            <li>Garantía de 6 meses</li>
-            <li>Retiro gratis en tienda</li>
+          <ul className="producto-datos-envio list-unstyled m-0 d-flex flex-column gap-2 text-light">
+            <li><span className="text-info me-2">✓</span> Envíos a todo Chile</li>
+            <li><span className="text-info me-2">✓</span> Garantía de 6 meses</li>
+            <li><span className="text-info me-2">✓</span> Retiro gratis en tienda</li>
           </ul>
         </section>
       </div>
 
-      <section className="producto-especificaciones my-5">
-        <h2>Especificaciones técnicas</h2>
+      {/* ESPECIFICACIONES TÉCNICAS */}
+      <section className="producto-especificaciones my-5 bg-dark p-4 rounded border border-secondary">
+        <h2 className="titulo-gamer text-info mb-4" style={{fontFamily: "'Press Start 2P', cursive", fontSize: "18px"}}>Especificaciones técnicas</h2>
 
         <div className="table-responsive">
-          <table className="tabla-especificaciones table table-dark table-striped">
+          <table className="tabla-especificaciones table table-dark table-striped table-hover border-secondary m-0">
             <tbody>
               {producto.especificaciones &&
                 Object.entries(producto.especificaciones).map(([clave, valor]) => (
                   <tr key={clave}>
-                    <th scope="row">{clave}</th>
-                    <td>{valor}</td>
+                    <th scope="row" className="text-info w-25">{clave}</th>
+                    <td className="text-light">{valor}</td>
                   </tr>
                 ))}
             </tbody>
           </table>
         </div>
 
-        <div className="producto-descripcion mt-4">
-          <h3>Descripción</h3>
-          <p>{producto.descripcion}</p>
+        <div className="mt-4 pt-4 border-top border-secondary">
+          <h3 className="text-primary mb-3" style={{fontFamily: "'Press Start 2P', cursive", fontSize: "14px"}}>Descripción</h3>
+          <p className="text-light" style={{ opacity: 0.9, lineHeight: 1.7 }}>{producto.descripcion}</p>
         </div>
       </section>
 
-      
-      <ListaResenas
-        resenas={[
-          {
-            id: 1,
-            autor: 'Martín G.',
-            calificacion: 5,
-            fecha: '2026-08-12',
-            comentario:
-              'Excelente rendimiento para el precio, llevo tiempo probando sin problemas y muy buena experiencia.',
-          },
-          {
-            id: 2,
-            autor: 'Camila R.',
-            calificacion: 4,
-            fecha: '2026-09-20',
-            comentario:
-              'Buen producto, cumple con lo esperado y llegó en buenas condiciones.',
-          },
-          {
-            id: 3,
-            autor: 'Diego P.',
-            calificacion: 4,
-            fecha: '2026-09-01',
-            comentario:
-              'Buena experiencia y buen rendimiento.',
-          },
-        ]}
-      />
+      {/* RESEÑAS */}
+      <div id="resenas">
+        <ListaResenas
+          resenas={[
+            {
+              id: 1,
+              autor: 'Martín G.',
+              calificacion: 5,
+              fecha: '2026-08-12',
+              comentario:
+                'Excelente rendimiento para el precio, llevo tiempo probando sin problemas y muy buena experiencia.',
+            },
+            {
+              id: 2,
+              autor: 'Camila R.',
+              calificacion: 4,
+              fecha: '2026-09-20',
+              comentario:
+                'Buen producto, cumple con lo esperado y llegó en buenas condiciones.',
+            },
+            {
+              id: 3,
+              autor: 'Diego P.',
+              calificacion: 4,
+              fecha: '2026-09-01',
+              comentario:
+                'Buena experiencia y buen rendimiento.',
+            },
+          ]}
+        />
+      </div>
     </main>
   );
 }

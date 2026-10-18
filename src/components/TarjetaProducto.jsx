@@ -6,21 +6,35 @@ const TarjetaProducto = ({ producto, agregarAlCarrito }) => {
   const sinStock = producto.stock <= 0;
 
   return (
-    <div className="card">
-      <img src={producto.imagen} alt={producto.nombre} />
-      <h3>{producto.nombre}</h3>
-      <p>${producto.precio}</p>
+    <div className="card h-100 bg-dark text-light border-secondary tarjeta-producto position-relative p-3">
+      <div className="text-center mb-3">
+        <img 
+          src={producto.imagen} 
+          alt={producto.nombre} 
+          className="img-fluid"
+          style={{height: "170px", objectFit: "contain", transition: "transform 0.3s ease"}} 
+        />
+      </div>
+      
+      <div className="card-body d-flex flex-column p-0">
+        <h5 className="card-title fs-5 fw-bold">{producto.nombre}</h5>
+        
+        <p className="fs-4 fw-bold mb-3 mt-auto">
+          ${producto.precio}
+        </p>
 
-      {sinStock && (
-        <p role="status">Producto sin stock</p>
-      )}
+        {sinStock && (
+          <p role="status" className="text-danger fw-bold mb-2">Producto sin stock</p>
+        )}
 
-      <button
-        onClick={() => agregarAlCarrito(producto)}
-        disabled={sinStock}
-      >
-        {sinStock ? 'Sin stock' : 'Agregar'}
-      </button>
+        <button
+          className="btn btn-primary w-100 fw-bold mt-auto"
+          onClick={() => agregarAlCarrito(producto)}
+          disabled={sinStock}
+        >
+          {sinStock ? 'Sin stock' : 'Agregar'}
+        </button>
+      </div>
     </div>
   );
 };

@@ -42,13 +42,6 @@
     text-shadow:
         0 0 8px rgba(214, 35, 106, 0.5);
 }
-/* ----------------------------------------------------- DETALLE PRINCIPAL DEL PRODUCTO ----------------------------------------------------- */
-.producto-detalle {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 50px;
-    align-items: start;
-}
 
 /* ----------------------------------------------------- GALERÍA ----------------------------------------------------- */
 .producto-galeria {
@@ -91,44 +84,6 @@
 
 .galeria-imagen-principal img:hover {
     transform: scale(1.04);
-}
-
-/* ----------------------------------------------------- MINIATURAS ----------------------------------------------------- */
-.galeria-miniaturas {
-    list-style: none;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    margin: 15px 0 0 0;
-    padding: 0;
-}
-
-.galeria-miniaturas li {
-    min-width: 0;
-}
-
-.galeria-miniaturas a {
-    display: block;
-    background-color: rgba(18, 14, 26, 0.6);
-    border: 1px solid rgba(0, 210, 255, 0.25);
-    border-radius: 6px;
-    padding: 5px;
-    transition:
-        border-color 0.3s ease,
-        box-shadow 0.3s ease;
-}
-
-.galeria-miniaturas a:hover {
-    border-color: var(--color-acento);
-    box-shadow:
-        0 0 8px rgba(0, 210, 255, 0.25);
-}
-/*POR AHORA NO ESTÁ FUNCIONAL YA QUE HAY QUE BUSCAR MUCHAS FOTOS*/
-.galeria-miniaturas img {
-    display: none;
-    /*width: 100%;
-    height: 75px;
-    object-fit: contain;*/
 }
 
 /* ----------------------------------------------------- INFORMACIÓN DEL PRODUCTO ----------------------------------------------------- */
@@ -295,96 +250,6 @@
     font-family: 'Rajdhani', sans-serif;
     font-size: 15px;
     font-weight: 600;
-}
-
-.selector-cantidad-controles {
-    display: flex;
-    align-items: center;
-}
-
-.btn-cantidad {
-    width: 38px;
-    height: 40px;
-    background-color: var(--color-superficie);
-    color: var(--color-acento);
-    border: 1px solid rgba(0, 210, 255, 0.45);
-    font-size: 20px;
-    font-weight: 700;
-    cursor: pointer;
-    transition:
-        background-color 0.3s ease,
-        color 0.3s ease,
-        border-color 0.3s ease;
-}
-
-.btn-cantidad:first-child {
-    border-radius: 6px 0 0 6px;
-}
-
-.btn-cantidad:last-child {
-    border-radius: 0 6px 6px 0;
-}
-
-.btn-cantidad:hover {
-    background-color: var(--color-acento);
-    color: var(--color-fondo);
-    border-color: var(--color-acento);
-}
-
-.selector-cantidad input {
-    width: 55px;
-    height: 40px;
-    background-color: var(--color-fondo);
-    color: var(--color-texto);
-    border-top: 1px solid rgba(0, 210, 255, 0.45);
-    border-bottom: 1px solid rgba(0, 210, 255, 0.45);
-    border-left: none;
-    border-right: none;
-    text-align: center;
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    outline: none;
-}
-
-/* BOTÓN AGREGAR */
-
-.btn-agregar-carrito {
-    flex: 1;
-    min-height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    background-color: var(--color-primario);
-    color: #FFFFFF;
-    border: 1px solid var(--color-primario);
-    border-radius: 8px;
-    padding: 10px 20px;
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    transition:
-        background-color 0.3s ease,
-        border-color 0.3s ease,
-        color 0.3s ease,
-        box-shadow 0.3s ease,
-        transform 0.3s ease;
-}
-
-.btn-agregar-carrito img {
-    width: 22px;
-    height: 22px;
-}
-
-.btn-agregar-carrito:hover {
-    background-color: var(--color-acento);
-    border-color: var(--color-acento);
-    color: var(--color-fondo);
-    box-shadow:
-        0 0 12px rgba(0, 210, 255, 0.45);
-    transform: translateY(-2px);
 }
 
 /* ----------------------------------------------------- INFORMACIÓN DE ENVÍO ----------------------------------------------------- */
@@ -561,79 +426,7 @@
 }
 
 /* ----------------------------------------------------- COMPATIBILIDAD ----------------------------------------------------- */
-@media (max-width: 900px) {
-    .producto-detalle {
-        grid-template-columns: 1fr;
-        gap: 35px;
-    }
-    .producto-titulo {
-        font-size: 19px;
-    }
 
-}
-
-@media (max-width: 768px) {
-    .producto-main {
-        padding: 30px 20px 45px 20px;
-    }
-    .miga-de-pan {
-        padding: 15px 20px 5px 20px;
-    }
-    .producto-galeria {
-        padding: 18px;
-    }
-    .galeria-imagen-principal {
-        height: 300px;
-    }
-    .producto-compra {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    .selector-cantidad {
-        width: 100%;
-    }
-    .selector-cantidad-controles {
-        width: 100%;
-    }
-    .selector-cantidad input {
-        flex: 1;
-    }
-    .btn-agregar-carrito {
-        width: 100%;
-    }
-    .producto-especificaciones,
-    .producto-reseñas {
-        padding: 22px 18px;
-    }
-    .tabla-especificaciones th,
-    .tabla-especificaciones td {
-        padding: 11px 8px;
-        font-size: 14px;
-    }
-    .tabla-especificaciones th {
-        width: 40%;
-    }
-    .reseña-fecha {
-        width: 100%;
-        margin-left: 0;
-    }
-}
-
-@media (max-width: 500px) {
-    .producto-titulo {
-        font-size: 16px;
-        line-height: 1.5;
-    }
-    .producto-precio .precio-actual {
-        font-size: 25px;
-    }
-    .galeria-miniaturas {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    .galeria-miniaturas img {
-        height: 65px;
-    }
-}
 .mensaje-carrito {
     display: none;
     margin-top: 15px;
