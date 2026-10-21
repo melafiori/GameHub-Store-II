@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { productos } from '../data/productos'; 
 import '../styles/catalogo.css';
@@ -29,27 +29,34 @@ function Catcategoria() {
     const categoriaURL = searchParams.get("categoria");
     const busquedaURL = searchParams.get("busqueda"); 
 
-// Estado con los filtros que se están seleccionando en el formulario (Temporales)
-    const [filtrosTemp, setFiltrosTemp] = useState(FILTROS_VACIOS);
+    // Función para inicializar el estado basado en la URL
+    const inicializarFiltros = () => {
+        const catInicial = (categoriaURL && CATEGORIAS[categoriaURL])
+            ? [CATEGORIAS[categoriaURL]]
+            : [];
+        return { ...FILTROS_VACIOS, categorias: catInicial };
+    };
+
+    // Estado con los filtros que se están seleccionando en el formulario (Temporales)
+    const [filtrosTemp, setFiltrosTemp] = useState(inicializarFiltros);
 
     // Estado con los filtros efectivamente aplicados
-    const [filtrosAplicados, setFiltrosAplicados] = useState(FILTROS_VACIOS);
+    const [filtrosAplicados, setFiltrosAplicados] = useState(inicializarFiltros);
 
     // Estados independientes de ordenamiento y paginación
     const [orden, setOrden] = useState("precio-asc");
     const [paginaActual, setPaginaActual] = useState(1);
 
-    // Sincronizar categoría inicial desde la URL
-    useEffect(() => {
-        const catInicial = (categoriaURL && CATEGORIAS[categoriaURL])
-            ? [CATEGORIAS[categoriaURL]]
-            : [];
+    // Guardar URL anterior para control de navegaciom
+    const [urlAnterior, setUrlAnterior] = useState(categoriaURL);
 
-        const nuevoEstado = { ...FILTROS_VACIOS, categorias: catInicial };
+    if (categoriaURL !== urlAnterior) {
+        setUrlAnterior(categoriaURL);
+        const nuevoEstado = inicializarFiltros();
         setFiltrosTemp(nuevoEstado);
         setFiltrosAplicados(nuevoEstado);
         setPaginaActual(1);
-    }, [categoriaURL]);
+    }
 
     // Manejadores de cambios (Checkbox e Inputs)
     const handleCategoriaChange = (nombreCat) => {
@@ -160,7 +167,7 @@ function Catcategoria() {
                     <div className="filtros p-4 rounded">
                         <form onSubmit={handleAplicarFiltros} onReset={handleLimpiarFiltros}>
                             <div className="mb-4">
-                                <h4 className="text-info fs-6 mb-3" style={{ fontFamily: "'Press Start 2P', cursive" }}>Categoría</h4>
+                                <h4 className="text-info mb-3 text-break" style={{ fontFamily: "'Press Start 2P', cursive", fontSize: "12px" }}>Categoría</h4>
                                 <ul className="list-unstyled m-0 p-0">
                                     {Object.entries(CATEGORIAS).map(([key, label]) => (
                                         <li key={key} className="form-check mb-2">
@@ -182,7 +189,7 @@ function Catcategoria() {
                             </div>
 
                             <div className="mb-4">
-                                <h4 className="text-info fs-6 mb-3" style={{ fontFamily: "'Press Start 2P', cursive" }}>Marca</h4>
+                                <h4 className="text-info mb-3 text-break" style={{ fontFamily: "'Press Start 2P', cursive", fontSize: "12px" }}>Marca</h4>
                                 <ul className="list-unstyled m-0 p-0">
                                     {["asus", "msi", "gigabyte", "nvidia", "amd", "zotac"].map((marca) => (
                                         <li key={marca} className="form-check mb-2">
@@ -204,7 +211,7 @@ function Catcategoria() {
                             </div>
 
                             <div className="mb-4">
-                                <h4 className="text-info fs-6 mb-3" style={{ fontFamily: "'Press Start 2P', cursive" }}>Rango de precio</h4>
+                                <h4 className="text-info mb-3 text-break" style={{ fontFamily: "'Press Start 2P', cursive", fontSize: "12px" }}>Rango de precio</h4>
                                 <div className="d-flex flex-column gap-2">
                                     <label className="text-light" htmlFor="precio-min">Mínimo</label>
                                     <input
@@ -232,7 +239,7 @@ function Catcategoria() {
                             </div>
 
                             <div className="mb-4">
-                                <h4 className="text-info fs-6 mb-3" style={{ fontFamily: "'Press Start 2P', cursive" }}>Disponibilidad</h4>
+                                <h4 className="text-info mb-3 text-break" style={{ fontFamily: "'Press Start 2P', cursive", fontSize: "12px" }}>Disponibilidad</h4>
                                 <div className="form-check">
                                     <input
                                         type="checkbox"
