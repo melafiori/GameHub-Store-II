@@ -3,21 +3,20 @@ import { useSearchParams, Link } from 'react-router-dom';
 import { productos } from '../data/productos';
 import { useCart } from '../context/CartContext';
 import '../styles/producto.css';
+import ListaResenas from '../components/ListaResenas';
 
-// Importación de ícono para producción en Vite/Vercel
 import iconoCarrito from '../assets/icons/icono-carrito.svg';
 
 const IDS_OFERTAS = [2, 4, 29, 19];
 
-// Mapeo para convertir la categoría del producto a la Query Param correspondiente
 const CATEGORIA_SLUGS = {
-  "Notebooks": "notebooks",
-  "Tarjetas Gráficas": "graficas",
-  "Procesadores": "procesadores",
-  "Periféricos": "perifericos",
-  "Consolas": "consolas",
-  "Monitores": "monitores",
-  "Accesorios": "accesorios"
+  'Notebooks': 'notebooks',
+  'Tarjetas Gráficas': 'graficas',
+  'Procesadores': 'procesadores',
+  'Periféricos': 'perifericos',
+  'Consolas': 'consolas',
+  'Monitores': 'monitores',
+  'Accesorios': 'accesorios',
 };
 
 function DetalleProducto() {
@@ -31,19 +30,22 @@ function DetalleProducto() {
   const [cantidad, setCantidad] = useState(1);
   const [imagenSeleccionada, setImagenSeleccionada] = useState('');
   const [mensajeCarrito, setMensajeCarrito] = useState('');
+  const [esErrorCarrito, setEsErrorCarrito] = useState(false);
 
   useEffect(() => {
     if (producto) {
       setImagenSeleccionada(producto.imagen);
+      setCantidad(1);
+      setMensajeCarrito('');
     }
   }, [producto]);
 
   if (!producto) {
     return (
-      <main className="container text-center my-5">
-        <h2>Producto no encontrado</h2>
-        <p>El producto que buscas no existe o ha sido removido.</p>
-        <Link to="/catcategoria" className="btn btn-primary">
+      <main className="container text-center my-5 py-5">
+        <h2 className="text-light">Producto no encontrado</h2>
+        <p className="text-secondary">El producto que buscas no existe o ha sido removido.</p>
+        <Link to="/catalogo" className="btn btn-primary mt-3">
           Volver al catálogo
         </Link>
       </main>
@@ -57,95 +59,182 @@ function DetalleProducto() {
   );
 
   const handleRestar = () => {
-    setCantidad((prev) => (prev > 1 ? prev - 1 : 1));
+    setCantidad((prev) => Math.max(1, prev - 1));
+    setMensajeCarrito('');
   };
 
   const handleSumar = () => {
-    if (producto.stock > 0 && cantidad >= producto.stock) {
-      alert(`Solo hay ${producto.stock} unidades en stock.`);
+    if (producto.stock <= 0) {
+      setMensajeCarrito('Este producto no tiene stock disponible.');
+      setEsErrorCarrito(true);
       return;
     }
-    setCantidad((prev) => prev + 1);
+
+    setCantidad((prev) => {
+      if (prev >= producto.stock) {
+        setMensajeCarrito(
+          `Solo hay ${producto.stock} unidades disponibles.`
+        );
+        setEsErrorCarrito(true);
+        return producto.stock;
+      }
+
+      setMensajeCarrito('');
+      return prev + 1;
+    });
+  };
+
+  const handleCambiarCantidad = (e) => {
+    const valor = e.target.value;
+
+    if (valor === '') {
+      setCantidad('');
+      setMensajeCarrito('');
+      return;
+    }
+
+    const numero = Number(valor);
+
+    if (!Number.isInteger(numero) || numero < 1) {
+      setCantidad(1);
+      return;
+    }
+
+    if (numero > producto.stock) {
+      setCantidad(producto.stock);
+      setMensajeCarrito(
+        `Solo hay ${producto.stock} unidades disponibles.`
+      );
+      setEsErrorCarrito(true);
+      return;
+    }
+
+    setCantidad(numero);
+    setMensajeCarrito('');
+    setEsErrorCarrito(false);
   };
 
   const handleAgregarAlCarrito = (e) => {
     e.preventDefault();
+
+    if (producto.stock <= 0) {
+      setMensajeCarrito('Este producto no tiene stock disponible.');
+      setEsErrorCarrito(true);
+      return;
+    }
+
+    if (!Number.isInteger(Number(cantidad)) || Number(cantidad) < 1) {
+      setMensajeCarrito('Ingresa una cantidad válida.');
+      setEsErrorCarrito(true);
+      return;
+    }
+
+    if (Number(cantidad) > producto.stock) {
+      setMensajeCarrito(
+        `Solo hay ${producto.stock} unidades disponibles.`
+      );
+      setEsErrorCarrito(true);
+      return;
+    }
+
     const precioFinal = esOferta ? precioOferta : producto.precio;
 
-    agregarAlCarrito(
+    const resultado = agregarAlCarrito(
       {
-        id: producto.id,
-        nombre: producto.nombre,
-        imagen: producto.imagen,
+        ...producto,
         precio: precioFinal,
       },
-      cantidad
+      Number(cantidad)
     );
 
-    setMensajeCarrito(`¡Añadido! (${cantidad}) ${producto.nombre} al carrito.`);
-    setTimeout(() => setMensajeCarrito(''), 4000);
+    if (resultado?.ok) {
+      setMensajeCarrito(
+        `¡Añadido! (${cantidad}) ${producto.nombre} al carrito.`
+      );
+      setEsErrorCarrito(false);
+    } else {
+      setMensajeCarrito(
+        resultado?.mensaje || 'No se pudo agregar el producto al carrito.'
+      );
+      setEsErrorCarrito(true);
+    }
   };
 
   const claseStock =
     producto.stock === 0
       ? 'agotado'
       : producto.stock <= 3
-      ? 'ultimas'
-      : 'disponible';
+        ? 'ultimas'
+        : 'disponible';
 
   const slugCategoria = CATEGORIA_SLUGS[producto.categoria] || 'graficas';
 
   return (
-    <main className="producto-main container my-4">
-      {/* MIGA DE PAN */}
-      <nav className="miga-de-pan mb-4" aria-label="ruta de navegación">
-        <ul className="d-flex list-unstyled gap-2 align-items-center">
+    <main className="container my-5">
+      {/* MIGAS DE PAN */}
+      <nav className="mb-4" aria-label="Ruta de navegación">
+        <ul className="d-flex list-unstyled gap-2 align-items-center m-0 p-0">
           <li>
-            <Link to="/">Inicio</Link> /
+            <Link to="/" className="text-info text-decoration-none">Inicio</Link> <span className="text-secondary ms-2">/</span>
           </li>
           <li>
-            <Link to={`/catcategoria?categoria=${slugCategoria}`}>
+            <Link to={`/catalogo?categoria=${slugCategoria}`} className="text-info text-decoration-none">
               {producto.categoria}
-            </Link>{' '}
-            /
+            </Link> <span className="text-secondary ms-2">/</span>
           </li>
-          <li className="active" aria-current="page">
+          <li className="text-light fw-bold" aria-current="page">
             {producto.nombre}
           </li>
         </ul>
       </nav>
 
-      {/* SECCIÓN PRINCIPAL */}
-      <div className="producto-detalle">
-        <section className="producto-galeria">
-          <div className="galeria-imagen-principal">
-            <img src={imagenSeleccionada || producto.imagen} alt={producto.nombre} />
-          </div>
+      {/* GRILLA PRINCIPAL BOOTSTRAP (2 COLUMNAS EN PC, 1 EN MÓVIL) */}
+      <div className="row g-5">
+        
+        {/* COLUMNA IZQUIERDA: GALERÍA */}
+        <section className="col-12 col-lg-6">
+          <div className="producto-galeria">
+            <div className="galeria-imagen-principal">
+              <img
+                src={imagenSeleccionada || producto.imagen}
+                alt={producto.nombre}
+                className="img-fluid"
+              />
+            </div>
 
-          <ul className="galeria-miniaturas">
-            {[...Array(4)].map((_, index) => (
-              <li key={index}>
-                <button
-                  type="button"
-                  className="btn-miniatura"
-                  onClick={() => setImagenSeleccionada(producto.imagen)}
-                >
-                  <img src={producto.imagen} alt={`Vista ${index + 1}`} />
-                </button>
-              </li>
-            ))}
-          </ul>
+            {/* GRILLA BOOTSTRAP PARA MINIATURAS */}
+            <ul className="row g-2 list-unstyled mt-3 mb-0">
+              {[...Array(4)].map((_, index) => (
+                <li className="col-3" key={index}>
+                  <button
+                    type="button"
+                    className="btn p-1 w-100 h-100 border-info bg-dark"
+                    onClick={() => setImagenSeleccionada(producto.imagen)}
+                    aria-label={`Seleccionar vista ${index + 1}`}
+                  >
+                    <img
+                      src={producto.imagen}
+                      alt={`Vista ${index + 1} de ${producto.nombre}`}
+                      className="img-fluid"
+                    />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
         </section>
 
-        <section className="producto-informacion">
+        {/* COLUMNA DERECHA: INFORMACIÓN Y COMPRA */}
+        <section className="col-12 col-lg-6 producto-informacion">
           <p className="producto-marca">{producto.marca}</p>
           <h1 className="producto-titulo">{producto.nombre}</h1>
 
-          <div className="producto-valoracion">
-            <span className="estrellas">★★★★☆</span> <a href="#reseñas">128 reseñas</a>
+          <div className="producto-valoracion mb-4">
+            <span className="estrellas">★★★★☆</span>
+            <a href="#resenas" className="text-info text-decoration-none ms-2">Ver reseñas y calificaciones</a>
           </div>
 
-          <div className="producto-precio">
+          <div className="producto-precio d-flex align-items-center flex-wrap gap-3 mb-2">
             {esOferta ? (
               <>
                 <span className="precio-anterior">
@@ -154,7 +243,9 @@ function DetalleProducto() {
                 <span className="precio-actual">
                   ${precioOferta.toLocaleString('es-CL')}
                 </span>
-                <span className="etiqueta-descuento">-{porcentajeDescuento}%</span>
+                <span className="etiqueta-descuento">
+                  -{porcentajeDescuento}%
+                </span>
               </>
             ) : (
               <span className="precio-actual">
@@ -165,18 +256,23 @@ function DetalleProducto() {
 
           <p className="producto-cuotas">Hasta 12 cuotas sin interés</p>
 
-          <p className={`producto-stock ${claseStock}`}>
-            <span className="indicador-stock">{producto.estado}</span>
+          <p className={`producto-stock ${claseStock} mb-4`}>
+            <span className="indicador-stock"></span>
+            {producto.estado}
           </p>
 
-          <form onSubmit={handleAgregarAlCarrito} className="producto-compra">
-            <div className="selector-cantidad">
-              <label htmlFor="cantidad">Cantidad</label>
-              <div className="selector-cantidad-controles">
+          {/* FORMULARIO DE COMPRA CON INPUT-GROUP DE BOOTSTRAP */}
+          <form onSubmit={handleAgregarAlCarrito} className="d-flex flex-column flex-md-row align-items-md-end gap-3 p-4 bg-dark border border-secondary rounded mb-4 shadow">
+            
+            <div className="selector-cantidad" style={{ maxWidth: '180px' }}>
+              <label htmlFor="cantidad" className="form-label text-light fw-bold mb-2">Cantidad</label>
+              <div className="input-group">
                 <button
                   type="button"
-                  className="btn-cantidad"
+                  className="btn btn-outline-info fw-bold fs-5"
                   onClick={handleRestar}
+                  disabled={Number(cantidad) <= 1}
+                  aria-label="Restar cantidad"
                 >
                   -
                 </button>
@@ -184,14 +280,19 @@ function DetalleProducto() {
                   type="number"
                   id="cantidad"
                   name="cantidad"
+                  className="form-control bg-dark text-light text-center border-info"
                   value={cantidad}
                   min="1"
-                  onChange={(e) => setCantidad(Math.max(1, Number(e.target.value)))}
+                  max={producto.stock}
+                  onChange={handleCambiarCantidad}
+                  aria-label="Cantidad de productos"
                 />
                 <button
                   type="button"
-                  className="btn-cantidad"
+                  className="btn btn-outline-info fw-bold fs-5"
                   onClick={handleSumar}
+                  disabled={producto.stock <= 0 || Number(cantidad) >= producto.stock}
+                  aria-label="Sumar cantidad"
                 >
                   +
                 </button>
@@ -200,72 +301,88 @@ function DetalleProducto() {
 
             <button
               type="submit"
-              className="btn-agregar-carrito"
-              disabled={producto.stock === 0}
+              className="btn btn-primary flex-grow-1 py-2 fw-bold d-flex align-items-center justify-content-center gap-2"
+              disabled={producto.stock <= 0 || cantidad === ''}
             >
-              <img src={iconoCarrito} alt="icono de carrito" />
-              {producto.stock === 0 ? 'Sin Stock' : 'Agregar al carrito'}
+              <img src={iconoCarrito} alt="" style={{ width: '22px' }} />
+              {producto.stock <= 0 ? 'Sin stock' : 'Agregar al carrito'}
             </button>
 
             {mensajeCarrito && (
-              <p className="mensaje-carrito text-success mt-2">
+              <p
+                role="status"
+                className={`mensaje-carrito mostrar ${
+                  esErrorCarrito ? 'mensaje-carrito-error' : 'mensaje-carrito-ok'
+                }`}
+              >
                 {mensajeCarrito}
               </p>
             )}
           </form>
 
-          <ul className="producto-datos-envio">
-            <li>Envíos a todo Chile</li>
-            <li>Garantía de 6 meses</li>
-            <li>Retiro gratis en tienda</li>
+          <ul className="producto-datos-envio list-unstyled m-0 d-flex flex-column gap-2 text-light">
+            <li><span className="text-info me-2">✓</span> Envíos a todo Chile</li>
+            <li><span className="text-info me-2">✓</span> Garantía de 6 meses</li>
+            <li><span className="text-info me-2">✓</span> Retiro gratis en tienda</li>
           </ul>
         </section>
       </div>
 
       {/* ESPECIFICACIONES TÉCNICAS */}
       <section className="producto-especificaciones my-5">
-        <h2>Especificaciones técnicas</h2>
-        <table className="tabla-especificaciones table table-dark table-striped">
-          <tbody>
-            {producto.especificaciones &&
-              Object.entries(producto.especificaciones).map(([clave, valor]) => (
-                <tr key={clave}>
-                  <th>{clave}</th>
-                  <td>{valor}</td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
+        <h2 className="mb-4">Especificaciones técnicas</h2>
 
-        <div className="producto-descripcion mt-4">
-          <h3>Descripción</h3>
-          <p>{producto.descripcion}</p>
+        <div className="table-responsive">
+          <table className="tabla-especificaciones table table-dark table-striped table-hover border-secondary m-0">
+            <tbody>
+              {producto.especificaciones &&
+                Object.entries(producto.especificaciones).map(([clave, valor]) => (
+                  <tr key={clave}>
+                    <th scope="row" className="text-info w-25">{clave}</th>
+                    <td className="text-light">{valor}</td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="producto-descripcion mt-4 pt-4 border-top border-secondary">
+          <h3 className="producto-descripcion-titulo mb-3">Descripción</h3>
+          <p className="text-light" style={{ opacity: 0.9, lineHeight: 1.7 }}>{producto.descripcion}</p>
         </div>
       </section>
 
       {/* RESEÑAS */}
-      <section className="producto-reseñas" id="reseñas">
-        <h2>Reseñas de usuarios</h2>
-        <div className="reseñas-resumen">
-          <span className="reseñas-promedio">4.5</span>
-          <span className="estrellas">★★★★☆</span>
-          <p>Basado en 128 reseñas</p>
-        </div>
-
-        <ul className="reseñas-lista">
-          <li className="reseña">
-            <div className="reseña-cabecera">
-              <span className="reseña-autor">Martín G.</span>
-              <span className="estrellas">★★★★★</span>
-              <span className="reseña-fecha">12 de agosto de 2026</span>
-            </div>
-            <p className="reseña-comentario">
-              Excelente rendimiento para el precio, llevo tiempo probando sin
-              problemas y muy buena experiencia.
-            </p>
-          </li>
-        </ul>
-      </section>
+      <div id="resenas">
+        <ListaResenas
+          resenas={[
+            {
+              id: 1,
+              autor: 'Martín G.',
+              calificacion: 5,
+              fecha: '2026-08-12',
+              comentario:
+                'Excelente rendimiento para el precio, llevo tiempo probando sin problemas y muy buena experiencia.',
+            },
+            {
+              id: 2,
+              autor: 'Camila R.',
+              calificacion: 4,
+              fecha: '2026-09-20',
+              comentario:
+                'Buen producto, cumple con lo esperado y llegó en buenas condiciones.',
+            },
+            {
+              id: 3,
+              autor: 'Diego P.',
+              calificacion: 4,
+              fecha: '2026-09-01',
+              comentario:
+                'Buena experiencia y buen rendimiento.',
+            },
+          ]}
+        />
+      </div>
     </main>
   );
 }

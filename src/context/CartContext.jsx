@@ -1,50 +1,129 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 
 const CartContext = createContext();
 
 export function CartProvider({ children }) {
-  // Guardar y recuperar del localStorage para no perder el carrito al recargar
   const [cart, setCart] = useState(() => {
-    const savedCart = localStorage.getItem('gamehub_cart');
-    return savedCart ? JSON.parse(savedCart) : [];
+    try {
+      const savedCart = localStorage.getItem('gamehub_cart');
+      return savedCart ? JSON.parse(savedCart) : [];
+    } catch {
+      return [];
+    }
   });
 
+  // Referencia al carrito actual para validar antes de actualizarlo
+  const cartRef = useRef(cart);
+
   useEffect(() => {
+    cartRef.current = cart;
     localStorage.setItem('gamehub_cart', JSON.stringify(cart));
   }, [cart]);
 
-  // Agregar un producto (si ya existe, suma la cantidad)
+  // Agregar productos sin duplicarlos y respetando el stock
   const agregarAlCarrito = (producto, cantidad = 1) => {
-    setCart((prevCart) => {
-      const existe = prevCart.find((item) => item.id === producto.id);
-      if (existe) {
-        return prevCart.map((item) =>
-          item.id === producto.id
-            ? { ...item, cantidad: item.cantidad + cantidad }
-            : item
-        );
-      }
-      return [...prevCart, { ...producto, cantidad }];
-    });
+    const stock = Number(producto.stock);
+    const cantidadSolicitada = Number(cantidad);
+
+    if (!Number.isFinite(stock) || stock <= 0) {
+      return {
+        ok: false,
+        mensaje: 'Este producto no tiene stock disponible.',
+      };
+    }
+
+    if (
+      !Number.isInteger(cantidadSolicitada) ||
+      cantidadSolicitada < 1
+    ) {
+      return {
+        ok: false,
+        mensaje: 'La cantidad debe ser al menos 1.',
+      };
+    }
+
+    const carritoActual = cartRef.current;
+    const existente = carritoActual.find(
+      (item) => item.id === producto.id
+    );
+
+    const cantidadActual = existente ? existente.cantidad : 0;
+    const nuevaCantidad = cantidadActual + cantidadSolicitada;
+
+    if (nuevaCantidad > stock) {
+      return {
+        ok: false,
+        mensaje: `Solo hay ${stock} unidades disponibles de este producto.`,
+      };
+    }
+
+    let nuevoCarrito;
+
+    if (existente) {
+      nuevoCarrito = carritoActual.map((item) =>
+        item.id === producto.id
+          ? { ...item, ...producto, cantidad: nuevaCantidad }
+          : item
+      );
+    } else {
+      nuevoCarrito = [
+        ...carritoActual,
+        { ...producto, cantidad: cantidadSolicitada },
+      ];
+    }
+
+    cartRef.current = nuevoCarrito;
+    setCart(nuevoCarrito);
+
+    return {
+      ok: true,
+      mensaje: 'Producto agregado al carrito.',
+    };
   };
 
-  // Cambiar cantidad de un ítem
+  // Cambiar cantidad respetando el stock
   const cambiarCantidad = (id, nuevaCantidad) => {
-    const cantidadNumerica = Math.max(1, Number(nuevaCantidad) || 1);
-    setCart((prevCart) =>
-      prevCart.map((item) =>
-        item.id === id ? { ...item, cantidad: cantidadNumerica } : item
-      )
-    );
+    const cantidadNumerica = Number(nuevaCantidad);
+    const carritoActual = cartRef.current;
+
+    const nuevoCarrito = carritoActual.map((item) => {
+      if (item.id !== id) return item;
+
+      const stock = Number(item.stock);
+
+      if (
+        !Number.isInteger(cantidadNumerica) ||
+        cantidadNumerica < 1 ||
+        !Number.isFinite(stock) ||
+        stock < 1
+      ) {
+        return item;
+      }
+
+      return {
+        ...item,
+        cantidad: Math.min(cantidadNumerica, stock),
+      };
+    });
+
+    cartRef.current = nuevoCarrito;
+    setCart(nuevoCarrito);
   };
 
   // Eliminar un producto
   const eliminarDelCarrito = (id) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== id));
+    const nuevoCarrito = cartRef.current.filter(
+      (item) => item.id !== id
+    );
+
+    cartRef.current = nuevoCarrito;
+    setCart(nuevoCarrito);
   };
 
-  // Vaciar todo el carrito
+  // Vaciar el carrito
   const vaciarCarrito = () => {
+    cartRef.current = [];
     setCart([]);
   };
 
@@ -63,7 +142,6 @@ export function CartProvider({ children }) {
   );
 }
 
-// Hook personalizado para usar el carrito en cualquier componente
 export function useCart() {
   return useContext(CartContext);
 }

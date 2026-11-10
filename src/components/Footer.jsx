@@ -6,7 +6,7 @@ function Footer() {
                 <div className="footer-seccion">
                     <h3>GameHub Store</h3>
                     <p>
-                        Somos una tienda gamer especializada en tarjetas grácas, procesadores,
+                        Somos una tienda gamer especializada en tarjetas gráficas, procesadores,
                         periféricos, consolas, monitores y accesorios para potenciar tu
                         experiencia.
                     </p>

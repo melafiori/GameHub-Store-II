@@ -1,0 +1,11 @@
+{
+  "presets": [
+    ["@babel/preset-env", { "targets": "defaults" }],
+    ["@babel/preset-react", { "runtime": "automatic" }]
+  ],
+  "env": {
+    "test": {
+      "plugins": ["istanbul"]
+    }
+  }
+}
