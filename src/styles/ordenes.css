@@ -303,3 +303,10 @@
 .mensaje-exito {
     color: var(--color-acento);
 }
+.resena-campos { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; }
+.resena-campos > * { min-width: 0; }
+.resena-producto span { display: block; font-weight: 600; margin-bottom: 7px; }
+.resena-producto p { margin: 0 0 15px; padding: 10px; color: var(--color-texto); }
+.formulario-resena select, .formulario-resena textarea { background-color: #120e1a; color: #fff; border-color: rgba(0,210,255,.4); }
+.formulario-resena select:focus, .formulario-resena textarea:focus { background-color: #120e1a; color: #fff; border-color: var(--color-acento); box-shadow: 0 0 0 .2rem rgba(0,210,255,.2); }
+@media (max-width: 768px) { .resena-campos { grid-template-columns: 1fr; gap: 0; } }

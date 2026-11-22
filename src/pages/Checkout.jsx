@@ -1,5 +1,7 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { apiFetch } from '../data/api';
+import { useSession } from '../context/SessionContext';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import '../styles/checkout.css';
@@ -32,50 +34,41 @@ const COMUNAS_POR_REGION = {
 };
 
 function obtenerCuponGuardado() {
-  try {
-    const guardado = localStorage.getItem('gamehub_cupon');
-
-    if (!guardado) return null;
-
-    const cupon = JSON.parse(guardado);
-
-    if (
-      !cupon ||
-      typeof cupon.codigo !== 'string' ||
-      !Number.isFinite(cupon.porcentaje) ||
-      !Number.isFinite(cupon.maximo) ||
-      !cupon.vigencia
-    ) {
-      return null;
-    }
-
-    const hoy = new Date();
-    const fechaLocal = [
-      hoy.getFullYear(),
-      String(hoy.getMonth() + 1).padStart(2, '0'),
-      String(hoy.getDate()).padStart(2, '0'),
-    ].join('-');
-
-    if (fechaLocal > cupon.vigencia) return null;
-
-    return cupon;
-  } catch {
-    return null;
-  }
+  try { const coupon = JSON.parse(localStorage.getItem('gamehub_cupon') || 'null');
+    return coupon && typeof coupon.codigo === 'string' && Number.isFinite(Number(coupon.subtotal)) && Number.isInteger(Number(coupon.descuento)) ? coupon : null;
+  } catch { return null; }
 }
 
 function Checkout() {
-  const { cart, vaciarCarrito } = useCart();
+  const { cart, vaciarCarrito, preciosCargando, errorPrecios, avisoPrecios, reintentarPrecios } = useCart();
+  const { token, cerrarSesion } = useSession();
+  const [enviando, setEnviando] = useState(false);
+  const [errorCompra, setErrorCompra] = useState('');
+  const [totalServidor, setTotalServidor] = useState(null);
+  const enviandoRef = useRef(false);
+  const [pendiente, setPendiente] = useState(null);
+  useEffect(() => { reintentarPrecios(); }, []);
+  const [avisoDireccion, setAvisoDireccion] = useState(false);
+  useEffect(() => {
+    if (!token) { setPendiente(null); return; }
+    try {
+      const user = JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/'))).sub;
+      const prefix = 'gamehub_checkout_' + user + '_';
+      const keys = Object.keys(localStorage).filter(key => key.startsWith(prefix));
+      const entry = keys.map(key => ({ storageKey: key, ...JSON.parse(localStorage.getItem(key)) })).find(item => item.key && item.items && item.direccionDespacho);
+      setPendiente(entry || null);
+    } catch { setPendiente(null); }
+  }, [token]);
 
-  const [formData, setFormData] = useState({
-    nombre: '',
-    correo: '',
-    telefono: '',
-    region: '',
-    comuna: '',
-    direccion: '',
-    metodoPago: '',
+  const [formData, setFormData] = useState(() => {
+    const defaults = { nombre: '', correo: '', telefono: '', region: '', comuna: '', direccion: '', metodoPago: '' };
+    try {
+      const saved = JSON.parse(sessionStorage.getItem('gamehub_checkout_form') || '{}');
+      for (const key of Object.keys(defaults)) if (typeof saved[key] === 'string') defaults[key] = saved[key];
+    } catch { /* Use an empty form if the saved draft is invalid. */ }
+    return defaults;
   });
+  useEffect(() => { sessionStorage.setItem('gamehub_checkout_form', JSON.stringify(formData)); }, [formData]);
 
   const [errores, setErrores] = useState({});
   const [ordenCompletada, setOrdenCompletada] = useState(false);
@@ -89,19 +82,15 @@ function Checkout() {
     0
   );
 
-  const montoDescuento = cuponGuardado
-    ? Math.min(
-        Math.round((subtotal * cuponGuardado.porcentaje) / 100),
-        cuponGuardado.maximo,
-        subtotal
-      )
-    : 0;
+  // Los cupones simulados aún no se aplican en el checkout.
+  const montoDescuento = cuponGuardado && Number(cuponGuardado.subtotal) === subtotal ? Number(cuponGuardado.descuento) : 0;
 
-  const total = Math.max(0, subtotal - montoDescuento);
+  const total = pendiente?.total != null ? Number(pendiente.total) : Math.max(0, subtotal - montoDescuento);
 
   const handleChange = (e) => {
     const { id, name, value } = e.target;
     const campo = name || id;
+    if (pendiente && ['region', 'comuna', 'direccion'].includes(campo)) setAvisoDireccion(true);
 
     setFormData((prev) => {
       const nuevoState = { ...prev, [campo]: value };
@@ -147,88 +136,53 @@ function Checkout() {
     if (!formData.metodoPago) nuevosErrores.metodoPago = true;
 
     setErrores(nuevosErrores);
-
-    return Object.keys(nuevosErrores).length === 0;
+    const primero = Object.keys(nuevosErrores)[0];
+    if (primero) document.getElementById(primero === 'metodoPago' ? 'pago-debito' : primero)?.focus();
+    return !primero;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e, retomar = false) => {
     e.preventDefault();
-
-    if (cart.length === 0) {
-      alert('Tu carrito está vacío.');
-      return;
-    }
-
-    if (!validarFormulario()) {
-      return;
-    }
-
-    let ordenesGuardadas = [];
-
+    if (enviandoRef.current) return;
+    if (!retomar && pendiente) { setErrorCompra('Hay una compra pendiente. Retomala con su direccion original.'); return; }
+    if (!retomar && (!cart.length || !validarFormulario())) { setErrorCompra(''); return; }
+    if (retomar && !pendiente) return;
+    if (!token) { setErrorCompra('Inicia sesión para confirmar tu compra.'); return; }
+    enviandoRef.current = true; setEnviando(true); setErrorCompra('');
     try {
-      const guardadas = localStorage.getItem('gamehub_ordenes');
-      ordenesGuardadas = guardadas ? JSON.parse(guardadas) : [];
-
-      if (!Array.isArray(ordenesGuardadas)) {
-        ordenesGuardadas = [];
+      const payload = JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+      if (!payload.sub) throw new Error('Sesión inválida. Inicia sesión nuevamente.');
+      const itemsActuales = Object.fromEntries(cart.map(item => [String(item.id), Number(item.cantidad)]).sort(([a], [b]) => Number(a) - Number(b)));
+      const region = { metropolitana: 'Región Metropolitana', valparaiso: 'Región de Valparaíso', biobio: 'Región del Biobío' }[formData.region];
+      const direccionDespacho = { region, comuna: formData.comuna.trim(), direccion: formData.direccion.trim() };
+      const storageKey = retomar ? pendiente.storageKey : 'gamehub_checkout_' + payload.sub + '_' + JSON.stringify(itemsActuales);
+      const codigoCupon = cuponGuardado && Number(cuponGuardado.subtotal) === subtotal ? cuponGuardado.codigo : null;
+      let intento = retomar ? pendiente : { key: crypto.randomUUID(), items: itemsActuales, direccionDespacho, carrito: cart, codigoCupon };
+      if (!retomar) { localStorage.setItem(storageKey, JSON.stringify(intento)); setPendiente({ ...intento, storageKey }); }
+      const headers = { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' };
+      const checkResponse = async response => {
+        if (response.status === 401) { cerrarSesion(); throw new Error('Tu sesión venció. Inicia sesión nuevamente; tu carrito se conserva.'); }
+        if (!response.ok) {
+          const body = await response.json().catch(() => ({}));
+          if (body.estado === 'RECHAZADA') { localStorage.removeItem(storageKey); setPendiente(null); throw new Error(body.motivoRechazo || 'La compra fue rechazada. Revisa el stock o el cupón.'); }
+          throw new Error(body.error || 'No se pudo completar la compra. Puedes reintentar sin perder tu carrito.');
+        }
+        return response.json();
+      };
+      if (!intento.orderId) {
+        const orden = await checkResponse(await apiFetch('/api/v1/orders', { method: 'POST', headers: { ...headers, 'Idempotency-Key': intento.key }, body: JSON.stringify({ items: intento.items, direccionDespacho: intento.direccionDespacho, codigoCupon: intento.codigoCupon || null }) }));
+        intento = { ...intento, orderId: orden.id, total: orden.total }; localStorage.setItem(storageKey, JSON.stringify(intento)); setPendiente({ ...intento, storageKey });
       }
-    } catch {
-      ordenesGuardadas = [];
-    }
-
-    const idOrden = `GH-${Date.now()}`;
-
-    const nuevaOrden = {
-      id: idOrden,
-      fecha: new Date().toLocaleDateString('es-CL', {
-        day: '2-digit',
-        month: 'long',
-        year: 'numeric',
-      }),
-      estado: 'Procesando',
-      subtotal,
-      descuento: montoDescuento,
-      cupon: montoDescuento > 0 ? cuponGuardado?.codigo || null : null,
-      total,
-      productos: cart.map((item) => ({
-        id: item.id,
-        nombre: item.nombre,
-        cantidad: item.cantidad,
-        precio: item.precio,
-      })),
-      cliente: {
-        nombre: formData.nombre.trim(),
-        correo: formData.correo.trim(),
-        telefono: formData.telefono.trim(),
-        region: formData.region,
-        comuna: formData.comuna,
-        direccion: formData.direccion.trim(),
-      },
-      metodoPago: formData.metodoPago,
-    };
-
-    try {
-      localStorage.setItem(
-        'gamehub_ordenes',
-        JSON.stringify([nuevaOrden, ...ordenesGuardadas])
-      );
-
-      // Conservar el total para mostrarlo después de vaciar el carrito.
-      setTotalOrdenConfirmada(total);
-
-      localStorage.removeItem('gamehub_cupon');
-      vaciarCarrito();
-
-      setNumeroOrden(idOrden);
-      setOrdenCompletada(true);
-    } catch {
-      alert(
-        'No se pudo guardar la orden. Inténtalo nuevamente. Tu carrito no se ha vaciado.'
-      );
-    }
+      setTotalServidor(intento.total);
+      const pago = await checkResponse(await apiFetch('/api/v1/orders/' + intento.orderId + '/payment', { method: 'POST', headers }));
+      if (pago.estado !== 'PAGADA') throw new Error('El pago aún no está confirmado. Puedes reintentarlo.');
+      setTotalOrdenConfirmada(pago.total); setNumeroOrden(pago.id); setOrdenCompletada(true);
+      localStorage.removeItem(storageKey); setPendiente(null); localStorage.removeItem('gamehub_cupon'); sessionStorage.removeItem('gamehub_checkout_form');
+      if (JSON.stringify(itemsActuales) === JSON.stringify(intento.items)) vaciarCarrito();
+    } catch (error) { setErrorCompra(error instanceof TypeError ? 'No se pudo conectar con el servidor. Reintenta: se conservaron el carrito y la compra.' : error.message); }
+    finally { enviandoRef.current = false; setEnviando(false); }
   };
 
-  // Pantalla de confirmación
   if (ordenCompletada) {
     return (
       <main className="container text-center my-5 py-5 checkout-container">
@@ -280,12 +234,26 @@ function Checkout() {
     );
   }
 
+  if (!pendiente && cart.length && (preciosCargando || errorPrecios)) return <main className="container my-5" role="status">{preciosCargando ? 'Consultando precios vigentes...' : <>{errorPrecios} <button onClick={reintentarPrecios}>Reintentar</button></>}</main>;
   return (
     <main className="container my-5 checkout-container">
+      {avisoPrecios && <p role="alert">{avisoPrecios}</p>}
       <h1 className="h2 mb-4 border-bottom pb-2 border-secondary titulo-gamer">
         Finalizar compra
       </h1>
+      <p role="note">El cupón se valida de nuevo al crear la orden. La dirección de despacho quedará guardada.</p>
 
+      {errorCompra && <p role="alert" className="text-danger">{errorCompra} {!token && <Link to="/login" state={{ volverA: '/checkout' }}>Iniciar sesion</Link>}</p>}
+      {totalServidor !== null && <p role="status">Total confirmado por el servidor: ${Number(totalServidor).toLocaleString('es-CL')}</p>}
+      {pendiente && <section className="card card-custom p-3 mb-3" role="status">
+        <strong>Compra pendiente{pendiente.orderId ? ' #' + pendiente.orderId : ''}</strong>
+        <p>Dirección original: {pendiente.direccionDespacho.direccion}, {pendiente.direccionDespacho.comuna}, {pendiente.direccionDespacho.region}</p>
+        {pendiente.total != null && <p>Total guardado por el servidor: ${Number(pendiente.total).toLocaleString('es-CL')}</p>}
+        <p>Productos: {Object.entries(pendiente.items).map(([id, cantidad]) => ' #' + id + ' x' + cantidad).join(', ')}</p>
+        <p>La compra pendiente conserva estos productos y esta dirección, aunque cambies el formulario.</p>
+        {avisoDireccion && <p role="alert">El cambio no modifica la dirección de la compra pendiente.</p>}
+        <button type="button" className="btn btn-neon-primario" disabled={enviando} onClick={e => handleSubmit(e, true)}>Retomar compra pendiente</button>
+      </section>}
       {cart.length === 0 ? (
         <div className="text-center py-5">
           <h2 className="h4 mb-3">
@@ -550,8 +518,9 @@ function Checkout() {
               <button
                 type="submit"
                 className="btn btn-neon-primario w-100 py-3 fw-bold"
+                disabled={enviando || !!pendiente || preciosCargando || !!errorPrecios}
               >
-                Confirmar orden y pagar
+                {enviando ? 'Procesando...' : 'Confirmar orden y pagar'}
               </button>
             </form>
           </div>
@@ -593,7 +562,7 @@ function Checkout() {
               <div className="d-flex justify-content-between gap-3 mb-2">
                 <span className="text-secondary">
                   Descuento
-                  {montoDescuento > 0 && ` (${cuponGuardado.porcentaje}%)`}
+                  {montoDescuento > 0 && ` (${cuponGuardado.codigo})`}
                 </span>
 
                 <span className="text-danger fw-bold text-nowrap">
@@ -603,7 +572,7 @@ function Checkout() {
 
               {montoDescuento > 0 && (
                 <p className="small text-success mb-3">
-                  Cupón aplicado: {cuponGuardado.codigo}
+                  Cupón estimado: {cuponGuardado.codigo}
                 </p>
               )}
 
@@ -628,3 +597,4 @@ function Checkout() {
 }
 
 export default Checkout;
+

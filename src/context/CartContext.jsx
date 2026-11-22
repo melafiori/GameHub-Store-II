@@ -1,5 +1,6 @@
 
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
+import { apiFetch } from '../data/api';
 
 const CartContext = createContext();
 
@@ -13,6 +14,10 @@ export function CartProvider({ children }) {
     }
   });
 
+  const [preciosCargando, setPreciosCargando] = useState(true);
+  const [errorPrecios, setErrorPrecios] = useState('');
+  const [avisoPrecios, setAvisoPrecios] = useState('');
+  const [revisionPrecios, setRevisionPrecios] = useState(0);
   // Referencia al carrito actual para validar antes de actualizarlo
   const cartRef = useRef(cart);
 
@@ -20,6 +25,32 @@ export function CartProvider({ children }) {
     cartRef.current = cart;
     localStorage.setItem('gamehub_cart', JSON.stringify(cart));
   }, [cart]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const inicial = cartRef.current;
+    if (!inicial.length) { setPreciosCargando(false); return () => controller.abort(); }
+    setPreciosCargando(true); setErrorPrecios('');
+    Promise.all(inicial.map(async item => {
+      const response = await apiFetch('/api/v1/products/' + encodeURIComponent(item.id), { signal: controller.signal });
+      if (!response.ok) throw new Error('No se pudo actualizar el precio de un producto.');
+      const product = await response.json();
+      if (product.estado?.toUpperCase() !== 'ACTIVO' || !Number.isFinite(Number(product.precioVigente)) || Number(product.precioVigente) <= 0) throw new Error('Un producto ya no esta disponible o no tiene precio vigente.');
+      return { id: String(item.id), normal: Number(product.precio), vigente: Number(product.precioVigente) };
+    })).then(prices => {
+      let changed = false;
+      const next = cartRef.current.map(item => {
+        const price = prices.find(p => p.id === String(item.id));
+        if (!price) return item;
+        if (Number(item.precio) !== price.vigente) changed = true;
+        return { ...item, precio: price.vigente, precioNormal: price.normal };
+      });
+      cartRef.current = next; setCart(next);
+      if (changed) { localStorage.removeItem('gamehub_cupon'); setAvisoPrecios('Actualizamos los precios del carrito. Revisa el total y vuelve a validar tu cupon antes de confirmar.'); }
+      setPreciosCargando(false);
+    }).catch(error => { if (error.name !== 'AbortError') { setErrorPrecios('No pudimos consultar los precios vigentes. Reintenta antes de comprar.'); setPreciosCargando(false); } });
+    return () => controller.abort();
+  }, [revisionPrecios]);
 
   // Agregar productos sin duplicarlos y respetando el stock
   const agregarAlCarrito = (producto, cantidad = 1) => {
@@ -130,7 +161,7 @@ export function CartProvider({ children }) {
   return (
     <CartContext.Provider
       value={{
-        cart,
+        cart, preciosCargando, errorPrecios, avisoPrecios, reintentarPrecios: () => setRevisionPrecios(n => n + 1),
         agregarAlCarrito,
         cambiarCantidad,
         eliminarDelCarrito,

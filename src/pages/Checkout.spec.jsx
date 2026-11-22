@@ -4,6 +4,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import Checkout from './Checkout.jsx';
 import { CartProvider } from '../context/CartContext.jsx';
+import { SessionProvider } from '../context/SessionContext.jsx';
 
 const PRODUCTO_PRUEBA = {
   id: 1,
@@ -13,19 +14,23 @@ const PRODUCTO_PRUEBA = {
   stock: 10,
 };
 
-const renderCheckout = () => {
+const renderCheckout = async () => {
   localStorage.setItem(
     'gamehub_cart',
     JSON.stringify([PRODUCTO_PRUEBA])
   );
 
-  return render(
+  const result = render(
     <MemoryRouter>
+      <SessionProvider>
       <CartProvider>
         <Checkout />
       </CartProvider>
+      </SessionProvider>
     </MemoryRouter>
   );
+  await screen.findByLabelText(/nombre completo/i);
+  return result;
 };
 
 const completarFormulario = ({
@@ -62,11 +67,19 @@ const completarFormulario = ({
 
 describe('Página Checkout', () => {
   beforeEach(() => {
-    localStorage.clear();
+    localStorage.clear(); sessionStorage.clear();
+    localStorage.setItem('gamehub_token', 'x.' + btoa(JSON.stringify({sub:'7',role:'CLIENTE'})) + '.x');
+    spyOn(window, 'fetch').and.callFake(async (url, options={}) => {
+      if (url.includes('/products/')) return new Response(JSON.stringify({estado:'ACTIVO',precio:29990,precioVigente:29990}),{status:200});
+      if (url.includes('/users/me')) return new Response('{}',{status:200});
+      if (url.includes('/orders/42/payment')) return new Response(JSON.stringify({id:42,estado:'PAGADA',total:29990}),{status:200});
+      if (url.endsWith('/orders')) return new Response(JSON.stringify({id:42,estado:'PENDIENTE_DE_PAGO',total:29990}),{status:201});
+      return new Response('{}',{status:404});
+    });
   });
 
-  it('Debe mostrar los campos principales del formulario', () => {
-    renderCheckout();
+  it('Debe mostrar los campos principales del formulario', async () => {
+    await renderCheckout();
 
     expect(screen.getByLabelText(/nombre completo/i)).not.toBeNull();
     expect(screen.getByLabelText(/correo electrónico/i)).not.toBeNull();
@@ -81,7 +94,7 @@ describe('Página Checkout', () => {
   });
 
   it('Debe impedir la compra cuando falta la dirección', async () => {
-    renderCheckout();
+    await renderCheckout();
 
     completarFormulario({ direccion: '' });
 
@@ -102,8 +115,8 @@ describe('Página Checkout', () => {
     });
   });
 
-  it('Debe rechazar una dirección que contiene solo espacios', () => {
-    renderCheckout();
+  it('Debe rechazar una dirección que contiene solo espacios', async () => {
+    await renderCheckout();
 
     completarFormulario({ direccion: '   ' });
 
@@ -118,8 +131,8 @@ describe('Página Checkout', () => {
     expect(localStorage.getItem('gamehub_ordenes')).toBeNull();
   });
 
-  it('Debe impedir la compra si faltan otros datos obligatorios', () => {
-    renderCheckout();
+  it('Debe impedir la compra si faltan otros datos obligatorios', async () => {
+    await renderCheckout();
 
     fireEvent.change(screen.getByLabelText(/dirección de entrega/i), {
       target: { value: 'Av. Providencia 123' },
@@ -141,7 +154,7 @@ describe('Página Checkout', () => {
   });
 
   it('Debe registrar la orden y vaciar el carrito si los datos son válidos', async () => {
-    renderCheckout();
+    await renderCheckout();
 
     completarFormulario();
 
@@ -153,17 +166,11 @@ describe('Página Checkout', () => {
       await screen.findByText(/se ha registrado correctamente/i)
     ).not.toBeNull();
 
-    const ordenes = JSON.parse(localStorage.getItem('gamehub_ordenes'));
-
-    expect(ordenes).toHaveSize(1);
-    expect(ordenes[0].cliente.direccion).toBe('Av. Providencia 123');
-    expect(ordenes[0].cliente.comuna).toBe('Santiago');
-    expect(ordenes[0].metodoPago).toBe('debito');
-
+    const request = window.fetch.calls.allArgs().find(([url]) => url.endsWith('/api/v1/orders'));
+    expect(JSON.parse(request[1].body).direccionDespacho.direccion).toBe('Av. Providencia 123');
+    expect(JSON.parse(request[1].body).direccionDespacho.comuna).toBe('Santiago');
     await waitFor(() => {
-      expect(
-        JSON.parse(localStorage.getItem('gamehub_cart'))
-      ).toEqual([]);
+      if (JSON.parse(localStorage.getItem('gamehub_cart')).length !== 0) throw new Error('El carrito todavia no se actualiza');
     });
   });
 });

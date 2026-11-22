@@ -1,427 +1,89 @@
-
-import React, { useState } from 'react';
+import '../styles/enlaces-cuenta.css';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { apiFetch } from '../data/api';
+import { useSession } from '../context/SessionContext';
 import '../styles/ordenes.css';
-
-// Datos de prueba simulados para las órdenes.
-const ORDENES_INICIALES = [
-  {
-    id: 'GH-8904',
-    fecha: '12 de octubre de 2026',
-    estado: 'Entregado',
-    total: 899990,
-    productos: [
-      {
-        id: 1,
-        nombre: 'ASUS TUF Gaming A15',
-        cantidad: 1,
-        precio: 899990,
-      },
-    ],
-  },
-  {
-    id: 'GH-7612',
-    fecha: '28 de septiembre de 2026',
-    estado: 'Entregado',
-    total: 151980,
-    productos: [
-      {
-        id: 19,
-        nombre: 'Teclado Mecánico RGB',
-        cantidad: 1,
-        precio: 110990,
-      },
-      {
-        id: 29,
-        nombre: 'Mouse Pad gamer',
-        cantidad: 1,
-        precio: 40990,
-      },
-    ],
-  },
-];
-
-// Cargar las órdenes guardadas y combinar con los datos de prueba.
-function cargarOrdenes() {
-  try {
-    const guardadas = JSON.parse(
-      localStorage.getItem('gamehub_ordenes') || '[]'
-    );
-
-    if (!Array.isArray(guardadas)) {
-      return ORDENES_INICIALES;
-    }
-
-    const idsGuardados = new Set(guardadas.map((orden) => orden.id));
-
-    const ordenesPrueba = ORDENES_INICIALES.filter(
-      (orden) => !idsGuardados.has(orden.id)
-    );
-
-    return [...guardadas, ...ordenesPrueba];
-  } catch {
-    return ORDENES_INICIALES;
-  }
-}
-
-function cargarRegistros(clave) {
-  try {
-    const registros = JSON.parse(localStorage.getItem(clave) || '[]');
-    return Array.isArray(registros) ? registros : [];
-  } catch {
-    return [];
-  }
-}
+import GarantiasOrden from '../components/GarantiasOrden';
 
 function MisOrdenes() {
-  const [ordenes] = useState(cargarOrdenes);
-  const [ordenExpandida, setOrdenExpandida] = useState(null);
-  const [formularioActivo, setFormularioActivo] = useState({});
-  const [mensajesFormulario, setMensajesFormulario] = useState({});
-  const [resenas, setResenas] = useState(() =>
-    cargarRegistros('gamehub_resenas')
-  );
-  const [solicitudesGarantia, setSolicitudesGarantia] = useState(() =>
-    cargarRegistros('gamehub_garantias')
-  );
-
-  const toggleDetalle = (id) => {
-    setOrdenExpandida((prev) => (prev === id ? null : id));
-  };
-
-  const toggleFormulario = (idOrden, tipo) => {
-    setFormularioActivo((prev) => ({
-      ...prev,
-      [idOrden]: prev[idOrden] === tipo ? null : tipo,
-    }));
-
-    setMensajesFormulario((prev) => ({
-      ...prev,
-      [idOrden]: '',
-    }));
-  };
-
-  const handleSubmitResena = (e, orden) => {
-    e.preventDefault();
-
-    const formulario = e.currentTarget;
-    const calificacion = formulario.elements[
-      `calificacion-${orden.id}`
-    ].value;
-    const comentario = formulario.elements[
-      `comentario-${orden.id}`
-    ].value.trim();
-
-    if (!comentario) return;
-
-    const nuevaResena = {
-      id: `RES-${Date.now()}`,
-      idOrden: orden.id,
-      calificacion: Number(calificacion),
-      comentario,
-      fecha: new Date().toLocaleDateString('es-CL'),
-      productos: orden.productos.map((producto) => producto.nombre),
-    };
-
-    const nuevasResenas = [...resenas, nuevaResena];
-
+  const { token, cerrarSesion } = useSession();
+  const [ordenes, setOrdenes] = useState([]);
+  const [nombres, setNombres] = useState({});
+  const [mensaje, setMensaje] = useState('');
+  const [cargando, setCargando] = useState(false);
+  const [expandida, setExpandida] = useState(null);
+  const [seguimientos, setSeguimientos] = useState({});
+  const [formularios, setFormularios] = useState({});
+  const [resenaEstado, setResenaEstado] = useState({});
+  const enviarResena = async (event, orden) => {
+    event.preventDefault();
+    const datos = formularios[orden.id] || {};
+    setResenaEstado(prev => ({ ...prev, [orden.id]: { enviando: true } }));
     try {
-      localStorage.setItem(
-        'gamehub_resenas',
-        JSON.stringify(nuevasResenas)
-      );
-
-      setResenas(nuevasResenas);
-      setMensajesFormulario((prev) => ({
-        ...prev,
-        [orden.id]: '¡Gracias por tu reseña! Ha sido guardada con éxito.',
-      }));
-      setFormularioActivo((prev) => ({
-        ...prev,
-        [orden.id]: null,
-      }));
-    } catch {
-      setMensajesFormulario((prev) => ({
-        ...prev,
-        [orden.id]: 'No se pudo guardar la reseña. Inténtalo nuevamente.',
-      }));
-    }
+      const response = await apiFetch('/api/v1/reviews', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token }, body: JSON.stringify({ orderId: orden.id, productId: Number(datos.productId || orden.items[0]?.productId), puntuacion: Number(datos.puntuacion || 5), comentario: datos.comentario || '' }) });
+      if (response.status === 401) { cerrarSesion(); throw new Error('Tu sesión venció. Inicia sesión nuevamente.'); }
+      if (response.status === 409) throw new Error('Esta orden ya fue reseñada. Solo se permite una reseña por orden.');
+      if (!response.ok) throw new Error('No se pudo publicar la reseña. Revisa los datos e inténtalo nuevamente.');
+      setResenaEstado(prev => ({ ...prev, [orden.id]: { exito: true, mensaje: 'Reseña publicada correctamente.' } }));
+    } catch (error) { setResenaEstado(prev => ({ ...prev, [orden.id]: { mensaje: error.message || 'No se pudo conectar con el servidor.' } })); }
   };
-
-  const handleSubmitGarantia = (e, orden) => {
-    e.preventDefault();
-
-    const formulario = e.currentTarget;
-    const motivo = formulario.elements[
-      `motivo-${orden.id}`
-    ].value.trim();
-
-    if (!motivo) return;
-
-    const nuevaSolicitud = {
-      id: `GAR-${Date.now()}`,
-      idOrden: orden.id,
-      motivo,
-      fecha: new Date().toLocaleDateString('es-CL'),
-      estado: 'Pendiente',
-    };
-
-    const nuevasSolicitudes = [...solicitudesGarantia, nuevaSolicitud];
-
+  const actualizarResena = (id, campo, valor) => setFormularios(prev => ({ ...prev, [id]: { ...prev[id], [campo]: valor } }));
+  const verDetalle = async id => {
+    if (expandida === id) { setExpandida(null); return; }
+    setExpandida(id);
+    await cargarSeguimiento(id);
+  };
+  const cargarSeguimiento = async id => {
+    setSeguimientos(prev => ({...prev, [id]: { cargando: true }}));
     try {
-      localStorage.setItem(
-        'gamehub_garantias',
-        JSON.stringify(nuevasSolicitudes)
-      );
-
-      setSolicitudesGarantia(nuevasSolicitudes);
-      setMensajesFormulario((prev) => ({
-        ...prev,
-        [orden.id]:
-          'Solicitud de garantía guardada. Su estado es pendiente.',
-      }));
-      setFormularioActivo((prev) => ({
-        ...prev,
-        [orden.id]: null,
-      }));
-    } catch {
-      setMensajesFormulario((prev) => ({
-        ...prev,
-        [orden.id]:
-          'No se pudo guardar la solicitud. Inténtalo nuevamente.',
-      }));
-    }
+      const r = await apiFetch('/api/v1/shippings/order/' + id, { headers: { Authorization: 'Bearer ' + token } });
+      if (r.status === 401) { cerrarSesion(); return; }
+      if (r.status === 204) { setSeguimientos(prev => ({...prev, [id]: { sinDespacho: true }})); return; }
+      if (!r.ok) throw new Error('seguimiento');
+      const data = await r.json(); setSeguimientos(prev => ({...prev, [id]: data}));
+    } catch { setSeguimientos(prev => ({...prev, [id]: { error: true }})); }
   };
-
-  return (
-    <main className="container my-5 ordenes-container">
-      <h1>Mis órdenes</h1>
-
-      <p className="ordenes-descripcion">
-        Revisa tus compras y consulta el estado de tus pedidos.
-      </p>
-
-      <section className="lista-ordenes">
-        {ordenes.length === 0 ? (
-          <p>No tienes órdenes registradas todavía.</p>
-        ) : (
-          ordenes.map((orden) => {
-            const esExpandida = ordenExpandida === orden.id;
-            const formTipo = formularioActivo[orden.id];
-            const mensaje = mensajesFormulario[orden.id];
-
-            const garantiasDeOrden = solicitudesGarantia.filter(
-              (solicitud) => solicitud.idOrden === orden.id
-            );
-
-            return (
-              <div key={orden.id} className="orden-card">
-                <div className="orden-informacion">
-                  <h2>Orden #{orden.id}</h2>
-
-                  <p>
-                    Fecha de compra: <strong>{orden.fecha}</strong>
-                  </p>
-
-                  <p>
-                    Estado:{' '}
-                    <strong className="text-acento">
-                      {orden.estado || 'Procesando'}
-                    </strong>
-                  </p>
-
-                  <p>
-                    Total:{' '}
-                    <strong>
-                      ${(Number(orden.total) || 0).toLocaleString('es-CL')}
-                    </strong>
-                  </p>
-                </div>
-
-                <button
-                  type="button"
-                  className="btn"
-                  onClick={() => toggleDetalle(orden.id)}
-                >
-                  {esExpandida ? 'Ocultar detalle' : 'Ver detalle'}
-                </button>
-
-                {esExpandida && (
-                  <div className="detalle-orden">
-                    <div className="detalle-separador"></div>
-
-                    <h3>Estado del pedido</h3>
-
-                    {orden.estado === 'Entregado' ? (
-                      <>
-                        <p className="estado-exitoso">
-                          <span className="indicador-estado"></span>
-                          Entregado con éxito el {orden.fecha}
-                        </p>
-
-                        <p className="paso-completado">
-                          Producto recibido por el destinatario en la
-                          dirección acordada.
-                        </p>
-                      </>
-                    ) : (
-                      <p>
-                        Estado actual: <strong>{orden.estado || 'Procesando'}</strong>.
-                        Todavía no se ha confirmado la entrega.
-                      </p>
-                    )}
-
-                    <h3>Productos comprados</h3>
-
-                    <div className="productos-orden">
-                      {(Array.isArray(orden.productos) ? orden.productos : []).map(
-                        (prod, indice) => (
-                          <div
-                            key={`${prod.id}-${indice}`}
-                            className="producto-orden"
-                          >
-                            <span>{prod.nombre}</span>
-                            <span>Cant: {prod.cantidad}</span>
-                            <strong>
-                              $
-                              {(
-                                (Number(prod.precio) || 0) *
-                                (Number(prod.cantidad) || 0)
-                              ).toLocaleString('es-CL')}
-                            </strong>
-                          </div>
-                        )
-                      )}
-                    </div>
-
-                    {Number(orden.descuento) > 0 && (
-                      <p>
-                        Descuento aplicado:{' '}
-                        <strong>
-                          -$
-                          {Number(orden.descuento).toLocaleString('es-CL')}
-                        </strong>
-                        {orden.cupon && ` (${orden.cupon})`}
-                      </p>
-                    )}
-
-                    {garantiasDeOrden.length > 0 && (
-                      <div className="mt-3">
-                        <h3>Solicitudes de garantía</h3>
-
-                        {garantiasDeOrden.map((solicitud) => (
-                          <p key={solicitud.id}>
-                            <strong>{solicitud.estado}:</strong>{' '}
-                            {solicitud.motivo}
-                          </p>
-                        ))}
-                      </div>
-                    )}
-
-                    <div className="acciones-orden">
-                      <button
-                        type="button"
-                        className="btn btn-resena"
-                        onClick={() => toggleFormulario(orden.id, 'resena')}
-                      >
-                        Escribir reseña
-                      </button>
-
-                      <button
-                        type="button"
-                        className="btn btn-garantia"
-                        onClick={() => toggleFormulario(orden.id, 'garantia')}
-                      >
-                        Solicitar garantía
-                      </button>
-                    </div>
-
-                    {mensaje && (
-                      <p
-                        role="status"
-                        className="mensaje-formulario mensaje-exito mt-3"
-                      >
-                        {mensaje}
-                      </p>
-                    )}
-
-                    {formTipo === 'resena' && (
-                      <form
-                        className="formulario-resena"
-                        onSubmit={(e) => handleSubmitResena(e, orden)}
-                      >
-                        <h3>Escribir una reseña</h3>
-
-                        <label htmlFor={`calificacion-${orden.id}`}>
-                          Calificación
-                        </label>
-
-                        <select
-                          id={`calificacion-${orden.id}`}
-                          name={`calificacion-${orden.id}`}
-                          className="form-select mb-3"
-                          defaultValue="5"
-                          required
-                        >
-                          <option value="5">★★★★★ (5/5)</option>
-                          <option value="4">★★★★☆ (4/5)</option>
-                          <option value="3">★★★☆☆ (3/5)</option>
-                          <option value="2">★★☆☆☆ (2/5)</option>
-                          <option value="1">★☆☆☆☆ (1/5)</option>
-                        </select>
-
-                        <label htmlFor={`comentario-${orden.id}`}>
-                          Tu opinión
-                        </label>
-
-                        <textarea
-                          id={`comentario-${orden.id}`}
-                          name={`comentario-${orden.id}`}
-                          className="form-control mb-3"
-                          rows="4"
-                          placeholder="Escribe tu opinión sobre el producto..."
-                          required
-                        ></textarea>
-
-                        <button type="submit" className="btn btn-resena">
-                          Enviar reseña
-                        </button>
-                      </form>
-                    )}
-
-                    {formTipo === 'garantia' && (
-                      <form
-                        className="formulario-garantia"
-                        onSubmit={(e) => handleSubmitGarantia(e, orden)}
-                      >
-                        <h3>Solicitar garantía</h3>
-
-                        <label htmlFor={`motivo-${orden.id}`}>
-                          Motivo de la falla
-                        </label>
-
-                        <textarea
-                          id={`motivo-${orden.id}`}
-                          name={`motivo-${orden.id}`}
-                          className="form-control mb-3"
-                          rows="4"
-                          placeholder="Describe el problema que presenta tu producto..."
-                          required
-                        ></textarea>
-
-                        <button type="submit" className="btn btn-garantia">
-                          Enviar solicitud
-                        </button>
-                      </form>
-                    )}
-                  </div>
-                )}
-              </div>
-            );
-          })
-        )}
-      </section>
-    </main>
-  );
+  useEffect(() => {
+    if (!token) { setOrdenes([]); return; }
+    const controller = new AbortController();
+    setOrdenes([]); setCargando(true); setMensaje('');
+    apiFetch('/api/v1/orders/me', { headers: { Authorization: `Bearer ${token}` }, signal: controller.signal })
+      .then(async response => {
+        if (response.status === 401) { cerrarSesion(); setMensaje('Tu sesión venció. Inicia sesión nuevamente.'); return; }
+        if (!response.ok) throw new Error('No se pudieron cargar tus órdenes.');
+        setOrdenes(await response.json());
+      }).catch(error => { if (error.name !== 'AbortError') setMensaje('No se pudieron cargar tus órdenes. Comprueba la conexión.'); })
+      .finally(() => { if (!controller.signal.aborted) setCargando(false); });
+    apiFetch('/api/v1/products', { signal: controller.signal }).then(r => r.ok ? r.json() : []).then(productos => {
+      setNombres(Object.fromEntries(productos.map(p => [p.id ?? p.productId, p.nombre])));
+    }).catch(() => {});
+    return () => controller.abort();
+  }, [token]);
+  return <main className="container my-5 ordenes-container">
+    <h1>Mis órdenes</h1>
+    <p className="ordenes-descripcion">Revisa tus compras y consulta el estado de tus pedidos.</p>
+    {!token && <p>Inicia sesión para ver tus órdenes. <Link className="enlace-cuenta" to="/login">Iniciar sesion</Link></p>}
+    {mensaje && <p role="alert">{mensaje}</p>}
+    {cargando && <p role="status">Cargando órdenes...</p>}
+    {token && !cargando && !mensaje && <section className="lista-ordenes">
+      {ordenes.length === 0 ? <p>No tienes órdenes registradas todavía.</p> : ordenes.map(orden => <div key={orden.id} className="orden-card">
+        <div className="orden-informacion"><h2>Orden #{orden.id}</h2><p>Estado: <strong className="text-acento">{orden.estado}</strong></p><p>Total: <strong>${Number(orden.total).toLocaleString('es-CL')}</strong></p></div>
+        <button type="button" className="btn" onClick={() => verDetalle(orden.id)}>{expandida === orden.id ? 'Ocultar detalle' : 'Ver detalle'}</button>
+        {expandida === orden.id && <div className="detalle-orden"><div className="detalle-separador" />{Number(orden.descuento) > 0 && <p>Subtotal: ${Number(orden.subtotal).toLocaleString('es-CL')} - Descuento: ${Number(orden.descuento).toLocaleString('es-CL')} ({orden.codigoCupon})</p>}<h3>Seguimiento</h3>{seguimientos[orden.id]?.cargando ? <p>Cargando seguimiento...</p> : seguimientos[orden.id]?.error ? <div><p role="alert">No se pudo cargar el seguimiento.</p><button type="button" className="btn" onClick={() => cargarSeguimiento(orden.id)}>Reintentar seguimiento</button></div> : seguimientos[orden.id]?.sinDespacho ? <p>Aún sin despacho</p> : seguimientos[orden.id] && <p>Estado: {seguimientos[orden.id].estado} · Seguimiento: {seguimientos[orden.id].tracking}</p>}<h3>Dirección de despacho</h3><p>{orden.direccionDespacho ? `${orden.direccionDespacho.direccion}, ${orden.direccionDespacho.comuna}, ${orden.direccionDespacho.region}` : 'Dirección no registrada para esta orden.'}</p><h3>Productos comprados</h3><div className="productos-orden">
+          {orden.items.map(item => <div key={item.productId} className="producto-orden"><span>{nombres[item.productId] || `Producto #${item.productId}`}</span><span>Cant: {item.cantidad}</span><strong>${(item.precioUnitario * item.cantidad).toLocaleString('es-CL')}</strong></div>)}
+        </div>{orden.estado === 'PAGADA' && <form onSubmit={event => enviarResena(event, orden)} className="formulario-resena">
+          <h3>Reseñar un producto</h3><p>Una reseña por orden; elige el producto que quieres reseñar.</p>
+          <div className="resena-campos">
+            {orden.items.length === 1 ? <div className="resena-producto"><span>Producto</span><p>{nombres[orden.items[0].productId] || 'Producto #' + orden.items[0].productId}</p></div> : <label>Producto <select className="form-select" value={formularios[orden.id]?.productId || orden.items[0]?.productId || ''} onChange={e => actualizarResena(orden.id, 'productId', e.target.value)}>{orden.items.map(item => <option key={item.productId} value={item.productId}>{nombres[item.productId] || 'Producto #' + item.productId}</option>)}</select></label>}
+            <label>Calificación <select className="form-select" value={formularios[orden.id]?.puntuacion || 5} onChange={e => actualizarResena(orden.id, 'puntuacion', e.target.value)}>{[5,4,3,2,1].map(n => <option key={n} value={n}>{n} estrellas</option>)}</select></label>
+          </div>
+          <label className="d-block">Comentario <textarea className="form-control" required maxLength={1000} value={formularios[orden.id]?.comentario || ''} onChange={e => actualizarResena(orden.id, 'comentario', e.target.value)} /></label>
+          <button className="btn btn-primary mt-2" disabled={resenaEstado[orden.id]?.enviando || resenaEstado[orden.id]?.exito}>Publicar reseña</button>
+          {resenaEstado[orden.id]?.mensaje && <p role="status">{resenaEstado[orden.id].mensaje}</p>}
+        </form>}<GarantiasOrden orden={orden} token={token} entrega={seguimientos[orden.id]} nombres={nombres} /></div>}
+      </div>)}
+    </section>}
+  </main>;
 }
-
 export default MisOrdenes;

@@ -1,13 +1,14 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import ResumenCarrito from '../components/ResumenCarrito';
+import { apiFetch } from '../data/api';
 import '../styles/carrito.css';
 
 function Carrito() {
   const {
-    cart,
+    cart, preciosCargando, errorPrecios, avisoPrecios, reintentarPrecios,
     cambiarCantidad,
     eliminarDelCarrito,
     vaciarCarrito,
@@ -15,6 +16,14 @@ function Carrito() {
 
   const [cupon, setCupon] = useState('');
   const [descuentoPorcentaje, setDescuentoPorcentaje] = useState(0);
+  const [vistaCupon, setVistaCupon] = useState(() => {
+    try { const quote = JSON.parse(localStorage.getItem('gamehub_cupon') || 'null');
+      if (quote && !Number.isInteger(Number(quote.descuento))) { localStorage.removeItem('gamehub_cupon'); return null; }
+      return quote;
+    } catch { return null; }
+  });
+  useEffect(() => { if (avisoPrecios) setVistaCupon(null); }, [avisoPrecios]);
+  const [validandoCupon, setValidandoCupon] = useState(false);
   const [maximoDescuento, setMaximoDescuento] = useState(0);
   const [mensajeCupon, setMensajeCupon] = useState({
     texto: '',
@@ -24,7 +33,7 @@ function Carrito() {
   const handleVaciarCarrito = () => {
     if (window.confirm('¿Estás seguro de que deseas vaciar tu carrito?')) {
       vaciarCarrito();
-      localStorage.removeItem('gamehub_cupon');
+      localStorage.removeItem('gamehub_cupon'); setVistaCupon(null);
 
       setDescuentoPorcentaje(0);
       setMaximoDescuento(0);
@@ -33,92 +42,21 @@ function Carrito() {
     }
   };
 
-  const handleAplicarCupon = () => {
+  const handleAplicarCupon = async () => {
     const codigo = cupon.trim().toUpperCase();
-
-    // Eliminar cualquier cupón anterior antes de validar el nuevo.
-    localStorage.removeItem('gamehub_cupon');
-
-    const cupones = {
-      NEON10: {
-        porcentaje: 10,
-        maximo: 50000,
-        vigencia: '2026-12-31',
-      },
-      GAMEHUB20: {
-        porcentaje: 20,
-        maximo: 80000,
-        vigencia: '2026-12-31',
-      },
-      GAMER20: {
-        porcentaje: 20,
-        maximo: 80000,
-        vigencia: '2026-12-31',
-      },
-      EXPIRADO: {
-        porcentaje: 15,
-        maximo: 30000,
-        vigencia: '2025-01-01',
-      },
-    };
-
-    const cuponSeleccionado = cupones[codigo];
-
-    if (!codigo) {
-      setDescuentoPorcentaje(0);
-      setMaximoDescuento(0);
-      setMensajeCupon({
-        texto: 'Ingresa un código de cupón.',
-        esError: true,
-      });
-      return;
-    }
-
-    if (!cuponSeleccionado) {
-      setDescuentoPorcentaje(0);
-      setMaximoDescuento(0);
-      setMensajeCupon({
-        texto: 'Cupón no válido.',
-        esError: true,
-      });
-      return;
-    }
-
-    // Obtener la fecha local para comprobar la vigencia.
-    const hoy = new Date();
-    const fechaLocal = [
-      hoy.getFullYear(),
-      String(hoy.getMonth() + 1).padStart(2, '0'),
-      String(hoy.getDate()).padStart(2, '0'),
-    ].join('-');
-
-    if (fechaLocal > cuponSeleccionado.vigencia) {
-      setDescuentoPorcentaje(0);
-      setMaximoDescuento(0);
-      setMensajeCupon({
-        texto: 'Este cupón está vencido.',
-        esError: true,
-      });
-      return;
-    }
-
-    // Guardar el cupón válido para recuperarlo en el checkout.
-    localStorage.setItem(
-      'gamehub_cupon',
-      JSON.stringify({
-        codigo,
-        porcentaje: cuponSeleccionado.porcentaje,
-        maximo: cuponSeleccionado.maximo,
-        vigencia: cuponSeleccionado.vigencia,
-      })
-    );
-
-    setDescuentoPorcentaje(cuponSeleccionado.porcentaje);
-    setMaximoDescuento(cuponSeleccionado.maximo);
-    setMensajeCupon({
-      texto: `¡Cupón del ${cuponSeleccionado.porcentaje}% aplicado con éxito!`,
-      esError: false,
-    });
+    if (!codigo) { setMensajeCupon({ texto: 'Ingresa un código de cupón.', esError: true }); return; }
+    setValidandoCupon(true); setMensajeCupon({ texto: '', esError: false });
+    try {
+      const items = Object.fromEntries(cart.map(item => [String(item.id), Number(item.cantidad)]));
+      const response = await apiFetch('/api/v1/promotions/preview', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ codigo, items }) });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.error || 'No se pudo validar el cupón.');
+      localStorage.setItem('gamehub_cupon', JSON.stringify(result)); setVistaCupon(result); setDescuentoPorcentaje(0);
+      setMensajeCupon({ texto: 'Cupón validado. Se confirmará al crear la orden.', esError: false });
+    } catch (error) {
+      localStorage.removeItem('gamehub_cupon'); setVistaCupon(null);
+      setMensajeCupon({ texto: error instanceof TypeError ? 'No se pudo conectar con promociones.' : error.message, esError: true });
+    } finally { setValidandoCupon(false); }
   };
 
   const subtotal = cart.reduce(
@@ -126,16 +64,14 @@ function Carrito() {
     0
   );
 
-  const montoDescuento = Math.min(
-    Math.round((subtotal * descuentoPorcentaje) / 100),
-    maximoDescuento,
-    subtotal
-  );
+  const montoDescuento = vistaCupon && Number(vistaCupon.subtotal) === subtotal ? Number(vistaCupon.descuento) : 0;
 
   const total = Math.max(0, subtotal - montoDescuento);
 
+  if (cart.length && (preciosCargando || errorPrecios)) return <main className="container my-5" role="status">{preciosCargando ? 'Consultando precios vigentes...' : <>{errorPrecios} <button onClick={reintentarPrecios}>Reintentar</button></>}</main>;
   return (
     <main className="container my-5">
+      {avisoPrecios && <p role="alert">{avisoPrecios}</p>}
       <h1 className="h2 mb-4 border-bottom pb-2 border-secondary titulo-gamer">
         Tu carrito de compras
       </h1>
@@ -264,12 +200,14 @@ function Carrito() {
                 <button
                   className="btn btn-neon-primario"
                   type="button"
+                  disabled={validandoCupon}
                   onClick={handleAplicarCupon}
                 >
                   Aplicar
                 </button>
               </div>
 
+              {vistaCupon && Number(vistaCupon.subtotal) !== subtotal && <small role="status">El carrito cambió; valida el cupón nuevamente.</small>}
               {mensajeCupon.texto && (
                 <small
                   role="status"

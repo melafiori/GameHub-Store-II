@@ -1,0 +1,26 @@
+.enlace-cuenta:link,
+.enlace-cuenta:visited {
+  color: color-mix(in srgb, var(--color-primario), white 35%);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+.enlace-cuenta:hover {
+  color: color-mix(in srgb, var(--color-primario), white 55%);
+  text-decoration: underline;
+}
+.enlace-cuenta:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--color-primario), white 55%);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.card .titulo-login {
+  font-family: 'Press Start 2P', cursive;
+  color: var(--color-texto);
+  font-size: 26px;
+  text-shadow: 0 0 6px rgba(214, 35, 106, 0.7), 0 0 15px rgba(214, 35, 106, 0.3);
+}
+
+@media (max-width: 768px) {
+  .card .titulo-login { font-size: 20px; }
+}

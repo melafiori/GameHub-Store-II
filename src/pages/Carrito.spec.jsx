@@ -23,21 +23,28 @@ const SEGUNDO_PRODUCTO = {
   imagen: 'mouse.jpg',
 };
 
-const renderCarrito = (productos = [PRODUCTO_PRUEBA]) => {
+const renderCarrito = async (productos = [PRODUCTO_PRUEBA]) => {
   localStorage.setItem('gamehub_cart', JSON.stringify(productos));
 
-  return render(
+  const result = render(
     <MemoryRouter>
       <CartProvider>
         <Carrito />
       </CartProvider>
     </MemoryRouter>
   );
+  if (productos.length) await screen.findByRole('button', {name: /vaciar carrito/i});
+  return result;
 };
 
 describe('Página Carrito', () => {
   beforeEach(() => {
     localStorage.clear();
+    spyOn(window, 'fetch').and.callFake(async (url, options={}) => {
+      if (url.includes('/products/')) { const id=Number(url.split('/').pop()); const item=JSON.parse(localStorage.getItem('gamehub_cart') || '[]').find(p=>p.id===id); return new Response(JSON.stringify({estado:'ACTIVO',precio:item.precio,precioVigente:item.precio}),{status:200}); }
+      if (url.includes('/promotions/preview')) { const body=JSON.parse(options.body); if(body.codigo==='EXPIRADO') return new Response(JSON.stringify({error:'Cupon vencido'}),{status:400}); return new Response(JSON.stringify({codigo:'NEON10',subtotal:1000000,descuento:50000,total:950000}),{status:200}); }
+      return new Response('{}',{status:404});
+    });
     window.confirm = jasmine.createSpy('confirm').and.returnValue(true);
   });
 
@@ -45,8 +52,8 @@ describe('Página Carrito', () => {
     window.confirm.calls.reset();
   });
 
-  it('debe mostrar los productos, precios y subtotales', () => {
-    renderCarrito([PRODUCTO_PRUEBA, SEGUNDO_PRODUCTO]);
+  it('debe mostrar los productos, precios y subtotales', async () => {
+    await renderCarrito([PRODUCTO_PRUEBA, SEGUNDO_PRODUCTO]);
 
     expect(screen.getByText('Teclado RGB')).not.toBeNull();
     expect(screen.getByText('Mouse Gamer')).not.toBeNull();
@@ -57,7 +64,7 @@ describe('Página Carrito', () => {
   });
 
   it('debe permitir modificar la cantidad de un producto', async () => {
-    renderCarrito();
+    await renderCarrito();
 
     const cantidad = screen.getByRole('spinbutton', {
       name: /cantidad de teclado rgb/i,
@@ -81,7 +88,7 @@ describe('Página Carrito', () => {
   });
 
   it('debe eliminar un producto del carrito', async () => {
-    renderCarrito([PRODUCTO_PRUEBA, SEGUNDO_PRODUCTO]);
+    await renderCarrito([PRODUCTO_PRUEBA, SEGUNDO_PRODUCTO]);
 
     fireEvent.click(
       screen.getByRole('button', { name: /eliminar teclado rgb/i })
@@ -97,13 +104,13 @@ describe('Página Carrito', () => {
     });
   });
 
-  it('debe aplicar un cupón válido y respetar su descuento máximo', () => {
+  it('debe aplicar un cupón válido y respetar su descuento máximo', async () => {
     const productoCostoso = {
       ...PRODUCTO_PRUEBA,
       precio: 1000000,
     };
 
-    renderCarrito([productoCostoso]);
+    await renderCarrito([productoCostoso]);
 
     fireEvent.change(screen.getByRole('textbox', {
       name: /código de cupón/i,
@@ -114,7 +121,7 @@ describe('Página Carrito', () => {
     fireEvent.click(screen.getByRole('button', { name: /^aplicar$/i }));
 
     expect(
-      screen.getByText(/cupón del 10% aplicado con éxito/i)
+      await screen.findByText(/validado/i)
     ).not.toBeNull();
 
     expect(screen.getByText('-$50.000')).not.toBeNull();
@@ -124,8 +131,8 @@ describe('Página Carrito', () => {
     expect(cupon.codigo).toBe('NEON10');
   });
 
-  it('debe rechazar un cupón vencido', () => {
-    renderCarrito();
+  it('debe rechazar un cupón vencido', async () => {
+    await renderCarrito();
 
     fireEvent.change(screen.getByRole('textbox', {
       name: /código de cupón/i,
@@ -135,12 +142,12 @@ describe('Página Carrito', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /^aplicar$/i }));
 
-    expect(screen.getByText('Este cupón está vencido.')).not.toBeNull();
+    expect(await screen.findByText('Cupon vencido')).not.toBeNull();
     expect(localStorage.getItem('gamehub_cupon')).toBeNull();
   });
 
-  it('debe mostrar un mensaje cuando el carrito está vacío', () => {
-    renderCarrito([]);
+  it('debe mostrar un mensaje cuando el carrito está vacío', async () => {
+    await renderCarrito([]);
 
     expect(
       screen.getByText(/tu carrito está vacío|carrito vacío/i)
@@ -153,7 +160,7 @@ describe('Página Carrito', () => {
       JSON.stringify({ codigo: 'NEON10' })
     );
 
-    renderCarrito();
+    await renderCarrito();
 
     fireEvent.click(
       screen.getByRole('button', { name: /vaciar carrito/i })
@@ -173,7 +180,7 @@ describe('Página Carrito', () => {
   it('no debe vaciar el carrito si se cancela la confirmación', async () => {
     window.confirm.and.returnValue(false);
 
-    renderCarrito();
+    await renderCarrito();
 
     fireEvent.click(
       screen.getByRole('button', { name: /vaciar carrito/i })
