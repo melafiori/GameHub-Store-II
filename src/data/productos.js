@@ -10,7 +10,7 @@ export const productos = [
         precio: 899990,
         stock: 10,
         estado: "En stock",
-        imagen: "https://cl-dam-resizer.ecomm.cencosud.com/unsafe/adaptive-fit-in/1920x0/cl/paris/406334999/variant/698c823ac83fe99183122a88/images/d638ffa3-d3c8-4705-81a3-043f4cc66f47/406334999-0000-001.jpg",
+        imagen: "/img/productos/asus-tuf-gaming-a15.webp",
         descripcion: "Notebook gamer ASUS TUF Gaming A15 diseñada para ofrecer un buen rendimiento en videojuegos y tareas exigentes, con un diseño resistente y sistema de refrigeración optimizado.", 
         especificaciones: { "Procesador": "AMD Ryzen 7", "Memoria RAM": "16 GB", "Almacenamiento": "512 GB SSD", "Tarjeta gráfica": "NVIDIA GeForce RTX 3050", "Pantalla": "15.6 pulgadas Full HD", "Sistema operativo": "Windows 11", "Conectividad": "Wi-Fi 6, Bluetooth" }
     },
@@ -93,7 +93,7 @@ export const productos = [
         precio: 649990,
         stock: 0,
         estado: "Sin stock",
-        imagen:"https://media.spdigital.cl/thumbnails/products/6s93b4nm_48ae52d8_thumbnail_512.png",
+        imagen: "/img/productos/gigabyte-rx-7800-xt-gaming-oc.png",
         descripcion: "Tarjeta gráfica Gigabyte Gaming OC RX 7800 XT diseñada para ofrecer un alto rendimiento en videojuegos, especialmente en resoluciones 1440p y 4K.", 
         especificaciones: { "Chipset": "AMD Radeon RX 7800 XT", "Memoria": "16 GB GDDR6", "Interfaz de memoria": "256-bit", "Frecuencia Boost": "Hasta 2520 MHz", "Conectores de salida": "2x DisplayPort, 2x HDMI", "Alimentación requerida": "2x 8 pines", "Interfaz": "PCI Express 4.0" }
     },
@@ -106,7 +106,7 @@ export const productos = [
         precio: 2199990,
         stock: 10,
         estado: "En stock",
-        imagen:"https://media.spdigital.cl/thumbnails/products/zrybrwu0_31108081_thumbnail_512.jpg",
+        imagen: "/img/productos/zotac-rtx-4090-trinity.jpg",
         descripcion: "Tarjeta gráfica Zotac Gaming Trinity RTX 4090 orientada a gaming de alto rendimiento y aplicaciones que requieren gran capacidad de procesamiento gráfico.", 
         especificaciones: { "Chipset": "NVIDIA GeForce RTX 4090", "Memoria": "24 GB GDDR6X", "Interfaz de memoria": "384-bit", "Frecuencia Boost": "2520 MHz", "Conectores de salida": "3x DisplayPort, 1x HDMI", "Alimentación requerida": "1x 16 pines", "Interfaz": "PCI Express 4.0" }
     },
@@ -158,7 +158,7 @@ export const productos = [
         precio: 599990,
         stock: 0,
         estado: "Sin stock",
-        imagen:"https://media.spdigital.cl/thumbnails/products/25df4qkb_d7b7546e_thumbnail_4096.jpg",
+        imagen: "/img/productos/zotac-rtx-4070-twin-edge.jpg",
         descripcion: "Tarjeta gráfica Zotac Twin Edge RTX 4070 con diseño compacto y rendimiento orientado a gaming en resolución 1440p.", 
         especificaciones: { "Chipset": "NVIDIA GeForce RTX 4070", "Memoria": "12 GB GDDR6X", "Interfaz de memoria": "192-bit", "Frecuencia Boost": "2475 MHz", "Conectores de salida": "3x DisplayPort, 1x HDMI", "Alimentación requerida": "1x 8 pines", "Interfaz": "PCI Express 4.0" }
     },
@@ -370,7 +370,7 @@ export const productos = [
         precio: 329990,
         stock: 2,
         estado: "Últimas unidades",
-        imagen:"https://media.spdigital.cl/thumbnails/products/hxulfw1__d3f9044d_thumbnail_512.png",
+        imagen:"/img/productos/gigabyte-m32qc-sa.avif",
         descripcion: "Monitor Gigabyte Gaming de 32 pulgadas diseñado para ofrecer una experiencia de juego inmersiva gracias a su gran tamaño de pantalla.", 
         especificaciones: { "Tamaño": "32 pulgadas", "Resolución": "2560 x 1440", "Frecuencia": "165 Hz", "Panel": "VA", "Tiempo de respuesta": "1 ms", "Conectores": "DisplayPort, HDMI" }
     },

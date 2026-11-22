@@ -8,6 +8,11 @@ import DetalleProducto from './pages/DetalleProducto';
 import Carrito from './pages/Carrito';
 import MisOrdenes from './pages/MisOrdenes';
 import Checkout from './pages/Checkout';
+import Login from './pages/Login';
+import Perfil from './pages/Perfil';
+import Registro from './pages/Registro';
+import GestionDespachos from './pages/GestionDespachos';
+import AdminCatalogo from './pages/AdminCatalogo';
 
 function App() {
   return (
@@ -22,6 +27,11 @@ function App() {
         <Route path="/carrito" element={<Carrito />} />
         <Route path="/mis-ordenes" element={<MisOrdenes />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/registro" element={<Registro />} />
+        <Route path="/perfil" element={<Perfil />} />
+        <Route path="/admin" element={<AdminCatalogo />} />
+        <Route path="/gestion-despachos" element={<GestionDespachos />} />
       </Routes>
 
       <Footer />

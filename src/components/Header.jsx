@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
+import { useSession } from '../context/SessionContext'
 
 // Importaciones de íconos para que Vite los procese en producción
 import iconoWishlist from '../assets/icons/icono-wishlist.svg'
@@ -9,6 +10,7 @@ import iconoUsuario from '../assets/icons/icono-usuario.svg'
 import iconoOrdenes from '../assets/icons/icono-ordenes.png'
 
 function Header() {
+  const { token } = useSession()
   const { cart } = useCart()
   const totalItems = cart ? cart.reduce((acc, item) => acc + item.cantidad, 0) : 0
 
@@ -68,12 +70,12 @@ function Header() {
             </Link>
           </li>
           <li>
-            <Link to="/login">
+            <Link to={token ? '/perfil' : '/login'}>
               <img
                 src={iconoUsuario}
                 alt="icono de inicio de sesion"
               />
-              Login
+              {token ? 'Mi perfil' : 'Login'}
             </Link>
           </li>
           <li>

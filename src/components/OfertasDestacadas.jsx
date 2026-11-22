@@ -1,16 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { productos } from '../data/productos'; 
+import { useCatalogo } from '../data/catalogoApi'; 
 
 function OfertasDestacadas() {
-  // IDs de los productos que mostramos como ofertas
-  const idsOfertas = [2, 4, 29, 19];
-
-  // Filtrar los productos
-  const productosOfertas = productos.filter((producto) =>
-    idsOfertas.includes(producto.id)
-  );
-
+  const { productos } = useCatalogo();
+  const productosOfertas = productos.filter(p => p.precio < p.precioNormal);
   return (
     <section className="ofertas-destacadas my-5">
       <h2 className="titulo-gamer text-light mb-4" style={{fontFamily: "'Press Start 2P', cursive", fontSize: "24px"}}>
@@ -18,12 +12,8 @@ function OfertasDestacadas() {
       </h2>
       <div className="row g-4">
         {productosOfertas.map((producto) => {
-          // Calculo de precio de oferta (10% descuento) y porcentaje
-          const precioOferta = Math.round(producto.precio * 0.90);
-          const descuento = Math.round(
-            ((producto.precio - precioOferta) / producto.precio) * 100
-          );
-
+          const precioOferta = producto.precio;
+          const descuento = Math.round((1 - producto.precio / producto.precioNormal) * 100);
           return (
             <div key={producto.id} className="col-12 col-md-6 col-lg-3">
               <div className="card h-100 bg-dark text-light border-secondary tarjeta-producto position-relative p-3">
@@ -50,14 +40,14 @@ function OfertasDestacadas() {
 
                   <div className="mt-auto">
                     <p className="precio-anterior text-secondary text-decoration-line-through fs-6 m-0">
-                      ${producto.precio.toLocaleString('es-CL')}
+                      ${producto.precioNormal.toLocaleString('es-CL')}
                     </p>
                     <p className="precio-oferta fs-4 text-primary fw-bold mb-3">
                       ${precioOferta.toLocaleString('es-CL')}
                     </p>
 
                     <Link
-                      to={`/producto?id=${producto.id}&oferta=true`}
+                      to={`/producto?id=${producto.id}`}
                       className="btn btn-primary w-100 fw-bold"
                     >
                       Ver producto

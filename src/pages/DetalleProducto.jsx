@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { productos } from '../data/productos';
+import { useCatalogo } from '../data/catalogoApi';
 import { useCart } from '../context/CartContext';
 import '../styles/producto.css';
 import ListaResenas from '../components/ListaResenas';
+import { apiFetch } from '../data/api';
 
 import iconoCarrito from '../assets/icons/icono-carrito.svg';
 
-const IDS_OFERTAS = [2, 4, 29, 19];
+const IDS_OFERTAS = [];
 
 const CATEGORIA_SLUGS = {
   'Notebooks': 'notebooks',
@@ -20,43 +21,63 @@ const CATEGORIA_SLUGS = {
 };
 
 function DetalleProducto() {
+  const { productos, cargando, error } = useCatalogo();
   const [searchParams] = useSearchParams();
   const idParam = searchParams.get('id');
-  const esOfertaParam = searchParams.get('oferta') === 'true';
+
 
   const { agregarAlCarrito } = useCart();
   const producto = productos.find((p) => p.id === Number(idParam));
 
+  const [resenas, setResenas] = useState([]);
+  const [estadoResenas, setEstadoResenas] = useState('cargando');
   const [cantidad, setCantidad] = useState(1);
   const [imagenSeleccionada, setImagenSeleccionada] = useState('');
+  const [imagenFallida, setImagenFallida] = useState(false);
   const [mensajeCarrito, setMensajeCarrito] = useState('');
   const [esErrorCarrito, setEsErrorCarrito] = useState(false);
 
   useEffect(() => {
+    if (!idParam || !/^\d+$/.test(idParam)) return;
+    const controller = new AbortController();
+    setEstadoResenas('cargando');
+    setResenas([]);
+    apiFetch('/api/v1/reviews/product/' + encodeURIComponent(idParam), { signal: controller.signal })
+      .then(response => { if (!response.ok) throw new Error('No disponible'); return response.json(); })
+      .then(data => {
+        setResenas(data.map(r => ({ id: r.resenaId, autor: 'Cliente verificado', calificacion: r.puntuacion, fecha: r.fecha?.slice(0, 10), comentario: r.comentario })));
+        setEstadoResenas('listo');
+      })
+      .catch(error => { if (error.name !== 'AbortError') setEstadoResenas('error'); });
+    return () => controller.abort();
+  }, [idParam]);
+
+  useEffect(() => {
     if (producto) {
       setImagenSeleccionada(producto.imagen);
+      setImagenFallida(false);
       setCantidad(1);
       setMensajeCarrito('');
     }
   }, [producto]);
+
+  if (cargando || error) return <main className="container my-5" role={error ? 'alert' : 'status'}>{error ? 'No se pudo cargar el producto desde el servidor.' : 'Cargando producto…'}</main>;
 
   if (!producto) {
     return (
       <main className="container text-center my-5 py-5">
         <h2 className="text-light">Producto no encontrado</h2>
         <p className="text-secondary">El producto que buscas no existe o ha sido removido.</p>
-        <Link to="/catalogo" className="btn btn-primary mt-3">
+        <Link to="/catcategoria" className="btn btn-primary mt-3">
           Volver al catálogo
         </Link>
       </main>
     );
   }
 
-  const esOferta = esOfertaParam || IDS_OFERTAS.includes(producto.id);
-  const precioOferta = Math.round(producto.precio * 0.9);
-  const porcentajeDescuento = Math.round(
-    ((producto.precio - precioOferta) / producto.precio) * 100
-  );
+  const esOferta = producto.precio < producto.precioNormal;
+  const precioOferta = producto.precio;
+  const porcentajeDescuento = esOferta ? Math.round((1 - producto.precio / producto.precioNormal) * 100) : 0;
 
   const handleRestar = () => {
     setCantidad((prev) => Math.max(1, prev - 1));
@@ -178,7 +199,7 @@ function DetalleProducto() {
             <Link to="/" className="text-info text-decoration-none">Inicio</Link> <span className="text-secondary ms-2">/</span>
           </li>
           <li>
-            <Link to={`/catalogo?categoria=${slugCategoria}`} className="text-info text-decoration-none">
+            <Link to={`/catcategoria?categoria=${slugCategoria}`} className="text-info text-decoration-none">
               {producto.categoria}
             </Link> <span className="text-secondary ms-2">/</span>
           </li>
@@ -195,15 +216,16 @@ function DetalleProducto() {
         <section className="col-12 col-lg-6">
           <div className="producto-galeria">
             <div className="galeria-imagen-principal">
-              <img
+              {producto.imagen && !imagenFallida ? <img
                 src={imagenSeleccionada || producto.imagen}
+                onError={() => setImagenFallida(true)}
                 alt={producto.nombre}
                 className="img-fluid"
-              />
+              /> : <p className="text-secondary">Sin imagen disponible</p>}
             </div>
 
             {/* GRILLA BOOTSTRAP PARA MINIATURAS */}
-            <ul className="row g-2 list-unstyled mt-3 mb-0">
+            {producto.imagen && !imagenFallida && <ul className="row g-2 list-unstyled mt-3 mb-0">
               {[...Array(4)].map((_, index) => (
                 <li className="col-3" key={index}>
                   <button
@@ -220,7 +242,7 @@ function DetalleProducto() {
                   </button>
                 </li>
               ))}
-            </ul>
+            </ul>}
           </div>
         </section>
 
@@ -230,7 +252,7 @@ function DetalleProducto() {
           <h1 className="producto-titulo">{producto.nombre}</h1>
 
           <div className="producto-valoracion mb-4">
-            <span className="estrellas">★★★★☆</span>
+            <span className="estrellas">{resenas.length ? (resenas.reduce((total, r) => total + r.calificacion, 0) / resenas.length).toFixed(1) + ' / 5' : 'Sin calificaciones'}</span>
             <a href="#resenas" className="text-info text-decoration-none ms-2">Ver reseñas y calificaciones</a>
           </div>
 
@@ -238,7 +260,7 @@ function DetalleProducto() {
             {esOferta ? (
               <>
                 <span className="precio-anterior">
-                  ${producto.precio.toLocaleString('es-CL')}
+                  ${producto.precioNormal.toLocaleString('es-CL')}
                 </span>
                 <span className="precio-actual">
                   ${precioOferta.toLocaleString('es-CL')}
@@ -305,7 +327,7 @@ function DetalleProducto() {
               disabled={producto.stock <= 0 || cantidad === ''}
             >
               <img src={iconoCarrito} alt="" style={{ width: '22px' }} />
-              {producto.stock <= 0 ? 'Sin stock' : 'Agregar al carrito'}
+              {producto.stock == null ? 'Disponibilidad no informada' : producto.stock <= 0 ? 'Sin stock' : 'Agregar al carrito'}
             </button>
 
             {mensajeCarrito && (
@@ -354,34 +376,9 @@ function DetalleProducto() {
 
       {/* RESEÑAS */}
       <div id="resenas">
-        <ListaResenas
-          resenas={[
-            {
-              id: 1,
-              autor: 'Martín G.',
-              calificacion: 5,
-              fecha: '2026-08-12',
-              comentario:
-                'Excelente rendimiento para el precio, llevo tiempo probando sin problemas y muy buena experiencia.',
-            },
-            {
-              id: 2,
-              autor: 'Camila R.',
-              calificacion: 4,
-              fecha: '2026-09-20',
-              comentario:
-                'Buen producto, cumple con lo esperado y llegó en buenas condiciones.',
-            },
-            {
-              id: 3,
-              autor: 'Diego P.',
-              calificacion: 4,
-              fecha: '2026-09-01',
-              comentario:
-                'Buena experiencia y buen rendimiento.',
-            },
-          ]}
-        />
+        {estadoResenas === 'cargando' && <p role="status">Cargando rese?as...</p>}
+        {estadoResenas === 'error' && <p role="alert">No se pudieron cargar las rese?as desde el servidor.</p>}
+        {estadoResenas === 'listo' && <ListaResenas resenas={resenas} />}
       </div>
     </main>
   );

@@ -17,7 +17,7 @@ function CarouselFade() {
                     ></iframe>
                 </div>
                 <Carousel.Caption>
-                    <h5>PRÓXIMAMENTE</h5>
+                    <h5>YA DISPONIBLE</h5>
                     <p>Grand Theft Auto VI Limited Edition DualSense Controllers | PS5</p>
                 </Carousel.Caption>
             </Carousel.Item>

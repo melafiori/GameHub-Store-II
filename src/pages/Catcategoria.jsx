@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { productos } from '../data/productos'; 
+import { useCatalogo } from '../data/catalogoApi';
 import '../styles/catalogo.css';
 
 const CATEGORIAS = {
@@ -13,7 +13,7 @@ const CATEGORIAS = {
     accesorios: "Accesorios"
 };
 
-const IDS_OFERTAS = [2, 4, 29, 19];
+const IDS_OFERTAS = [];
 const PRODUCTOS_POR_PAGINA = 12;
 
 const FILTROS_VACIOS = {
@@ -25,6 +25,7 @@ const FILTROS_VACIOS = {
 };
 
 function Catcategoria() {
+    const { productos, categorias, cargando, error } = useCatalogo();
     const [searchParams] = useSearchParams();
     const categoriaURL = searchParams.get("categoria");
     const busquedaURL = searchParams.get("busqueda"); 
@@ -133,7 +134,7 @@ function Catcategoria() {
         });
 
         return lista;
-    }, [busquedaURL, filtrosAplicados, orden]);
+    }, [productos, busquedaURL, filtrosAplicados, orden]);
 
     // Cálculo de Paginación
     const totalPaginas = Math.ceil(productosFiltrados.length / PRODUCTOS_POR_PAGINA);
@@ -157,6 +158,9 @@ function Catcategoria() {
                 <p className="text-secondary fs-5 m-0">
                     Mostrando {productosPagina.length} de {productosFiltrados.length} productos
                 </p>
+                {cargando && <p role="status">Cargando catálogo desde el servidor…</p>}
+                {error && <p role="alert" className="text-danger">No se pudo cargar el catálogo desde el servidor. Comprueba que el backend esté disponible.</p>}
+                {!cargando && !error && <p className="text-secondary">Datos del catálogo obtenidos del servidor.</p>}
             </div>
 
             {/* CONTENEDOR PRINCIPAL BOOTSTRAP (Grilla) */}
@@ -169,7 +173,7 @@ function Catcategoria() {
                             <div className="mb-4">
                                 <h4 className="text-info mb-3 text-break" style={{ fontFamily: "'Press Start 2P', cursive", fontSize: "12px" }}>Categoría</h4>
                                 <ul className="list-unstyled m-0 p-0">
-                                    {Object.entries(CATEGORIAS).map(([key, label]) => (
+                                    {categorias.map(({ categoryId: key, nombre: label }) => (
                                         <li key={key} className="form-check mb-2">
                                             <input
                                                 type="checkbox"
@@ -191,7 +195,7 @@ function Catcategoria() {
                             <div className="mb-4">
                                 <h4 className="text-info mb-3 text-break" style={{ fontFamily: "'Press Start 2P', cursive", fontSize: "12px" }}>Marca</h4>
                                 <ul className="list-unstyled m-0 p-0">
-                                    {["asus", "msi", "gigabyte", "nvidia", "amd", "zotac"].map((marca) => (
+                                    {[...new Set(productos.map(p => p.marca.toLowerCase()).filter(Boolean))].map((marca) => (
                                         <li key={marca} className="form-check mb-2">
                                             <input
                                                 type="checkbox"
@@ -246,6 +250,7 @@ function Catcategoria() {
                                         id="stock-disponible"
                                         name="disponibilidad"
                                         className="form-check-input"
+                                        disabled={!productos.some(producto => producto.stock != null)}
                                         checked={filtrosTemp.soloStock}
                                         onChange={(e) => setFiltrosTemp(prev => ({ ...prev, soloStock: e.target.checked }))}
                                     />
@@ -295,7 +300,7 @@ function Catcategoria() {
                             </div>
                         ) : (
                             productosPagina.map((producto) => {
-                                const esOferta = IDS_OFERTAS.includes(producto.id);
+                                const esOferta = producto.precio < producto.precioNormal;
                                 let claseStock = "disponible";
                                 if (producto.stock === 0) {
                                     claseStock = "agotado";
@@ -310,7 +315,7 @@ function Catcategoria() {
                                             </span>
                                             
                                             <div className="text-center mb-3">
-                                                <img src={producto.imagen} alt={producto.nombre} className="img-fluid" style={{height: "170px", objectFit: "contain", transition: "transform 0.3s ease"}} />
+                                                {producto.imagen ? <><img src={producto.imagen} alt={producto.nombre} className="img-fluid" style={{height: "170px", objectFit: "contain"}} onError={e => { e.currentTarget.hidden = true; e.currentTarget.nextSibling.hidden = false; }} /><div hidden style={{height: "170px", alignContent: "center"}}>Sin imagen disponible</div></> : <div className="text-secondary d-flex align-items-center justify-content-center" style={{height: "170px"}}>Sin imagen disponible</div>}
                                             </div>
                                             
                                             <h5 className="card-title fs-5 fw-bold">{producto.nombre}</h5>
@@ -320,10 +325,10 @@ function Catcategoria() {
                                                 {esOferta ? (
                                                     <>
                                                         <span className="text-secondary text-decoration-line-through fs-6 me-2">
-                                                            ${producto.precio.toLocaleString("es-CL")}
+                                                            ${producto.precioNormal.toLocaleString("es-CL")}
                                                         </span>
                                                         <span className="precio-oferta">
-                                                            ${Math.round(producto.precio * 0.90).toLocaleString("es-CL")}
+                                                            ${producto.precio.toLocaleString("es-CL")}
                                                         </span>
                                                     </>
                                                 ) : (
@@ -332,7 +337,7 @@ function Catcategoria() {
                                             </p>
                                             
                                             <Link
-                                                to={`/producto?id=${producto.id}${esOferta ? "&oferta=true" : ""}`}
+                                                to={`/producto?id=${producto.id}`}
                                                 className="btn btn-primary w-100 fw-bold"
                                             >
                                                 Ver producto

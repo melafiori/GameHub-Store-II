@@ -1,0 +1,157 @@
+﻿/* Estilos compartidos de los paneles de gestión, con la paleta de la tienda. */
+.panel-gestion {
+  color: var(--color-texto);
+  padding-bottom: 2rem;
+}
+.panel-gestion > h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.65rem, 3vw, 2.4rem);
+  color: var(--color-acento);
+  text-shadow: 0 0 6px rgba(0, 210, 255, .7), 0 0 18px rgba(0, 210, 255, .3);
+  margin-bottom: 2rem;
+}
+.panel-gestion h2, .panel-gestion h3 {
+  color: var(--color-texto);
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 600;
+}
+.panel-gestion h2 { font-size: clamp(1.15rem, 2vw, 1.45rem); margin-bottom: 1.2rem; }
+.panel-gestion h3 { font-size: 1.05rem; }
+.panel-gestion section,
+.panel-gestion > .card,
+.panel-gestion .orden-card {
+  background: var(--color-superficie);
+  color: var(--color-texto);
+  border: 1px solid rgba(0, 210, 255, .25);
+  border-radius: 14px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, .18);
+}
+.panel-gestion section { padding: clamp(1.1rem, 3vw, 1.75rem); margin: 1.25rem 0 !important; }
+.panel-gestion section .orden-card { background: var(--color-fondo); box-shadow: none; }
+.panel-gestion form { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 1rem; align-items: end; }
+.panel-gestion label { display: block; min-width: 0; color: var(--color-texto); font-weight: 600; margin: 0 !important; }
+.panel-gestion input, .panel-gestion select, .panel-gestion textarea,
+.panel-gestion .form-control, .panel-gestion .form-select {
+  width: 100%; min-height: 44px; margin-top: .4rem;
+  background-color: var(--color-fondo); color: var(--color-texto);
+  border: 1px solid rgba(0, 210, 255, .4); border-radius: 8px;
+}
+.panel-gestion input:focus, .panel-gestion select:focus, .panel-gestion textarea:focus {
+  background-color: var(--color-fondo); color: var(--color-texto);
+  border-color: var(--color-acento); outline: none;
+  box-shadow: 0 0 0 .2rem rgba(0, 210, 255, .2);
+}
+.panel-gestion select option { background: var(--color-superficie); color: var(--color-texto); }
+.panel-gestion input:disabled, .panel-gestion select:disabled, .panel-gestion textarea:disabled { opacity: .65; background-color: var(--color-fondo); }
+.panel-gestion button, .panel-gestion .btn {
+  width: fit-content; min-height: 40px; border-radius: 8px; font-weight: 600;
+  background: var(--color-primario); border: 1px solid var(--color-primario); color: #fff;
+  padding: .5rem .9rem; transition: filter .2s, box-shadow .2s;
+}
+.panel-gestion button:hover:not(:disabled), .panel-gestion .btn:hover:not(:disabled) { background: var(--color-primario); border-color: var(--color-primario); color: #fff; filter: brightness(1.15); }
+.panel-gestion button:focus-visible, .panel-gestion .btn:focus-visible { outline: 2px solid var(--color-acento); outline-offset: 3px; }
+.panel-gestion button:disabled { opacity: .55; cursor: not-allowed; }
+.panel-gestion .btn-outline-info, .panel-gestion .btn-outline-warning, .panel-gestion .btn-outline-secondary {
+  color: var(--color-acento); background: transparent; border-color: var(--color-acento);
+}
+.panel-gestion .btn-outline-info:hover:not(:disabled), .panel-gestion .btn-outline-warning:hover:not(:disabled), .panel-gestion .btn-outline-secondary:hover:not(:disabled) { background: var(--color-acento); color: var(--color-fondo); border-color: var(--color-acento); }
+.panel-gestion [role='alert'] { color: var(--color-error); }
+.panel-gestion [role='status'] { color: var(--color-texto); }
+.panel-gestion ul { padding-left: 0; list-style: none; margin: 1.25rem 0 0; }
+.panel-gestion li { padding: .8rem 0; border-top: 1px solid rgba(0, 210, 255, .18); }
+.panel-gestion li button, .panel-gestion article button, .panel-gestion .border-top button { margin: .3rem .4rem 0 0; }
+.panel-gestion .border-top { border-color: rgba(0, 210, 255, .2) !important; }
+.panel-gestion .table { --bs-table-bg: var(--color-superficie); --bs-table-color: var(--color-texto); --bs-table-border-color: rgba(0, 210, 255, .2); }
+.panel-gestion .table th, .panel-gestion .table td { vertical-align: middle; padding: .8rem; }
+.panel-admin > .card { display: flex; flex-direction: row; align-items: center; flex-wrap: wrap; gap: .7rem; }
+.panel-admin > .card p { flex: 1 1 280px; margin: 0; }
+.panel-operador > h2 { margin-top: 2rem; }
+.panel-operador > section > label { margin-right: .75rem !important; }
+@media (max-width: 575px) {
+  .panel-gestion > h1 { font-size: 1.55rem; }
+  .panel-gestion form { grid-template-columns: 1fr; }
+  .panel-gestion form button { width: 100%; }
+  .panel-admin > .card p { flex-basis: 100%; }
+}
+/* Administración: navegación compacta y catálogo fácil de recorrer. */
+.admin-dashboard { margin-top: 3.5rem; max-width: 1200px; }
+.admin-header { display:flex; justify-content:space-between; align-items:end; gap:2rem; margin-bottom:2rem; }
+.admin-eyebrow,.admin-kicker { color:var(--color-acento); font-size:.7rem; font-weight:700; letter-spacing:.16em; }
+.admin-header h1 { font-family:'Orbitron',sans-serif; font-size:clamp(1.9rem,4vw,2.8rem); color:var(--color-texto); font-weight:700; margin:.55rem 0; }
+.admin-header p,.admin-section-heading p,.admin-list-heading p { color:rgba(243,239,250,.7); margin:0; font-size:.94rem; }
+.admin-stats { display:flex; gap:.65rem; }
+.admin-stats div { min-width:135px; background:var(--color-superficie); border:1px solid rgba(0,210,255,.18); border-radius:12px; padding:.85rem 1rem; }
+.admin-stats strong,.admin-stats span { display:block; }
+.admin-stats strong { font-family:'Orbitron',sans-serif; color:var(--color-acento); font-size:1.4rem; }
+.admin-stats span { color:rgba(243,239,250,.7); font-size:.75rem; margin-top:.2rem; }
+.admin-tabs { display:flex; gap:.35rem; border-bottom:1px solid rgba(0,210,255,.2); overflow-x:auto; }
+.panel-admin .admin-tab { flex:0 0 auto; background:transparent; border:0; border-radius:0; color:rgba(243,239,250,.7); padding:.85rem 1rem; border-bottom:2px solid transparent; }
+.panel-admin .admin-tab:hover:not(:disabled) { background:transparent; color:var(--color-texto); }
+.panel-admin .admin-tab.active { color:var(--color-acento); background:transparent; border-bottom-color:var(--color-acento); }
+.panel-admin .admin-section, .panel-admin > div > section { margin:1.5rem 0 !important; padding:clamp(1.2rem,3vw,2rem); }
+.admin-section-heading,.admin-list-heading { margin-bottom:1.5rem; }
+.admin-section-heading h2,.admin-list-heading h2 { margin:.5rem 0; }
+.admin-form-actions { display:flex; align-items:center; flex-wrap:wrap; gap:.6rem; }
+.panel-admin .admin-message { background:var(--color-superficie); border-left:3px solid var(--color-acento); padding:1rem; margin-top:1rem; border-radius:6px; }
+.admin-list-heading { display:flex; align-items:end; justify-content:space-between; gap:1rem; }
+.admin-count { color:var(--color-acento); font-size:.8rem; padding:.25rem .55rem; border:1px solid rgba(0,210,255,.3); border-radius:30px; vertical-align:middle; }
+.panel-admin .admin-search { width:min(100%,280px); }
+.admin-product-list { border-top:1px solid rgba(0,210,255,.15); }
+.admin-product { display:flex; align-items:center; gap:1rem; padding:1rem 0; border-bottom:1px solid rgba(0,210,255,.13); }
+.admin-product-image { flex:0 0 64px; height:64px; border-radius:9px; background:var(--color-fondo); display:grid; place-items:center; overflow:hidden; }
+.admin-product-image img { width:100%; height:100%; object-fit:contain; }
+.admin-product-info { flex:1; min-width:0; }
+.admin-product-info strong,.admin-product-info span { display:block; }
+.admin-product-info strong { font-size:.92rem; }
+.admin-product-info span { font-size:.75rem; color:rgba(243,239,250,.6); margin-top:.25rem; }
+.admin-product-price { white-space:nowrap; font-size:.95rem; }
+.admin-product-actions { display:flex; gap:.45rem; }
+.panel-admin .admin-product-actions button { font-size:.8rem; min-height:36px; padding:.4rem .7rem; }
+.admin-categories li { display:flex; justify-content:space-between; align-items:center; gap:1rem; }
+.admin-category-state { display:inline-block; color:var(--color-acento); font-size:.68rem; margin-left:.8rem; letter-spacing:.05em; }
+.admin-empty { color:rgba(243,239,250,.7); padding:1rem 0 0; }
+@media(max-width:767px) { .admin-header { align-items:start; flex-direction:column; gap:1rem; } .admin-stats { width:100%; } .admin-stats div { flex:1; } .admin-list-heading { align-items:start; flex-direction:column; } .panel-admin .admin-search { width:100%; } .admin-product { flex-wrap:wrap; } .admin-product-info { flex:1 1 calc(100% - 85px); } .admin-product-price { margin-left:80px; } .admin-product-actions { margin-left:auto; } }
+@media(max-width:420px) { .admin-product-price { margin-left:0; } .admin-product-actions { margin-left:auto; } .admin-categories li { align-items:start; flex-direction:column; } }
+/* Panel de operador: misma jerarquía visual que administración. */
+.operator-dashboard { margin-top:3.5rem; max-width:1200px; }
+.panel-operador .admin-tab { flex:0 0 auto; background:transparent; border:0; border-radius:0; color:rgba(243,239,250,.7); padding:.85rem 1rem; border-bottom:2px solid transparent; }
+.panel-operador .admin-tab:hover:not(:disabled) { background:transparent; color:var(--color-texto); }
+.panel-operador .admin-tab.active { color:var(--color-acento); background:transparent; border-bottom-color:var(--color-acento); }
+.panel-operador > div > section { margin:1.5rem 0 !important; padding:clamp(1.2rem,3vw,2rem); }
+.panel-operador .admin-message { background:var(--color-superficie); border-left:3px solid var(--color-error); padding:1rem; margin-top:1rem; border-radius:6px; }
+.panel-operador .operator-empty { color:rgba(243,239,250,.7); background:var(--color-fondo); border:1px dashed rgba(0,210,255,.25); border-radius:10px; padding:1.25rem; margin:0; }
+.panel-operador .orden-card { margin-top:1rem; padding:1.2rem; }
+.panel-operador .orden-card h3 { color:var(--color-acento); }
+.panel-operador .orden-card p { margin-bottom:.5rem; }
+.panel-operador .orden-card button { margin-top:.5rem; }
+.panel-operador section > h3 { margin-top:1.8rem; }
+.panel-operador section > label { margin-right:.75rem !important; }
+.panel-operador .table-responsive { margin-top:1.2rem; border:1px solid rgba(0,210,255,.15); border-radius:10px; }
+.panel-operador .table { margin-bottom:0; }
+/* Bandeja de ordenes */
+.panel-operador .bandeja-filtros { display:flex; gap:.85rem; align-items:end; flex-wrap:wrap; padding:1rem; background:var(--color-fondo); border:1px solid rgba(0,210,255,.15); border-radius:10px; }
+.panel-operador .bandeja-filtros label { flex:1 1 210px; max-width:300px; font-size:.85rem; }
+.panel-operador .bandeja-filtros .form-select { margin-top:.4rem; }
+.panel-operador .bandeja-aviso { margin:1.25rem 0 0; padding:1.2rem; border:1px dashed rgba(0,210,255,.25); border-radius:10px; background:var(--color-fondo); color:rgba(243,239,250,.75); }
+.panel-operador .bandeja-ordenes .table { --bs-table-bg:var(--color-superficie); --bs-table-color:var(--color-texto); --bs-table-border-color:rgba(0,210,255,.15); font-size:.9rem; }
+.panel-operador .bandeja-ordenes thead th { color:rgba(243,239,250,.7); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; background:var(--color-fondo); white-space:nowrap; }
+.panel-operador .bandeja-ordenes tbody tr:last-child td { border-bottom:0; }
+.panel-operador .bandeja-numero { color:var(--color-acento); font-weight:700; }
+.panel-operador .bandeja-estado { display:inline-block; padding:.35rem .65rem; border:1px solid rgba(0,210,255,.35); border-radius:30px; color:var(--color-acento); background:rgba(0,210,255,.06); font-size:.72rem; font-weight:700; white-space:nowrap; }
+.panel-operador .bandeja-ordenes td p { max-width:190px; color:rgba(243,239,250,.7); font-size:.78rem; margin:.45rem 0 0; }
+.panel-operador .bandeja-ordenes .btn-outline-warning,
+.panel-operador .bandeja-ordenes .btn-outline-warning:disabled {
+  --bs-btn-disabled-color: var(--color-acento);
+  --bs-btn-disabled-border-color: var(--color-acento);
+  --bs-btn-disabled-bg: transparent;
+  color: var(--color-acento);
+  border-color: var(--color-acento);
+  background: transparent;
+}
+.panel-operador .bandeja-ordenes .btn-outline-warning:hover:not(:disabled) {
+  color: var(--color-fondo);
+  background: var(--color-acento);
+  border-color: var(--color-acento);
+}
+@media(max-width:575px) { .panel-operador .bandeja-filtros label,.panel-operador .bandeja-filtros button { max-width:none; width:100%; } }

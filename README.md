@@ -1,5 +1,7 @@
 # Especificación del Proyecto: GameHub Store - Frontend
 
+Para instalar y ejecutar la entrega EP3, consulta [ENTREGA_EP3.md](ENTREGA_EP3.md).
+
 ## Descripción General
 Este repositorio contiene el código fuente correspondiente a la Evaluación Parcial 2 (EP2) del proyecto GameHub Store. 
 
@@ -8,7 +10,7 @@ Este repositorio contiene el código fuente correspondiente a la Evaluación Par
 *   **Enrutamiento de Cliente (Client-Side Routing):** Implementación de navegación dinámica mediante `react-router-dom`, eliminando las recargas de página para optimizar la experiencia de usuario.
 *   **Gestión Global de Estado:** Integración de la API de Contexto (`Context API`) para administrar la persistencia de datos y las reglas de negocio del carrito de compras.
 *   **Diseño Responsivo y Framework CSS:** Sustitución de hojas de estilo manuales por el sistema de grillas de Bootstrap. Garantiza adaptabilidad en resoluciones de 360px, 768px y 1280px, respetando la paleta         de colores Neón requerida a través de la sobrescritura de variables nativas.
-*   **Testing Automatizado:** Configuración de un entorno de pruebas unitarias utilizando Jasmine y Karma. Se alcanza un 100% de cobertura en la lógica de negocio y en la simulación de eventos mediante el uso de       objetos espía (Mocks).
+*   **Testing Automatizado:** Configuración de un entorno de pruebas unitarias utilizando Jasmine y Karma. La cobertura y el resultado deben verificarse ejecutando Karma.
 
 ## 2. Vistas Implementadas
 El sistema cuenta con seis interfaces funcionales:
@@ -57,9 +59,18 @@ El proyecto incluye una suite de mas de 10 pruebas unitarias requeridas, ejecuta
 2.  **Revisar los resultados:** La terminal compilará los módulos mediante Webpack e indicará el resultado de los casos evaluados (ej. `35 SUCCESS`).
 3.  **Visualizar el reporte de cobertura (Coverage):**
     *   Navegue hacia la ruta generada automáticamente por el plugin de Istanbul: `/coverage/html`.
-    *   Abra el archivo `index.html` en su navegador web para acceder al desglose métrico detallado (100% de cobertura en Statements, Branches, Functions y Lines).
+    *   Abra el archivo `index.html` en su navegador web para acceder al desglose métrico detallado (consulte los valores del reporte generado).
 
 ## 6. Equipo de Desarrollo
 *   Carolina Rivera
 *   Cassie Muñoz
 *   Ariel Rojo
+
+
+## EP3
+
+Consulte el [manual de usuario EP3](MANUAL_EP3.md) y la guia de arranque del backend. La cobertura real debe revisarse en el reporte generado por Karma; no se ha confirmado el 100%.
+
+## EP3: ejecuci?n y manual
+
+Configure `VITE_API_URL` con el Gateway, instale dependencias con `npm.cmd install` e inicie con `npm.cmd run dev`. Consulte [manual de usuario](MANUAL_EP3.md). Ejecute `npm.cmd test -- --single-run`; la cobertura est? en `coverage/html/index.html`.
